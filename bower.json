@@ -1,0 +1,16 @@
+{
+  "name": "adapt-esdc-simulation",
+  "version": "0.0.2",
+  "framework": ">=3.3",
+  "homepage": "https://github.com/lit-eia/adapt-esdc-simulation",
+  "issues": "https://github.com/lit-eia/adapt-esdc-simulation/issues/new",
+  "description": "A component that enables a simulation on images",
+  "main": "/js/adapt-esdc-simulation.js",
+  "displayName" : "Simulation",
+  "component" : "simulation",
+  "keywords": [
+    "adapt-plugin",
+    "adapt-component"
+  ],
+  "license": "GPL-3.0"
+}

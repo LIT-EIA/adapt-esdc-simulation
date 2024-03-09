@@ -1,0 +1,180 @@
+{
+  "type": "object",
+  "$schema": "http://json-schema.org/draft-04/schema",
+  "id": "http://jsonschema.net",
+  "$ref": "http://localhost/plugins/content/component/model.schema",
+  "globals": {
+    "ariaRegion": {
+      "type": "string",
+      "required": true,
+      "default": "Image with selectable areas. Select each button to show more information.",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "closeText": {
+      "type": "string",
+      "required": false,
+      "default": "Close",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "nextText": {
+      "type": "string",
+      "required": false,
+      "default": "Next",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "previousText": {
+      "type": "string",
+      "required": false,
+      "default": "Previous",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "startTourText": {
+      "type": "string",
+      "required": false,
+      "default": "Start Tour",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    }
+  },
+  "properties": {
+    "_supportedLayout": {
+      "type": "string",
+      "required": true,
+      "enum": ["full-width", "half-width", "both"],
+      "default": "full-width",
+      "editorOnly": true
+    },
+    "instruction": {
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "translatable": true
+    },
+    "_setCompletionOn": {
+      "type": "string",
+      "required": false,
+      "default": "allItems",
+      "title": "Set completion on:",
+      "enum": ["inview", "allItems"],
+      "inputType": {
+        "type": "Select",
+        "options": ["inview", "allItems"]
+      },
+      "validators": [],
+      "help": "Whether completion is based on the learner having viewed all the items - or just having viewed the component"
+    },
+    "_items": {
+      "type": "array",
+      "required": true,
+      "title": "Simulation Steps",
+      "validators": ["minimumItems2"],
+      "items": {
+        "type": "object",
+        "required": true,
+        "properties": {
+          "title": {
+            "type": "string",
+            "required": true,
+            "default": "",
+            "inputType": "Text",
+            "validators": [],
+            "help": "Title displayed in the step bubble",
+            "translatable": true
+          },
+          "_ariaLevel": {
+            "type": "number",
+            "required": true,
+            "default": 0,
+            "title": "Title level",
+            "inputType": "Number",
+            "validators": ["required", "number"],
+            "help": "Aria level for title"
+          },
+          "body": {
+            "type": "string",
+            "required": true,
+            "default": "",
+            "inputType": "TextArea",
+            "validators": ["required"],
+            "help": "Body text displayed in the step bubble",
+            "translatable": true,
+            "a11y": "Accessibility Recommendation: Make sure that your step can be understood on its own. The understanding of this text cannot depend on information available on the image or the direction of the pointer."
+          },
+          "_graphic": {
+            "type": "object",
+            "required": true,
+            "title": "Step Graphic",
+            "properties": {
+              "src": {
+                "type": "string",
+                "required": true,
+                "default": "",
+                "inputType": "Asset:image",
+                "validators": ["required"],
+                "help": "Background image to be displayed behind the step."
+              },
+              "alt": {
+                "type": "string",
+                "required": false,
+                "default": "",
+                "inputType": "Text",
+                "validators": [],
+                "help": "Alternative text for the image displayed behind the step",
+                "translatable": true
+              }
+            }
+          },
+          "_pin": {
+            "type": "object",
+            "required": false,
+            "title": "Step Position",
+            "secondaryLabel": "Tip: You can quickly find the pin position with the <a target=\"_blank\" href=\"https://lit-eia.github.io/en/adapt/pin-finder/\">Pin Position Finder Tool</a>",
+            "properties": {
+              "_left": {
+                "type": "number",
+                "required": true,
+                "default": 0,
+                "title": "Pin Position - Left",
+                "inputType": "Number",
+                "validators": ["required", "number"],
+                "help": "Left position of pin (the pin is where the bubble will point)"
+              },
+              "_top": {
+                "type": "number",
+                "required": true,
+                "default": 0,
+                "title": "Pin Position - Top",
+                "inputType": "Number",
+                "validators": ["required", "number"],
+                "help": "Top position of pin (the pin is where the bubble will point)"
+              },
+              "_bubbledirection": {
+                "type": "string",
+                "required": true,
+                "default": "right",
+                "title": "Bubble Direction:",
+                "inputType": {
+                  "type": "Select",
+                  "options": ["none", "left", "right", "top", "bottom"]
+                },
+                "validators": [],
+                "help": "Direction of the bubble"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
