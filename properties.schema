@@ -49,7 +49,11 @@
     "_supportedLayout": {
       "type": "string",
       "required": true,
-      "enum": ["full-width", "half-width", "both"],
+      "enum": [
+        "full-width",
+        "half-width",
+        "both"
+      ],
       "default": "full-width",
       "editorOnly": true
     },
@@ -66,19 +70,37 @@
       "required": false,
       "default": "allItems",
       "title": "Set completion on:",
-      "enum": ["inview", "allItems"],
+      "enum": [
+        "inview",
+        "actionSuccess"
+      ],
       "inputType": {
         "type": "Select",
-        "options": ["inview", "allItems"]
+        "options": [
+          "inview",
+          "actionSuccess"
+        ]
       },
       "validators": [],
       "help": "Whether completion is based on the learner having viewed all the items - or just having viewed the component"
     },
+    "_incorrectFallback": {
+      "type": "string",
+      "title": "Incorrect Fallback Message",
+      "required": true,
+      "default": "",
+      "inputType": "TextArea",
+      "validators": ["required"],
+      "help": "Body text displayed as general message when you click on a wrong position in a screen",
+      "translatable": true
+    },
     "_items": {
       "type": "array",
       "required": true,
-      "title": "Simulation Steps",
-      "validators": ["minimumItems2"],
+      "title": "Simulation Screens",
+      "validators": [
+        "minimumItems2"
+      ],
       "items": {
         "type": "object",
         "required": true,
@@ -92,37 +114,30 @@
             "help": "Title displayed in the step bubble",
             "translatable": true
           },
-          "_ariaLevel": {
-            "type": "number",
-            "required": true,
-            "default": 0,
-            "title": "Title level",
-            "inputType": "Number",
-            "validators": ["required", "number"],
-            "help": "Aria level for title"
-          },
-          "body": {
+          "_screendID": {
             "type": "string",
+            "title": "Screen ID",
             "required": true,
             "default": "",
-            "inputType": "TextArea",
+            "inputType": "Text",
             "validators": ["required"],
-            "help": "Body text displayed in the step bubble",
-            "translatable": true,
-            "a11y": "Accessibility Recommendation: Make sure that your step can be understood on its own. The understanding of this text cannot depend on information available on the image or the direction of the pointer."
+            "help": "ID that identifies your screen, it is used to associate an action to this screen.",
+            "translatable": true
           },
           "_graphic": {
             "type": "object",
             "required": true,
-            "title": "Step Graphic",
+            "title": "Screen Graphic",
             "properties": {
               "src": {
                 "type": "string",
                 "required": true,
                 "default": "",
                 "inputType": "Asset:image",
-                "validators": ["required"],
-                "help": "Background image to be displayed behind the step."
+                "validators": [
+                  "required"
+                ],
+                "help": "Background image to be displayed for the screen"
               },
               "alt": {
                 "type": "string",
@@ -130,46 +145,180 @@
                 "default": "",
                 "inputType": "Text",
                 "validators": [],
-                "help": "Alternative text for the image displayed behind the step",
+                "help": "Alternative text for the image displayed for the screen",
                 "translatable": true
               }
             }
           },
-          "_pin": {
-            "type": "object",
+          "body": {
+            "type": "string",
+            "title": "Screen Message",
             "required": false,
-            "title": "Step Position",
-            "secondaryLabel": "Tip: You can quickly find the pin position with the <a target=\"_blank\" href=\"https://lit-eia.github.io/en/adapt/pin-finder/\">Pin Position Finder Tool</a>",
-            "properties": {
-              "_left": {
-                "type": "number",
-                "required": true,
-                "default": 0,
-                "title": "Pin Position - Left",
-                "inputType": "Number",
-                "validators": ["required", "number"],
-                "help": "Left position of pin (the pin is where the bubble will point)"
-              },
-              "_top": {
-                "type": "number",
-                "required": true,
-                "default": 0,
-                "title": "Pin Position - Top",
-                "inputType": "Number",
-                "validators": ["required", "number"],
-                "help": "Top position of pin (the pin is where the bubble will point)"
-              },
-              "_bubbledirection": {
-                "type": "string",
-                "required": true,
-                "default": "right",
-                "title": "Bubble Direction:",
-                "inputType": {
-                  "type": "Select",
-                  "options": ["none", "left", "right", "top", "bottom"]
+            "default": "",
+            "inputType": "TextArea",
+            "validators": [],
+            "help": "Body text displayed before you can interact with the screen",
+            "translatable": true
+          },
+          "_childItems": {
+            "type": "array",
+            "required": true,
+            "title": "Actions",
+            "validators": ["required"],
+            "items": {
+              "type": "object",
+              "required": true,
+              "properties": {
+                "title": {
+                  "type": "string",
+                  "required": true,
+                  "default": "",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Title",
+                  "translatable": true,
+                  "title": "Element Name"
                 },
-                "validators": [],
-                "help": "Direction of the bubble"
+                "_actionType": {
+                  "type": "string",
+                  "required": true,
+                  "default": "click",
+                  "title": "Type of action",
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "click",
+                      "input"
+                    ]
+                  },
+                  "validators": [],
+                  "help": "Direction of the bubble"
+                },
+                "_matchText": {
+                  "type": "string",
+                  "title": "Match Text",
+                  "required": false,
+                  "default": "",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Text the learner needs to enter in the input type"
+                },
+                "_goTo": {
+                  "type": "string",
+                  "title": "GoTo",
+                  "required": false,
+                  "default": "",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "goTo screen"
+                },
+                "_position": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Element Size and Position",
+                  "properties": {
+                    "_left": {
+                      "type": "number",
+                      "required": true,
+                      "default": 0,
+                      "title": "Element Position - Left",
+                      "inputType": "Number",
+                      "validators": [
+                        "required",
+                        "number"
+                      ],
+                      "help": "Left position of element"
+                    },
+                    "_top": {
+                      "type": "number",
+                      "required": true,
+                      "default": 0,
+                      "title": "Element Position - Top",
+                      "inputType": "Number",
+                      "validators": [
+                        "required",
+                        "number"
+                      ],
+                      "help": "Top position of element"
+                    },
+                    "_width": {
+                      "type": "number",
+                      "required": true,
+                      "default": 0,
+                      "title": "Element Width",
+                      "inputType": "Number",
+                      "validators": [
+                        "required",
+                        "number"
+                      ],
+                      "help": "Width of element"
+                    },
+                    "_height": {
+                      "type": "number",
+                      "required": true,
+                      "default": 0,
+                      "title": "Element Height",
+                      "inputType": "Number",
+                      "validators": [
+                        "required",
+                        "number"
+                      ],
+                      "help": "Height of element"
+                    }
+                  }
+                },
+                "_failure": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Failure",
+                  "properties": {
+                    "_isFailure": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "This action is a failure",
+                      "inputType": "Checkbox",
+                      "validators": [],
+                      "help": "This action is a failure"
+                    },
+                    "body": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "inputType": "TextArea",
+                      "validators": [],
+                      "help": "Body text displayed as failure message",
+                      "translatable": true,
+                      "title": "Failure Message"
+                    }
+                  }
+                },
+                "_success": {
+                  "type": "object",
+                  "required": false,
+                  "title": "Success",
+                  "properties": {
+                    "_isSuccess": {
+                      "type": "boolean",
+                      "required": false,
+                      "default": false,
+                      "title": "This action is a success",
+                      "inputType": "Checkbox",
+                      "validators": [],
+                      "help": "This action is a success"
+                    },
+                    "body": {
+                      "type": "string",
+                      "required": false,
+                      "default": "",
+                      "inputType": "TextArea",
+                      "validators": [],
+                      "help": "Body text displayed as success message",
+                      "translatable": true,
+                      "title": "Success Message"
+                    }
+                  }
+                }
               }
             }
           }
