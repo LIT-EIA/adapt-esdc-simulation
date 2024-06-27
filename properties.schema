@@ -68,7 +68,7 @@
     "_setCompletionOn": {
       "type": "string",
       "required": false,
-      "default": "allItems",
+      "default": "actionSuccess",
       "title": "Set completion on:",
       "enum": [
         "inview",
@@ -90,7 +90,9 @@
       "required": true,
       "default": "",
       "inputType": "TextArea",
-      "validators": ["required"],
+      "validators": [
+        "required"
+      ],
       "help": "Body text displayed as general message when you click on a wrong position in a screen",
       "translatable": true
     },
@@ -110,8 +112,21 @@
             "required": true,
             "default": "",
             "inputType": "Text",
-            "validators": [],
-            "help": "Title displayed in the step bubble",
+            "validators": [
+              "required"
+            ],
+            "help": "Title used for editing",
+            "translatable": true
+          },
+          "displayTitle": {
+            "type": "string",
+            "required": true,
+            "default": "",
+            "inputType": "Text",
+            "validators": [
+              "required"
+            ],
+            "help": "Title visible on the screen",
             "translatable": true
           },
           "_screendID": {
@@ -119,8 +134,10 @@
             "title": "Screen ID",
             "required": true,
             "default": "",
-            "inputType": "Text",
-            "validators": ["required"],
+            "inputType": "UniqueID",
+            "validators": [
+              "required"
+            ],
             "help": "ID that identifies your screen, it is used to associate an action to this screen.",
             "translatable": true
           },
@@ -139,14 +156,14 @@
                 ],
                 "help": "Background image to be displayed for the screen"
               },
-              "alt": {
-                "type": "string",
+              "_forceFullWidth": {
+                "type": "boolean",
                 "required": false,
-                "default": "",
-                "inputType": "Text",
+                "default": false,
+                "inputType": "Checkbox",
                 "validators": [],
-                "help": "Alternative text for the image displayed for the screen",
-                "translatable": true
+                "title": "Force full width",
+                "help": "Force full width"
               }
             }
           },
@@ -164,7 +181,9 @@
             "type": "array",
             "required": true,
             "title": "Actions",
-            "validators": ["required"],
+            "validators": [
+              "required"
+            ],
             "items": {
               "type": "object",
               "required": true,
@@ -188,29 +207,150 @@
                     "type": "Select",
                     "options": [
                       "click",
-                      "input"
+                      "input",
+                      "select"
                     ]
                   },
                   "validators": [],
-                  "help": "Direction of the bubble"
+                  "help": "action type"
                 },
-                "_matchText": {
+                "_clickType": {
                   "type": "string",
-                  "title": "Match Text",
-                  "required": false,
-                  "default": "",
-                  "inputType": "Text",
+                  "required": true,
+                  "default": "button",
+                  "title": "Type of click action",
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "button",
+                      "link"
+                    ]
+                  },
                   "validators": [],
-                  "help": "Text the learner needs to enter in the input type"
+                  "help": "click type"
                 },
                 "_goTo": {
                   "type": "string",
                   "title": "GoTo",
                   "required": false,
                   "default": "",
-                  "inputType": "Text",
+                  "inputType": "SelectScreen",
                   "validators": [],
                   "help": "goTo screen"
+                },
+                "_matchTextItems": {
+                  "type": "array",
+                  "required": true,
+                  "title": "Match Text",
+                  "validators": [],
+                  "items": {
+                    "type": "object",
+                    "required": true,
+                    "properties": {
+                      "_matchValue": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "inputType": "Text",
+                        "validators": [
+                          "required"
+                        ],
+                        "help": "Title",
+                        "translatable": true,
+                        "title": "Text To Match"
+                      },
+                      "_caseInsensitive": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Case insensitive",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "The text will match no matter the case"
+                      },
+                      "_matchRegex": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Match with regex",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Use regex expression as match text"
+                      }
+                    }
+                  }
+                },
+                "matchFailure": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "TextArea",
+                  "validators": [],
+                  "help": "Body text displayed as failure message",
+                  "translatable": true,
+                  "title": "Match Text Failure Message"
+                },
+                "_selectOptions": {
+                  "type": "array",
+                  "required": true,
+                  "title": "Select Options",
+                  "validators": [],
+                  "items": {
+                    "type": "object",
+                    "required": true,
+                    "properties": {
+                      "_selectValue": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "inputType": "Text",
+                        "validators": [
+                          "required"
+                        ],
+                        "help": "Option to be displayed in dropdown",
+                        "translatable": true,
+                        "title": "Title"
+                      },
+                      "_correctOption": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Correct option",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Selecting this option will trigger goTo"
+                      }
+                    }
+                  }
+                },
+                "selectFailure": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "TextArea",
+                  "validators": [],
+                  "help": "Body text displayed as failure message",
+                  "translatable": true,
+                  "title": "Select Failure Message"
+                },
+                "_zonefinder": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "SimulationZoneFinder",
+                  "validators": [],
+                  "help": "Pin finder",
+                  "title": "Pin finder",
+                  "noTitle": true
+                },
+                "_zonefinderSize": {
+                  "type": "string",
+                  "required": false,
+                  "default": "100",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Zone finder sizing",
+                  "title": "Zone finder size"
                 },
                 "_position": {
                   "type": "object",
@@ -296,16 +436,16 @@
                 "_success": {
                   "type": "object",
                   "required": false,
-                  "title": "Success",
+                  "title": "Completion Trigger",
                   "properties": {
                     "_isSuccess": {
                       "type": "boolean",
                       "required": false,
                       "default": false,
-                      "title": "This action is a success",
+                      "title": "This action triggers completion",
                       "inputType": "Checkbox",
                       "validators": [],
-                      "help": "This action is a success"
+                      "help": "This action triggers completion"
                     },
                     "body": {
                       "type": "string",
@@ -313,9 +453,9 @@
                       "default": "",
                       "inputType": "TextArea",
                       "validators": [],
-                      "help": "Body text displayed as success message",
+                      "help": "Body text displayed as completion message",
                       "translatable": true,
-                      "title": "Success Message"
+                      "title": "Completion Message"
                     }
                   }
                 }
