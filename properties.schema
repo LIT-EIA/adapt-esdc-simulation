@@ -198,6 +198,27 @@
                   "translatable": true,
                   "title": "Element Name"
                 },
+                "_goTo": {
+                  "type": "string",
+                  "title": "GoTo",
+                  "required": false,
+                  "default": "",
+                  "inputType": "SelectScreen",
+                  "validators": [],
+                  "help": "goTo screen",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_failure._isFailure",
+                        "!value": "true"
+                      },
+                      {
+                        "name": "_success._isSuccess",
+                        "!value": "true"
+                      }
+                    ]
+                  }
+                },
                 "_actionType": {
                   "type": "string",
                   "required": true,
@@ -227,16 +248,15 @@
                     ]
                   },
                   "validators": [],
-                  "help": "click type"
-                },
-                "_goTo": {
-                  "type": "string",
-                  "title": "GoTo",
-                  "required": false,
-                  "default": "",
-                  "inputType": "SelectScreen",
-                  "validators": [],
-                  "help": "goTo screen"
+                  "help": "click type",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "click"
+                      }
+                    ]
+                  }
                 },
                 "_matchTextItems": {
                   "type": "array",
@@ -278,6 +298,14 @@
                         "help": "Use regex expression as match text"
                       }
                     }
+                  },
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      }
+                    ]
                   }
                 },
                 "matchFailure": {
@@ -288,7 +316,15 @@
                   "validators": [],
                   "help": "Body text displayed as failure message",
                   "translatable": true,
-                  "title": "Match Text Failure Message"
+                  "title": "Match Text Failure Message",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      }
+                    ]
+                  }
                 },
                 "_selectOptions": {
                   "type": "array",
@@ -321,6 +357,14 @@
                         "help": "Selecting this option will trigger goTo"
                       }
                     }
+                  },
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "select"
+                      }
+                    ]
                   }
                 },
                 "selectFailure": {
@@ -331,7 +375,15 @@
                   "validators": [],
                   "help": "Body text displayed as failure message",
                   "translatable": true,
-                  "title": "Select Failure Message"
+                  "title": "Select Failure Message",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "select"
+                      }
+                    ]
+                  }
                 },
                 "_zonefinder": {
                   "type": "string",
@@ -429,8 +481,24 @@
                       "validators": [],
                       "help": "Body text displayed as failure message",
                       "translatable": true,
-                      "title": "Failure Message"
+                      "title": "Failure Message",
+                      "conditions": {
+                        "and": [
+                          {
+                            "name": "_isFailure",
+                            "value": "true"
+                          }
+                        ]
+                      }
                     }
+                  },
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_success._isSuccess",
+                        "!value": "true"
+                      }
+                    ]
                   }
                 },
                 "_success": {
@@ -455,8 +523,24 @@
                       "validators": [],
                       "help": "Body text displayed as completion message",
                       "translatable": true,
-                      "title": "Completion Message"
+                      "title": "Completion Message",
+                      "conditions": {
+                        "and": [
+                          {
+                            "name": "_isSuccess",
+                            "value": "true"
+                          }
+                        ]
+                      }
                     }
+                  },
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_failure._isFailure",
+                        "!value": "true"
+                      }
+                    ]
                   }
                 }
               }
