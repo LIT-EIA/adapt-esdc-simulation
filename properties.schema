@@ -36,10 +36,10 @@
       "validators": [],
       "translatable": true
     },
-    "startTourText": {
+    "startSimulationText": {
       "type": "string",
       "required": false,
-      "default": "Start Tour",
+      "default": "Start Simulation",
       "inputType": "Text",
       "validators": [],
       "translatable": true
