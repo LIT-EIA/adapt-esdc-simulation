@@ -1,0 +1,13 @@
+<div id="screen-{{_screenID}}" class="action-container" aria-label="{{{title}}}">
+  {{#each _childItems}}
+    {{#if type.input}}
+      <div class="click-zone" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;"></div>
+    {{/if}}
+    {{#if type.select}}
+      <div class="click-zone" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;"></div>
+    {{/if}}
+    {{#if type.click}}
+      <div class="click-zone" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;"></div>
+    {{/if}}
+  {{/each}}
+</div>

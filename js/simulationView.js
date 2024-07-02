@@ -31,6 +31,7 @@ define([
     },
 
     postRender: function () {
+      var self = this;
       if (this.model.get('active')) {
         var simulation = this.model.get('simulation');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -51,9 +52,20 @@ define([
           var screen = filteredScreen[0];
           var imageSrc = screen._graphic.src;
           this.loadImage(imageSrc).then(function(){
-            screen._childItems.forEach(function(action){
-              console.log(action);
-            })
+            //console.log(self);
+            screen._childItems.forEach(function(action, index){
+               var type = {
+                input: action._actionType === 'input',
+                select: action._actionType === 'select',
+                click: action._actionType === 'click'
+              };
+              screen._childItems[index].type = type;
+             });
+             console.log(screen);
+             var templateScreen = Handlebars.templates['simulationScreen'];
+             var screenHTML = templateScreen(screen);
+             console.log(screenHTML);
+             self.$el.find('.simulation-graphic').append(screenHTML);
           });
         };
 
