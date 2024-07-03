@@ -7,7 +7,8 @@ define([
     events: {
       'click .simulation-action-element': 'handleAction',
       'change .simulation-action-element': 'handleAction',
-      'input .simulation-action-element': 'handleAction'
+      'input .simulation-action-element': 'handleAction',
+      'keypress .simulation-action-element': 'handleAction'
     },
 
     initialize: function () {
@@ -35,10 +36,14 @@ define([
 
     handleAction: function (e) {
       var eventType = e.type;
-
       switch (eventType) {
         case 'click':
           this.handleClick(e);
+          break;
+        case 'keypress':
+          if (e.which === 13) {
+            this.handleClick(e);
+          }
           break;
         case 'change':
           this.handleChange(e);
@@ -51,18 +56,85 @@ define([
       }
     },
 
-    handleClick: function(e){
+    handleClick: function (e) {
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
-      console.log(action);
+      if (action._actionType === 'click') {
+        console.log('click action:', action);
+        if (action._failure._isFailure) {
+          Adapt.trigger('notify:popup', {
+            title: 'Incorrect Action',
+            body: action._failure.body
+          });
+        }
+      }
     },
 
-    handleChange: function(e){
-      console.log('action listener: ', e);
+    handleChange: function (e) {
+      var actionId = $(e.target).attr('data-id');
+      var action = this.model.get('_childItems').find(item => item.id === actionId);
+      if (action._actionType === 'select') {
+        console.log('change action:', action);
+        if (action._failure._isFailure) {
+          Adapt.trigger('notify:popup', {
+            title: 'Incorrect Action',
+            body: action._failure.body
+          });
+        }
+      }
     },
 
-    handleInput: function(e){
-      console.log('action listener: ', e);
+    handleInput: function (e) {
+      var actionId = $(e.target).attr('data-id');
+      var action = this.model.get('_childItems').find(item => item.id === actionId);
+      if (action._actionType === 'input') {
+        if (action._failure._isFailure) {
+          Adapt.trigger('notify:popup', {
+            title: 'Incorrect Action',
+            body: action._failure.body
+          });
+        } else {
+          console.log('input action:', action);
+          var inputString = $(e.target).val();
+          var criteriaList = action._matchTextItems;
+          var isMatched = this.matchString(inputString, criteriaList);
+          if(isMatched){
+            console.log(this);
+            //Adapt.trigger('simulation:loadscreen', {id: screenID, componentId: })
+          }
+        }
+      }
+    },
+
+    matchString: function (inputString, criteriaList) {
+      var matched = false;
+
+      criteriaList.forEach(function (criteria) {
+        var matchValue = criteria._matchValue;
+        var caseInsensitive = criteria._caseInsensitive;
+        var matchRegex = criteria._matchRegex;
+
+        if (matchRegex) {
+          var regexFlags = caseInsensitive ? 'i' : '';
+          var regex = new RegExp(matchValue, regexFlags);
+
+          if (regex.test(inputString)) {
+            matched = true;
+          }
+        } else {
+          if (caseInsensitive) {
+            if (inputString.toLowerCase() === matchValue.toLowerCase()) {
+              matched = true;
+            }
+          } else {
+            if (inputString === matchValue) {
+              matched = true;
+            }
+          }
+        }
+      });
+
+      return matched;
     }
 
   });
