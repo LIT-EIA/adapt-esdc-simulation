@@ -1,7 +1,8 @@
 define([
   'core/js/adapt',
-  'core/js/views/componentView'
-], function (Adapt, ComponentView) {
+  'core/js/views/componentView',
+  './simulationScreenView'
+], function (Adapt, ComponentView, SimulationScreenView) {
   'use strict';
 
   var SimulationView = ComponentView.extend({
@@ -12,6 +13,7 @@ define([
 
     initialize: function () {
       ComponentView.prototype.initialize.call(this);
+      this.screenHistory = [];
       this.checkIfResetOnRevisit();
     },
 
@@ -45,29 +47,21 @@ define([
           })
         };
 
-        this.loadScreen = function(id){
-          var filteredScreen = this.screens.filter(function(screen){
+        this.loadScreen = function (id) {
+          var filteredScreen = this.screens.filter(function (screen) {
             return screen._screendID === id
           });
           var screen = filteredScreen[0];
           var imageSrc = screen._graphic.src;
-          this.loadImage(imageSrc).then(function(){
+          this.loadImage(imageSrc).then(function () {
             //console.log(self);
-            screen._childItems.forEach(function(action, index){
-               var type = {
-                input: action._actionType === 'input',
-                select: action._actionType === 'select',
-                click: action._actionType === 'click'
-              };
-              screen._childItems[index].type = type;
-             });
-             console.log(screen);
-             var templateScreen = Handlebars.templates['simulationScreen'];
-             var screenHTML = templateScreen(screen);
-             console.log(screenHTML);
-             self.$el.find('.simulation-graphic').append(screenHTML);
+              var screenView = new SimulationScreenView({model: new Backbone.Model(screen)});
+            self.screenHistory.push(screen._screendID);
+            console.log(screenView);
+            self.$el.find('.simulation-graphic').append(screenView.render().el);
           });
         };
+        console.log('after this.screenHistory: ', this.screenHistory);
 
         var screenID = this.screens[0]._screendID;
         this.loadScreen(screenID);

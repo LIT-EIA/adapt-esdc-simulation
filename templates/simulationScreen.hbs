@@ -1,11 +1,11 @@
 <div id="screen-{{_screenID}}" class="action-container" aria-label="{{{title}}}">
   {{#each _childItems}}
     {{#if type.input}}
-    <input type="text" class="input-zone"
+    <input type="text" class="input-zone simulation-action-element"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;" />
     {{/if}}
     {{#if type.select}}
-    <select name="options" id="options" class="select-zone"
+    <select name="options" id="options" class="select-zone simulation-action-element"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
       {{#each _selectOptions}}
       <option value="{{_selectValue}}">{{_selectValue}}</option>
@@ -13,7 +13,7 @@
     </select>
     {{/if}}
     {{#if type.click}}
-    <div role="button" tabindex="0" aria-label="{{title}}" class="click-zone"
+    <div role="button" tabindex="0" aria-label="{{title}}" class="click-zone simulation-action-element"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     </div>
     {{/if}}
