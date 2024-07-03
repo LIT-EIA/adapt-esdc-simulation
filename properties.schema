@@ -118,17 +118,6 @@
             "help": "Title used for editing",
             "translatable": true
           },
-          "displayTitle": {
-            "type": "string",
-            "required": true,
-            "default": "",
-            "inputType": "Text",
-            "validators": [
-              "required"
-            ],
-            "help": "Title visible on the screen",
-            "translatable": true
-          },
           "_screendID": {
             "type": "string",
             "title": "Screen ID",
@@ -139,6 +128,17 @@
               "required"
             ],
             "help": "ID that identifies your screen, it is used to associate an action to this screen.",
+            "translatable": true
+          },
+          "displayTitle": {
+            "type": "string",
+            "required": true,
+            "default": "",
+            "inputType": "Text",
+            "validators": [
+              "required"
+            ],
+            "help": "Title visible on the screen",
             "translatable": true
           },
           "_graphic": {

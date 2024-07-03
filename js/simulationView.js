@@ -14,6 +14,7 @@ define([
     initialize: function () {
       ComponentView.prototype.initialize.call(this);
       this.screenHistory = [];
+      this.currentViewData;
       this.checkIfResetOnRevisit();
     },
 
@@ -34,6 +35,7 @@ define([
 
     postRender: function () {
       var self = this;
+      this.listenTo(Adapt, 'simulationloadscreen', this.loadScreen);
       if (this.model.get('active')) {
         var simulation = this.model.get('simulation');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -47,24 +49,34 @@ define([
           })
         };
 
-        this.loadScreen = function (id) {
-          var filteredScreen = this.screens.filter(function (screen) {
-            return screen._screendID === id
-          });
-          var screen = filteredScreen[0];
-          var imageSrc = screen._graphic.src;
-          this.loadImage(imageSrc).then(function () {
-            //console.log(self);
-              var screenView = new SimulationScreenView({model: new Backbone.Model(screen)});
-            self.screenHistory.push(screen._screendID);
-            console.log(screenView);
-            self.$el.find('.simulation-graphic').append(screenView.render().el);
-          });
+        this.loadScreen = function (data) {
+          if (data.componentID === self.componentID) {
+            var filteredScreen = this.screens.filter(function (screen) {
+              return screen._screendID === data.id
+            });
+            var screen = filteredScreen[0];
+            var imageSrc = screen._graphic.src;
+            screen.componentID = this.componentID;
+            if (screen) {
+              if(self.currentViewData && self.currentViewData.screenView){
+                self.currentViewData.screenView.remove();
+              }
+              this.loadImage(imageSrc).then(function () {
+                self.currentViewData = {
+                  screenID: screen._screendID,
+                  screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
+                }
+                self.screenHistory.push(self.currentViewData.screenID);
+                console.log(self.currentViewData.screenView);
+                self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
+              });
+            }
+          }
         };
         console.log('after this.screenHistory: ', this.screenHistory);
 
         var screenID = this.screens[0]._screendID;
-        this.loadScreen(screenID);
+        this.loadScreen({ id: screenID, componentID: this.componentID });
       }
       this.$('.simulation-widget').imageready(this.setReadyStatus.bind(this));
       if (this.model.get('_setCompletionOn') === 'inview') {

@@ -99,8 +99,11 @@ define([
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);
           if(isMatched){
-            console.log(this);
-            //Adapt.trigger('simulation:loadscreen', {id: screenID, componentId: })
+            var eventData = {
+              id: action._goTo,
+              componentID: this.model.get('componentID')
+            }
+            Adapt.trigger('simulationloadscreen', eventData);
           }
         }
       }
