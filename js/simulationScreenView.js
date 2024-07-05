@@ -13,7 +13,7 @@ define([
 
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
-      console.log('simulation screen view this: ', this);
+      //console.log('simulation screen view this: ', this);
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         _childItems[index].id = `screen-action-${index}`;
@@ -66,6 +66,12 @@ define([
             title: 'Incorrect Action',
             body: action._failure.body
           });
+        } else {
+          var eventData = {
+            id: action._goTo,
+            componentID: this.model.get('componentID')
+          }
+          Adapt.trigger('simulationloadscreen', eventData);
         }
       }
     },
@@ -74,12 +80,39 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'select') {
-        console.log('change action:', action);
+        //console.log('change action:', action);
         if (action._failure._isFailure) {
           Adapt.trigger('notify:popup', {
             title: 'Incorrect Action',
             body: action._failure.body
           });
+        } else {
+          console.log('this', this);
+          var selectedOption = $(e.target).val();
+          var correctOption = action._selectOptions.filter(function (option) {
+            return option._correctOption === true
+          })[0];
+          var correctOptionValue = correctOption._selectValue;
+          if (selectedOption === correctOptionValue) {
+            var eventData = {
+              id: action._goTo,
+              componentID: this.model.get('componentID')
+            }
+            Adapt.trigger('simulationloadscreen', eventData);
+          } else {
+            if (action.selectFailure) {
+              Adapt.trigger('notify:popup', {
+                title: 'Incorrect Action',
+                body: action.selectFailure
+              });
+            } else {
+              Adapt.trigger('notify:popup', {
+                title: 'Incorrect Action',
+                body: this.model.get('incorrectFallback')
+              });
+            }
+
+          }
         }
       }
     },
@@ -94,11 +127,11 @@ define([
             body: action._failure.body
           });
         } else {
-          console.log('input action:', action);
+          //console.log('input action:', action);
           var inputString = $(e.target).val();
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);
-          if(isMatched){
+          if (isMatched) {
             var eventData = {
               id: action._goTo,
               componentID: this.model.get('componentID')

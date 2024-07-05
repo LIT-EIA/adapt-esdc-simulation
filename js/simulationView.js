@@ -57,6 +57,7 @@ define([
             var screen = filteredScreen[0];
             var imageSrc = screen._graphic.src;
             screen.componentID = this.componentID;
+            screen.incorrectFallback = self.model.get('_incorrectFallback');
             if (screen) {
               if(self.currentViewData && self.currentViewData.screenView){
                 self.currentViewData.screenView.remove();
