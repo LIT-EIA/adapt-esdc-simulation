@@ -1,8 +1,9 @@
 define([
 	'core/js/adapt',
 	'./simulationView',
-	'core/js/models/itemsComponentModel'
-], function (Adapt, SimulationView, ItemsComponentModel) {
+	'core/js/models/itemsComponentModel',
+  './helpers/keyboardTrap'
+], function (Adapt, SimulationView, ItemsComponentModel, KeyBoardTrapHelper) {
 
 	function loadScript(scriptObject, callback) {
 		var head = document.getElementsByTagName('head')[0];
@@ -37,7 +38,15 @@ define([
 		});
 	}
 
-	Adapt.once("app:dataReady", setShepherdJS)
+	Adapt.once("app:dataReady", setShepherdJS);
+
+  Adapt.on('startkeyboardtrap', function (keyboardTrapObject, opts) {
+    KeyBoardTrapHelper.handleStartKeyboardTrap(keyboardTrapObject, opts);
+  });
+
+  Adapt.on('stopkeyboardtrap', function (keyboardTrapObject) {
+    KeyBoardTrapHelper.handleStopKeyboardTrap(keyboardTrapObject);
+  });
 
 	return Adapt.register('simulation', {
 		model: ItemsComponentModel,

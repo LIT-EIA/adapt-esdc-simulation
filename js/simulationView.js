@@ -8,7 +8,8 @@ define([
   var SimulationView = ComponentView.extend({
 
     events: {
-      'click .start-simulation': 'onStartSimulation'
+      'click .start-simulation': 'onStartSimulation',
+      'click .exit-simulation-btn': 'onStopSimulation'
     },
 
     initialize: function () {
@@ -55,6 +56,7 @@ define([
               return screen._screendID === data.id
             });
             var screen = filteredScreen[0];
+            console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             screen.componentID = this.componentID;
             screen.incorrectFallback = self.model.get('_incorrectFallback');
@@ -92,11 +94,26 @@ define([
     },
 
     onStartSimulation: function () {
+      console.log('start simulation this: ', this);
+      this.$el.find('.exit-simulation-btn').show();
+      Adapt.trigger('startkeyboardtrap', { $el: this.$el.find('.action-container')});
+
       this.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
       var self = this;
       setTimeout(function () {
         self.$el.find('.start-simulation').addClass('display-none');
         self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
+      }, 300)
+    },
+
+    onStopSimulation: function() {
+      console.log('start simulation this: ', this);
+      Adapt.trigger('stopkeyboardtrap', { $el: this.$el.find('.action-container') });
+      this.$el.find('.exit-simulation-btn').hide();
+      var self = this;
+      setTimeout(function () {
+        self.$el.find('.start-simulation').removeClass('display-none');
+        self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
       }, 300)
     }
 
