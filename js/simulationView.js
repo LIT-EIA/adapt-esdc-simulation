@@ -50,7 +50,21 @@ define([
           })
         };
 
-        this.loadScreen = function (data) {
+        this.loadThumbnail = function (data) {
+          if (data.componentID === self.componentID) {
+            var filteredScreen = this.screens.filter(function (screen) {
+              return screen._screendID === data.id
+            });
+            var screen = filteredScreen[0];
+            console.log('screen: ', screen);
+            var imageSrc = screen._graphic.src;
+            this.loadImage(imageSrc).then(function () {
+              console.log('loaded');
+            });
+          }
+        };
+
+        this.loadScreen = function (data, callback) {
           if (data.componentID === self.componentID) {
             var filteredScreen = this.screens.filter(function (screen) {
               return screen._screendID === data.id
@@ -61,7 +75,8 @@ define([
             screen.componentID = this.componentID;
             screen.incorrectFallback = self.model.get('_incorrectFallback');
             if (screen) {
-              if(self.currentViewData && self.currentViewData.screenView){
+              if (self.currentViewData && self.currentViewData.screenView) {
+                Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container') });
                 self.currentViewData.screenView.remove();
               }
               this.loadImage(imageSrc).then(function () {
@@ -72,14 +87,15 @@ define([
                 self.screenHistory.push(self.currentViewData.screenID);
                 console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
+                Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container') });
+                if (callback) callback();
               });
             }
           }
         };
         console.log('after this.screenHistory: ', this.screenHistory);
-
         var screenID = this.screens[0]._screendID;
-        this.loadScreen({ id: screenID, componentID: this.componentID });
+        this.loadThumbnail({ id: screenID, componentID: this.componentID })
       }
       this.$('.simulation-widget').imageready(this.setReadyStatus.bind(this));
       if (this.model.get('_setCompletionOn') === 'inview') {
@@ -94,21 +110,22 @@ define([
     },
 
     onStartSimulation: function () {
-      console.log('start simulation this: ', this);
-      this.$el.find('.exit-simulation-btn').show();
-      Adapt.trigger('startkeyboardtrap', { $el: this.$el.find('.action-container')});
-
-      this.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
       var self = this;
-      setTimeout(function () {
-        self.$el.find('.start-simulation').addClass('display-none');
-        self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
-      }, 300)
+      console.log('start simulation this: ', this);
+      var screenID = this.screens[0]._screendID;
+      this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
+        self.$el.find('.exit-simulation-btn').show();
+        self.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
+        setTimeout(function () {
+          self.$el.find('.start-simulation').addClass('display-none');
+          self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
+        }, 300)
+      });
+
     },
 
-    onStopSimulation: function() {
+    onStopSimulation: function () {
       console.log('start simulation this: ', this);
-      Adapt.trigger('stopkeyboardtrap', { $el: this.$el.find('.action-container') });
       this.$el.find('.exit-simulation-btn').hide();
       var self = this;
       setTimeout(function () {
