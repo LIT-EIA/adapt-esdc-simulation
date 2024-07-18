@@ -10,7 +10,9 @@ define([
 
     events: {
       'click .start-simulation': 'onStartSimulation',
-      'click .exit-simulation-btn': 'onStopSimulation'
+      'click .simulation-toolbar .undo': 'onUndo',
+      'click .simulation-toolbar .exit': 'onStopSimulation',
+      'click .simulation-toolbar .expand': 'onExpand',
     },
 
     initialize: function () {
@@ -36,13 +38,29 @@ define([
       this.render();
     },
 
+    onUndo: function(){
+
+    },
+
+    onExit: function(){
+
+    },
+
+    onExpand: function(){
+      if (this.isBrowserFullScreen()) {
+        document.exitFullscreen();
+      } else {
+        this.$el.find('.simulation-wrapper')[0].requestFullscreen();
+      }
+    },
+
     listenToFullScreenChange: function () {
       var self = this;
       function handleFullScreenChange() {
         if (self.isBrowserFullScreen()) {
-          self.$el.find('.simulation-widget').addClass('full-screen-style');
+          self.$el.find('.simulation-wrapper').addClass('full-screen-style');
         } else {
-          self.$el.find('.simulation-widget').removeClass('full-screen-style');
+          self.$el.find('.simulation-wrapper').removeClass('full-screen-style');
         }
       }
       document.addEventListener('fullscreenchange', handleFullScreenChange);
@@ -61,12 +79,6 @@ define([
     },
 
     postRender: function () {
-      var DerivedView = NotifyView.extend({
-        render: function() {
-            NotifyView.prototype.render.apply(this);
-        }
-    });
-      //var notifyView = new DerivedView({ model: new Backbone.Model({_classes: 'display-none'}) });
       var self = this;
       this.listenTo(Adapt, 'simulationloadscreen', this.loadScreen);
       if (this.model.get('active')) {
@@ -127,7 +139,7 @@ define([
         };
         console.log('after this.screenHistory: ', this.screenHistory);
         var screenID = this.screens[0]._screendID;
-        this.loadThumbnail({ id: screenID, componentID: this.componentID })
+        this.loadThumbnail({ id: screenID, componentID: this.componentID });
       }
       this.$('.simulation-widget').imageready(this.setReadyStatus.bind(this));
       if (this.model.get('_setCompletionOn') === 'inview') {
@@ -146,24 +158,27 @@ define([
       console.log('start simulation this: ', this);
       var screenID = this.screens[0]._screendID;
       this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
-        self.$el.find('.exit-simulation-btn').show();
-        self.$el.parents('.block-inner')[0].scrollIntoView({ block: "end", behavior: "smooth" });
-        setTimeout(function () {
+          self.$el.find('.simulation-toolbar').show();
           self.$el.find('.start-simulation').addClass('display-none');
           self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
-        }, 300)
       });
 
     },
 
     onStopSimulation: function () {
-      console.log('start simulation this: ', this);
-      this.$el.find('.exit-simulation-btn').hide();
       var self = this;
-      setTimeout(function () {
-        self.$el.find('.start-simulation').removeClass('display-none');
-        self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
-      }, 300)
+      if(self.isBrowserFullScreen()){
+        document.exitFullscreen();
+      }
+      self.$el.find('.simulation-toolbar').hide();
+      if (self.currentViewData && self.currentViewData.screenView) {
+        Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container') });
+        self.currentViewData.screenView.remove();
+      }
+      var screenID = this.screens[0]._screendID;
+      this.loadThumbnail({ id: screenID, componentID: this.componentID });
+      self.$el.find('.start-simulation').removeClass('display-none');
+      self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
     }
 
   });

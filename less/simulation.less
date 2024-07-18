@@ -1,5 +1,55 @@
 .simulation-component {
 
+    .full-screen-style {
+        background: inherit;
+
+        .simulation-widget {
+            overflow-x: scroll;
+            height: calc(100% - 54px);
+
+            .simulation-graphic {
+                img {
+                    width: 100vw;
+                }
+            }
+
+            .simulation-toolbar {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: calc(100% - 30px);
+                border-radius: 0;
+            }
+        }
+
+    }
+
+    .simulation-widget {
+        max-width: 100%;
+        display: inline-block;
+
+        .simulation-toolbar {
+            background: @esdc-interactive-blue;
+            border-radius: 0 0 10px 10px;
+            padding: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            height: 24px;
+
+            button {
+                background: transparent;
+                padding: 0;
+                line-height: 0;
+            }
+
+            svg {
+                fill: @white;
+            }
+        }
+    }
+
     .simulation-graphic {
         position: relative;
         display: inline-block;
@@ -307,6 +357,7 @@
 
 .simulation-disabled {
     opacity: 0.3;
+    margin-bottom: 54px;
 }
 
 .start-simulation {
