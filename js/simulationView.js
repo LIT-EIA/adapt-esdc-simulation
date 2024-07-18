@@ -1,8 +1,9 @@
 define([
   'core/js/adapt',
   'core/js/views/componentView',
-  './simulationScreenView'
-], function (Adapt, ComponentView, SimulationScreenView) {
+  './simulationScreenView',
+  'core/js/views/notifyView'
+], function (Adapt, ComponentView, SimulationScreenView, NotifyView) {
   'use strict';
 
   var SimulationView = ComponentView.extend({
@@ -16,6 +17,7 @@ define([
       ComponentView.prototype.initialize.call(this);
       this.screenHistory = [];
       this.currentViewData;
+      this.listenToFullScreenChange();
       this.checkIfResetOnRevisit();
     },
 
@@ -34,7 +36,37 @@ define([
       this.render();
     },
 
+    listenToFullScreenChange: function () {
+      var self = this;
+      function handleFullScreenChange() {
+        if (self.isBrowserFullScreen()) {
+          self.$el.find('.simulation-widget').addClass('full-screen-style');
+        } else {
+          self.$el.find('.simulation-widget').removeClass('full-screen-style');
+        }
+      }
+      document.addEventListener('fullscreenchange', handleFullScreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
+      document.addEventListener('mozfullscreenchange', handleFullScreenChange);
+      document.addEventListener('MSFullscreenChange', handleFullScreenChange);
+    },
+
+    isBrowserFullScreen: function () {
+      return (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+    },
+
     postRender: function () {
+      var DerivedView = NotifyView.extend({
+        render: function() {
+            NotifyView.prototype.render.apply(this);
+        }
+    });
+      //var notifyView = new DerivedView({ model: new Backbone.Model({_classes: 'display-none'}) });
       var self = this;
       this.listenTo(Adapt, 'simulationloadscreen', this.loadScreen);
       if (this.model.get('active')) {
