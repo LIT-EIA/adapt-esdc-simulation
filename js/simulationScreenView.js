@@ -13,7 +13,7 @@ define([
 
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
-      //console.log('simulation screen view this: ', this);
+      ////console.log('simulation screen view this: ', this);
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         _childItems[index].id = `screen-action-${index}`;
@@ -29,6 +29,7 @@ define([
 
     render: function () {
       var data = this.model.toJSON();
+      console.log(data);
       var template = Handlebars.templates['simulationScreen'];
       this.$el.html(template(data));
       return this;
@@ -52,7 +53,7 @@ define([
           this.handleInput(e);
           break;
         default:
-          console.log('Unhandled event type:', eventType);
+          //console.log('Unhandled event type:', eventType);
       }
     },
 
@@ -60,7 +61,7 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'click') {
-        console.log('click action:', action);
+        //console.log('click action:', action);
         if (action._failure._isFailure) {
           Adapt.trigger('notify:popup', {
             title: 'Incorrect Action',
@@ -80,14 +81,14 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'select') {
-        //console.log('change action:', action);
+        ////console.log('change action:', action);
         if (action._failure._isFailure) {
           Adapt.trigger('notify:popup', {
             title: 'Incorrect Action',
             body: action._failure.body
           });
         } else {
-          console.log('this', this);
+          //console.log('this', this);
           var selectedOption = $(e.target).val();
           var correctOption = action._selectOptions.filter(function (option) {
             return option._correctOption === true
@@ -127,7 +128,7 @@ define([
             body: action._failure.body
           });
         } else {
-          //console.log('input action:', action);
+          ////console.log('input action:', action);
           var inputString = $(e.target).val();
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);

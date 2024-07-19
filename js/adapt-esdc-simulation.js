@@ -30,16 +30,6 @@ define([
 		head.appendChild(script);
 	}
 
-	function setShepherdJS() {
-		Adapt.wait ? Adapt.wait.begin() : Adapt.trigger("plugin:beginWait");
-		var src = "./assets/shepherd.js";
-		loadScript({ src: src }, function () {
-			Adapt.wait ? Adapt.wait.end() : Adapt.trigger("plugin:endWait");
-		});
-	}
-
-	Adapt.once("app:dataReady", setShepherdJS);
-
   Adapt.on('startkeyboardtrap', function (keyboardTrapObject, opts) {
     KeyBoardTrapHelper.handleStartKeyboardTrap(keyboardTrapObject, opts);
   });

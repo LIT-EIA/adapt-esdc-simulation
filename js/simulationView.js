@@ -39,11 +39,15 @@ define([
     },
 
     onUndo: function(){
-
-    },
-
-    onExit: function(){
-
+      var self = this;
+      if(self.screenHistory.length > 1){
+        var screenIndex = self.screenHistory.length - 1;
+        var nextScreenIndex = screenIndex - 1;
+        var screenID = self.screenHistory[nextScreenIndex];
+        self.loadScreen({ id: screenID, componentID: this.componentID }, function(){
+          self.screenHistory = self.screenHistory.slice(0, -2);
+        });
+      }
     },
 
     onExpand: function(){
@@ -100,10 +104,10 @@ define([
               return screen._screendID === data.id
             });
             var screen = filteredScreen[0];
-            console.log('screen: ', screen);
+            //console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             this.loadImage(imageSrc).then(function () {
-              console.log('loaded');
+              //console.log('loaded');
             });
           }
         };
@@ -114,7 +118,7 @@ define([
               return screen._screendID === data.id
             });
             var screen = filteredScreen[0];
-            console.log('screen: ', screen);
+            //console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             screen.componentID = this.componentID;
             screen.incorrectFallback = self.model.get('_incorrectFallback');
@@ -129,7 +133,7 @@ define([
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
                 }
                 self.screenHistory.push(self.currentViewData.screenID);
-                console.log(self.currentViewData.screenView);
+                //console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
                 Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container') });
                 if (callback) callback();
@@ -137,7 +141,7 @@ define([
             }
           }
         };
-        console.log('after this.screenHistory: ', this.screenHistory);
+        //console.log('after this.screenHistory: ', this.screenHistory);
         var screenID = this.screens[0]._screendID;
         this.loadThumbnail({ id: screenID, componentID: this.componentID });
       }
@@ -155,7 +159,8 @@ define([
 
     onStartSimulation: function () {
       var self = this;
-      console.log('start simulation this: ', this);
+      self.screenHistory = [];
+      //console.log('start simulation this: ', this);
       var screenID = this.screens[0]._screendID;
       this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
           self.$el.find('.simulation-toolbar').show();
