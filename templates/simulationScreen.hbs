@@ -1,22 +1,47 @@
 <div id="screen-{{_screenID}}" class="action-container" aria-label="{{{title}}}">
   {{#each _childItems}}
-    <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
-    {{#if type.input}}
-    <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text" class="input-zone simulation-action-element"
-      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;" />
-    {{/if}}
-    {{#if type.select}}
-    <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options" class="select-zone simulation-action-element"
-      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
-      {{#each _selectOptions}}
-      <option value="{{_selectValue}}">{{_selectValue}}</option>
-      {{/each}}
-    </select>
-    {{/if}}
-    {{#if type.click}}
-    <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" role="button" tabindex="0" aria-label="{{title}}" class="click-zone simulation-action-element"
-      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
-    </div>
+    {{#if _isForm}}
+      <form data-id="{{id}}" id="simulation_form_{{@index}}_{{../componentID}}" class="simulation-form">
+        {{#each _form}}
+            <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
+            {{#if type.input}}
+            <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text" class="input-zone simulation-form-element"
+              style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;" />
+            {{/if}}
+            {{#if type.select}}
+            <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options" class="select-zone simulation-form-element"
+              style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+              {{#each _selectOptions}}
+              <option value="{{_selectValue}}">{{_selectValue}}</option>
+              {{/each}}
+            </select>
+            {{/if}}
+            {{#if type.submit}}
+            <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" role="button" tabindex="0" aria-label="{{title}}" class="click-zone simulation-form-element form-submit"
+              style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+            </div>
+            {{/if}}
+        {{/each}}
+      </form>
+    {{else}}
+      <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
+      {{#if type.input}}
+      <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text" class="input-zone simulation-action-element"
+        style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;" />
+      {{/if}}
+      {{#if type.select}}
+      <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options" class="select-zone simulation-action-element"
+        style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+        {{#each _selectOptions}}
+        <option value="{{_selectValue}}">{{_selectValue}}</option>
+        {{/each}}
+      </select>
+      {{/if}}
+      {{#if type.click}}
+      <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" role="button" tabindex="0" aria-label="{{title}}" class="click-zone simulation-action-element"
+        style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      </div>
+      {{/if}}
     {{/if}}
   {{/each}}
 </div>

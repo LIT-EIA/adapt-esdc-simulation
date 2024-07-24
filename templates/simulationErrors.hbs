@@ -1,0 +1,9 @@
+<p>Issues detected with the following fields:</p>
+
+{{#each errors}}
+  <strong>{{name}}</strong>
+  <span style="font-size: 80%;"><em>You have entered: "{{userValue}}"</em></span>
+  <p>{{{message}}}</p>
+  <br>
+{{/each}}
+
