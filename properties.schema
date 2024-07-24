@@ -180,7 +180,7 @@
           "_childItems": {
             "type": "array",
             "required": true,
-            "title": "Actions",
+            "title": "Elements",
             "validators": [
               "required"
             ],
@@ -202,15 +202,15 @@
                   "type": "boolean",
                   "required": false,
                   "default": false,
-                  "title": "This action is a form (action group)",
+                  "title": "This element is a form (element group)",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "This action requires multiple fields and a submit button"
+                  "help": "This element requires multiple fields and a submit button"
                 },
                 "_form": {
                   "type": "array",
                   "required": true,
-                  "title": "Form Actions",
+                  "title": "Form Elements",
                   "validators": [
                     "required"
                   ],
@@ -228,27 +228,6 @@
                         "translatable": true,
                         "title": "Element Name"
                       },
-                      "_goTo": {
-                        "type": "string",
-                        "title": "GoTo",
-                        "required": false,
-                        "default": "",
-                        "inputType": "SelectScreen",
-                        "validators": [],
-                        "help": "goTo screen",
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_failure._isFailure",
-                              "!value": "true"
-                            },
-                            {
-                              "name": "_success._isSuccess",
-                              "!value": "true"
-                            }
-                          ]
-                        }
-                      },
                       "_actionType": {
                         "type": "string",
                         "required": true,
@@ -264,29 +243,6 @@
                         },
                         "validators": [],
                         "help": "action type"
-                      },
-                      "_submitType": {
-                        "type": "string",
-                        "required": true,
-                        "default": "button",
-                        "title": "Type of submit action",
-                        "inputType": {
-                          "type": "Select",
-                          "options": [
-                            "button",
-                            "link"
-                          ]
-                        },
-                        "validators": [],
-                        "help": "submit type",
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_actionType",
-                              "value": "submit"
-                            }
-                          ]
-                        }
                       },
                       "_matchTextItems": {
                         "type": "array",
@@ -488,90 +444,6 @@
                             "help": "Height of element"
                           }
                         }
-                      },
-                      "_failure": {
-                        "type": "object",
-                        "required": false,
-                        "title": "Failure",
-                        "properties": {
-                          "_isFailure": {
-                            "type": "boolean",
-                            "required": false,
-                            "default": false,
-                            "title": "This action is a failure",
-                            "inputType": "Checkbox",
-                            "validators": [],
-                            "help": "This action is a failure"
-                          },
-                          "body": {
-                            "type": "string",
-                            "required": false,
-                            "default": "",
-                            "inputType": "TextArea",
-                            "validators": [],
-                            "help": "Body text displayed as failure message",
-                            "translatable": true,
-                            "title": "Failure Message",
-                            "conditions": {
-                              "and": [
-                                {
-                                  "name": "_isFailure",
-                                  "value": "true"
-                                }
-                              ]
-                            }
-                          }
-                        },
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_success._isSuccess",
-                              "!value": "true"
-                            }
-                          ]
-                        }
-                      },
-                      "_success": {
-                        "type": "object",
-                        "required": false,
-                        "title": "Completion Trigger",
-                        "properties": {
-                          "_isSuccess": {
-                            "type": "boolean",
-                            "required": false,
-                            "default": false,
-                            "title": "This action triggers completion",
-                            "inputType": "Checkbox",
-                            "validators": [],
-                            "help": "This action triggers completion"
-                          },
-                          "body": {
-                            "type": "string",
-                            "required": false,
-                            "default": "",
-                            "inputType": "TextArea",
-                            "validators": [],
-                            "help": "Body text displayed as completion message",
-                            "translatable": true,
-                            "title": "Completion Message",
-                            "conditions": {
-                              "and": [
-                                {
-                                  "name": "_isSuccess",
-                                  "value": "true"
-                                }
-                              ]
-                            }
-                          }
-                        },
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_failure._isFailure",
-                              "!value": "true"
-                            }
-                          ]
-                        }
                       }
                     }
                   },
@@ -595,16 +467,8 @@
                   "conditions": {
                     "and": [
                       {
-                        "name": "_failure._isFailure",
+                        "name": "_isSuccess",
                         "!value": "true"
-                      },
-                      {
-                        "name": "_success._isSuccess",
-                        "!value": "true"
-                      },
-                      {
-                        "name": "_isForm",
-                        "value": "false"
                       }
                     ]
                   }
@@ -613,7 +477,7 @@
                   "type": "string",
                   "required": true,
                   "default": "click",
-                  "title": "Type of action",
+                  "title": "Type of ",
                   "inputType": {
                     "type": "Select",
                     "options": [
@@ -901,43 +765,18 @@
                     ]
                   }
                 },
-                "_failure": {
-                  "type": "object",
+                "_isFailure": {
+                  "type": "boolean",
                   "required": false,
-                  "title": "Failure",
-                  "properties": {
-                    "_isFailure": {
-                      "type": "boolean",
-                      "required": false,
-                      "default": false,
-                      "title": "This action is a failure",
-                      "inputType": "Checkbox",
-                      "validators": [],
-                      "help": "This action is a failure"
-                    },
-                    "body": {
-                      "type": "string",
-                      "required": false,
-                      "default": "",
-                      "inputType": "TextArea",
-                      "validators": [],
-                      "help": "Body text displayed as failure message",
-                      "translatable": true,
-                      "title": "Failure Message",
-                      "conditions": {
-                        "and": [
-                          {
-                            "name": "_isFailure",
-                            "value": "true"
-                          }
-                        ]
-                      }
-                    }
-                  },
+                  "default": false,
+                  "title": "This action is a failure",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "This action is a failure",
                   "conditions": {
                     "and": [
                       {
-                        "name": "_success._isSuccess",
+                        "name": "_isSuccess",
                         "!value": "true"
                       },
                       {
@@ -947,48 +786,59 @@
                     ]
                   }
                 },
-                "_success": {
-                  "type": "object",
+                "_failureBody": {
+                  "type": "string",
                   "required": false,
-                  "title": "Completion Trigger",
-                  "properties": {
-                    "_isSuccess": {
-                      "type": "boolean",
-                      "required": false,
-                      "default": false,
-                      "title": "This action triggers completion",
-                      "inputType": "Checkbox",
-                      "validators": [],
-                      "help": "This action triggers completion"
-                    },
-                    "body": {
-                      "type": "string",
-                      "required": false,
-                      "default": "",
-                      "inputType": "TextArea",
-                      "validators": [],
-                      "help": "Body text displayed as completion message",
-                      "translatable": true,
-                      "title": "Completion Message",
-                      "conditions": {
-                        "and": [
-                          {
-                            "name": "_isSuccess",
-                            "value": "true"
-                          }
-                        ]
-                      }
-                    }
-                  },
+                  "default": "",
+                  "inputType": "TextArea",
+                  "validators": [],
+                  "help": "Body text displayed as failure message",
+                  "translatable": true,
+                  "title": "Failure Message",
                   "conditions": {
                     "and": [
                       {
-                        "name": "_failure._isFailure",
-                        "!value": "true"
+                        "name": "_isFailure",
+                        "value": "true"
                       },
                       {
                         "name": "_isForm",
                         "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_isSuccess": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "This action triggers completion",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "help": "This action triggers completion",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_isFailure",
+                        "!value": "true"
+                      }
+                    ]
+                  }
+                },
+                "_successBody": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "TextArea",
+                  "validators": [],
+                  "help": "Body text displayed as completion message",
+                  "translatable": true,
+                  "title": "Completion Message",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_isSuccess",
+                        "value": "true"
                       }
                     ]
                   }
