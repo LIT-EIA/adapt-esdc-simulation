@@ -2,7 +2,8 @@ define([
 	'core/js/adapt',
 	'./simulationView',
 	'core/js/models/itemsComponentModel',
-  './helpers/keyboardTrap'
+  './helpers/keyboardTrap',
+  './helpers/simulationNotify'
 ], function (Adapt, SimulationView, ItemsComponentModel, KeyBoardTrapHelper) {
 
 	function loadScript(scriptObject, callback) {

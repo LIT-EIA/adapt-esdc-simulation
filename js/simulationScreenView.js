@@ -63,7 +63,7 @@ define([
       if (action._actionType === 'click') {
         //console.log('click action:', action);
         if (action._failure._isFailure) {
-          Adapt.trigger('notify:popup', {
+          Adapt.trigger('simulation-notify:popup', {
             title: 'Incorrect Action',
             body: action._failure.body
           });
@@ -83,7 +83,7 @@ define([
       if (action._actionType === 'select') {
         ////console.log('change action:', action);
         if (action._failure._isFailure) {
-          Adapt.trigger('notify:popup', {
+          Adapt.trigger('simulation-notify:popup', {
             title: 'Incorrect Action',
             body: action._failure.body
           });
@@ -102,12 +102,12 @@ define([
             Adapt.trigger('simulationloadscreen', eventData);
           } else {
             if (action.selectFailure) {
-              Adapt.trigger('notify:popup', {
+              Adapt.trigger('simulation-notify:popup', {
                 title: 'Incorrect Action',
                 body: action.selectFailure
               });
             } else {
-              Adapt.trigger('notify:popup', {
+              Adapt.trigger('simulation-notify:popup', {
                 title: 'Incorrect Action',
                 body: this.model.get('incorrectFallback')
               });
@@ -123,7 +123,7 @@ define([
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
         if (action._failure._isFailure) {
-          Adapt.trigger('notify:popup', {
+          Adapt.trigger('simulation-notify:popup', {
             title: 'Incorrect Action',
             body: action._failure.body
           });
