@@ -140,11 +140,11 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'click') {
-        if (action._isFailure || action._isSuccess) {
-          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+        //console.log('click action:', action);
+        if (action._isFailure) {
           Adapt.trigger('notify:popup', {
-            title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
-            body: action._isFailure ? failureBody : action._successBody
+            title: 'Incorrect Action',
+            body: action._failureBody
           });
         } else {
           var eventData = {
@@ -192,7 +192,6 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
-
           var inputString = $(e.target).val();
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);

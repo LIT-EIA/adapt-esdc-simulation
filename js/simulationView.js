@@ -2,8 +2,8 @@ define([
   'core/js/adapt',
   'core/js/views/componentView',
   './simulationScreenView',
-  'core/js/views/notifyView'
-], function (Adapt, ComponentView, SimulationScreenView, NotifyView) {
+  './helpers/simulationNotifyView'
+], function (Adapt, ComponentView, SimulationScreenView, SimulationNotifyView) {
   'use strict';
 
   var SimulationView = ComponentView.extend({
@@ -60,11 +60,11 @@ define([
 
     listenToFullScreenChange: function () {
       var self = this;
-      function handleFullScreenChange() {
+      function handleFullScreenChange(e) {
         if (self.isBrowserFullScreen()) {
-          self.$el.find('.simulation-wrapper').addClass('full-screen-style');
+          $(e.target).addClass('full-screen-style');
         } else {
-          self.$el.find('.simulation-wrapper').removeClass('full-screen-style');
+          $(e.target).removeClass('full-screen-style');
         }
       }
       document.addEventListener('fullscreenchange', handleFullScreenChange);
