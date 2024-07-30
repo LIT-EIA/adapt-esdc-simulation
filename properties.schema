@@ -118,7 +118,7 @@
             "help": "Title used for editing",
             "translatable": true
           },
-          "_screendID": {
+          "_screenID": {
             "type": "string",
             "title": "Screen ID",
             "required": true,
