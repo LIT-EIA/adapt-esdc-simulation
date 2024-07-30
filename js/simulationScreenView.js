@@ -116,13 +116,13 @@ define([
       if (errors.length > 0) {
         var template = Handlebars.templates['simulationErrors'];
         var messageHTML = template({ errors: errors });
-        Adapt.trigger('notify:popup', {
+        Adapt.trigger('simulation-notify:popup', {
           title: 'Incorrect Action',
           body: messageHTML
         });
       } else {
         if (formModel._isSuccess) {
-          Adapt.trigger('notify:popup', {
+          Adapt.trigger('simulation-notify:popup', {
             title: 'Completion Message',
             body: formModel._successBody
           });
@@ -140,11 +140,11 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'click') {
-        //console.log('click action:', action);
-        if (action._isFailure) {
-          Adapt.trigger('notify:popup', {
-            title: 'Incorrect Action',
-            body: action._failureBody
+        if (action._isFailure || action._isSuccess) {
+          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+          Adapt.trigger('simulation-notify:popup', {
+            title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
+            body: action._isFailure ? failureBody : action._successBody
           });
         } else {
           var eventData = {
@@ -167,7 +167,7 @@ define([
         var correctOptionValue = correctOption._selectValue;
         if (selectedOption === correctOptionValue) {
           if (action._isSuccess) {
-            Adapt.trigger('notify:popup', {
+            Adapt.trigger('simulation-notify:popup', {
               title: 'Completion Message',
               body: action._successBody
             });
@@ -180,7 +180,7 @@ define([
           }
         } else {
             var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
-            Adapt.trigger('notify:popup', {
+            Adapt.trigger('simulation-notify:popup', {
               title: 'Incorrect Action',
               body: selectFailure
             });
@@ -192,13 +192,14 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
+
           var inputString = $(e.target).val();
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);
           if (isMatched) {
             if (action._isFailure || action._isSuccess) {
               var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-              Adapt.trigger('notify:popup', {
+              Adapt.trigger('simulation-notify:popup', {
                 title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
                 body: action._isFailure ? failureBody : action._successBody
               });
