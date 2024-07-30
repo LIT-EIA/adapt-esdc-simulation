@@ -2,6 +2,11 @@
 
     .full-screen-style {
         background: inherit;
+        font-size: 140%;
+
+        select {
+            font-size: 120%;
+        }
 
         .simulation-widget {
             overflow-y: scroll;
@@ -47,6 +52,17 @@
 
             svg {
                 fill: @white;
+            }
+        }
+
+        &.full-width {
+            width: 100%;
+            .simulation-graphic {
+                width: 100%;
+
+                img {
+                    width: 100%;
+                }
             }
         }
     }

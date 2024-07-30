@@ -1,6 +1,6 @@
 {
   "name": "adapt-esdc-simulation",
-  "version": "0.0.1",
+  "version": "0.0.5",
   "framework": ">=3.3",
   "homepage": "https://github.com/lit-eia/adapt-esdc-simulation",
   "issues": "https://github.com/lit-eia/adapt-esdc-simulation/issues/new",

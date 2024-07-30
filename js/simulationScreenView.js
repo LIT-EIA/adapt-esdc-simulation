@@ -83,11 +83,11 @@ define([
       var submitAction = formActions.find(item => item.id === submitId);
 
       var errors = [];
-      $.each(elements, function(){
+      $.each(elements, function () {
         var actionId = $(this).attr('data-id');
         var action = formActions.find(item => item.id === actionId);
         var fieldValue = $(this).val();
-        if(action._actionType === 'input'){
+        if (action._actionType === 'input') {
           var inputString = fieldValue;
           var criteriaList = action._matchTextItems;
           var isMatched = self.matchString(inputString, criteriaList);
@@ -98,7 +98,7 @@ define([
               userValue: fieldValue
             });
           }
-        } else if (action._actionType === 'select'){
+        } else if (action._actionType === 'select') {
           var selectedOption = fieldValue;
           var correctOption = action._selectOptions.filter(function (option) {
             return option._correctOption === true
@@ -113,23 +113,22 @@ define([
           }
         }
       });
-      if(errors.length > 0){
+      if (errors.length > 0) {
         var template = Handlebars.templates['simulationErrors'];
-        var messageHTML = template({errors: errors});
+        var messageHTML = template({ errors: errors });
         Adapt.trigger('notify:popup', {
           title: 'Incorrect Action',
           body: messageHTML
         });
       } else {
-        console.log(formModel);
-        if(formModel._isSuccess){
+        if (formModel._isSuccess) {
           Adapt.trigger('notify:popup', {
             title: 'Completion Message',
             body: formModel._successBody
           });
         } else {
           var eventData = {
-            id: submitAction._goTo,
+            id: formModel._goTo,
             componentID: self.model.get('componentID')
           }
           Adapt.trigger('simulationloadscreen', eventData);
@@ -141,11 +140,11 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'click') {
-        //console.log('click action:', action);
-        if (action._isFailure) {
+        if (action._isFailure || action._isSuccess) {
+          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
           Adapt.trigger('notify:popup', {
-            title: 'Incorrect Action',
-            body: action._failureBody
+            title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
+            body: action._isFailure ? failureBody : action._successBody
           });
         } else {
           var eventData = {
@@ -161,39 +160,30 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'select') {
-        ////console.log('change action:', action);
-        if (action._isFailure) {
-          Adapt.trigger('notify:popup', {
-            title: 'Incorrect Action',
-            body: action._failureBody
-          });
-        } else {
-          //console.log('this', this);
-          var selectedOption = $(e.target).val();
-          var correctOption = action._selectOptions.filter(function (option) {
-            return option._correctOption === true
-          })[0];
-          var correctOptionValue = correctOption._selectValue;
-          if (selectedOption === correctOptionValue) {
+        var selectedOption = $(e.target).val();
+        var correctOption = action._selectOptions.filter(function (option) {
+          return option._correctOption === true
+        })[0];
+        var correctOptionValue = correctOption._selectValue;
+        if (selectedOption === correctOptionValue) {
+          if (action._isSuccess) {
+            Adapt.trigger('notify:popup', {
+              title: 'Completion Message',
+              body: action._successBody
+            });
+          } else {
             var eventData = {
               id: action._goTo,
               componentID: this.model.get('componentID')
             }
             Adapt.trigger('simulationloadscreen', eventData);
-          } else {
-            if (action.selectFailure) {
-              Adapt.trigger('notify:popup', {
-                title: 'Incorrect Action',
-                body: action.selectFailure
-              });
-            } else {
-              Adapt.trigger('notify:popup', {
-                title: 'Incorrect Action',
-                body: this.model.get('incorrectFallback')
-              });
-            }
-
           }
+        } else {
+            var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
+            Adapt.trigger('notify:popup', {
+              title: 'Incorrect Action',
+              body: selectFailure
+            });
         }
       }
     },
@@ -202,24 +192,25 @@ define([
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
-        if (action._isFailure) {
-          Adapt.trigger('notify:popup', {
-            title: 'Incorrect Action',
-            body: action._failureBody
-          });
-        } else {
-          ////console.log('input action:', action);
+
           var inputString = $(e.target).val();
           var criteriaList = action._matchTextItems;
           var isMatched = this.matchString(inputString, criteriaList);
           if (isMatched) {
-            var eventData = {
-              id: action._goTo,
-              componentID: this.model.get('componentID')
+            if (action._isFailure || action._isSuccess) {
+              var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+              Adapt.trigger('notify:popup', {
+                title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
+                body: action._isFailure ? failureBody : action._successBody
+              });
+            } else {
+              var eventData = {
+                id: action._goTo,
+                componentID: this.model.get('componentID')
+              }
+              Adapt.trigger('simulationloadscreen', eventData);
             }
-            Adapt.trigger('simulationloadscreen', eventData);
           }
-        }
       }
     },
 
@@ -256,6 +247,6 @@ define([
 
   });
 
-  return SimulationScreenView;
+return SimulationScreenView;
 
 });

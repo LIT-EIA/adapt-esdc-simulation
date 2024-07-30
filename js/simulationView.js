@@ -107,18 +107,20 @@ define([
             //console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             this.loadImage(imageSrc).then(function () {
-              //console.log('loaded');
+              var fullWidth = screen._graphic._forceFullWidth ? true : false;
+              const wrapper = self.$el.find('.simulation-widget');
+              wrapper.toggleClass('full-width', fullWidth);
             });
           }
         };
 
         this.loadScreen = function (data, callback) {
+          var self = this;
           if (data.componentID === self.componentID) {
             var filteredScreen = this.screens.filter(function (screen) {
               return screen._screendID === data.id
             });
             var screen = filteredScreen[0];
-            //console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             screen.componentID = this.componentID;
             screen.incorrectFallback = self.model.get('_incorrectFallback');
@@ -128,6 +130,9 @@ define([
                 self.currentViewData.screenView.remove();
               }
               this.loadImage(imageSrc).then(function () {
+                var fullWidth = screen._graphic._forceFullWidth ? true : false;
+                const wrapper = self.$el.find('.simulation-widget');
+                wrapper.toggleClass('full-width', fullWidth);
                 self.currentViewData = {
                   screenID: screen._screendID,
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
