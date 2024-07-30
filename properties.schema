@@ -244,6 +244,52 @@
                         "validators": [],
                         "help": "action type"
                       },
+                      "_prefilledType": {
+                        "type": "string",
+                        "required": true,
+                        "default": "none",
+                        "title": "Type of pre-filled value",
+                        "inputType": {
+                          "type": "Select",
+                          "options": [
+                            "none",
+                            "placeholder",
+                            "text"
+                          ]
+                        },
+                        "validators": [],
+                        "help": "pre-filled type",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            }
+                          ]
+                        }
+                      },
+                      "_prefilledValue": {
+                        "type": "string",
+                        "required": true,
+                        "default": "",
+                        "inputType": "Text",
+                        "validators": [],
+                        "help": "Title",
+                        "translatable": true,
+                        "title": "Pre-filled Value",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            },
+                            {
+                              "name": "_prefilledType",
+                              "!value": "none"
+                            }
+                          ]
+                        }
+                      },
                       "_matchTextItems": {
                         "type": "array",
                         "required": true,
@@ -477,7 +523,7 @@
                   "type": "string",
                   "required": true,
                   "default": "click",
-                  "title": "Type of ",
+                  "title": "Type of action",
                   "inputType": {
                     "type": "Select",
                     "options": [
@@ -516,6 +562,60 @@
                       {
                         "name": "_actionType",
                         "value": "click"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_prefilledType": {
+                  "type": "string",
+                  "required": true,
+                  "default": "none",
+                  "title": "Type of pre-filled value",
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "none",
+                      "placeholder",
+                      "text"
+                    ]
+                  },
+                  "validators": [],
+                  "help": "pre-filled type",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_prefilledValue": {
+                  "type": "string",
+                  "required": true,
+                  "default": "",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "Title",
+                  "translatable": true,
+                  "title": "Pre-filled Value",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      },
+                      {
+                        "name": "_prefilledType",
+                        "!value": "none"
                       },
                       {
                         "name": "_isForm",
