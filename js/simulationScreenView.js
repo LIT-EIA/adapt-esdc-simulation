@@ -9,7 +9,8 @@ define([
       'change .simulation-action-element': 'handleAction',
       'input .simulation-action-element': 'handleAction',
       'keypress .simulation-action-element': 'handleAction',
-      'click .simulation-form .form-submit': 'handleSubmit'
+      'click .simulation-form .form-submit': 'handleSubmit',
+      'keypress .simulation-form .form-submit': 'handleKeypressSubmit',
     },
 
     initialize: function () {
@@ -68,6 +69,12 @@ define([
           break;
         default:
         //console.log('Unhandled event type:', eventType);
+      }
+    },
+
+    handleKeypressSubmit: function(e){
+      if (e.which === 13) {
+        this.handleSubmit(e);
       }
     },
 
