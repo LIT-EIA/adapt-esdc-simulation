@@ -5,14 +5,10 @@ define([
   var mutationObserverMap = {};
 
   function startKeyboardTrap(keyboardTrapObject) {
-    //console.log('keyboard trap object: ', keyboardTrapObject);
     if (keyboardTrapObject && keyboardTrapObject.$el) {
-      //console.log('keyboardTrapObject.$el: ', keyboardTrapObject.$el);
-      //console.log('focusableItems: ', `.${keyboardTrapObject.$el.attr('class').replace(' ', '.')} :focusable:not(.trap-wrapper)`);
-      var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(' ', '.')} :focusable:not(.trap-wrapper)`);
+      var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none)`);
       if (focusableItems && focusableItems.length > 0) {
         focusableItems.first().on('keydown', function (e) {
-          //console.log('focusableitem first keydown e: ', e);
           var keyCode = e.keyCode || e.which;
           if (e.type == 'keydown' && keyCode === 9 && e.shiftKey) {
             e.preventDefault();
@@ -20,7 +16,6 @@ define([
           }
         });
         focusableItems.last().on('keydown', function (e) {
-          //console.log('focusableitem last keydown e: ', e);
           var keyCode = e.keyCode || e.which;
           if (e.type == 'keydown' && keyCode === 9 && !e.shiftKey) {
             e.preventDefault();
@@ -32,7 +27,7 @@ define([
   }
 
   function stopKeyboardtrap(keyboardTrapObject) {
-    var focusableItems = $(`.${keyboardTrapObject.$el.attr('class')} :focusable`);
+    var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.') } :focusable:not(.trap-wrapper):not(.display-none)`);
     if (focusableItems && focusableItems.length > 1) {
       focusableItems.first().off('keydown');
       focusableItems.last().off('keydown');
@@ -46,7 +41,7 @@ define([
         var node = document.getElementsByClassName(elClassName)[0];
         var config = { attributes: true, childList: true, subtree: true };
         var callback = (mutationList, observer) => {
-          var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(' ', '.')} :focusable:not(.trap-wrapper)`);
+          var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none)`);
           if (mutationObserverMap[elClassName] && !mutationObserverMap[elClassName]['startedKeyboardTrap']) {
             if (focusableItems.length > 1) {
               startKeyboardTrap(keyboardTrapObject);
@@ -65,7 +60,6 @@ define([
   }
 
   function handleStopKeyboardTrap(keyboardTrapObject) {
-    //console.log('stopkeyboardtrap for: ', keyboardTrapObject);
     if (keyboardTrapObject && keyboardTrapObject.$el) {
       var elClassName = keyboardTrapObject.$el.attr('class');
       if (mutationObserverMap[elClassName]) {
@@ -73,8 +67,8 @@ define([
         if (observer) observer.disconnect();
         delete mutationObserverMap[elClassName];
       }
+      stopKeyboardtrap(keyboardTrapObject)
     }
-    stopKeyboardtrap(keyboardTrapObject)
   }
 
   return {

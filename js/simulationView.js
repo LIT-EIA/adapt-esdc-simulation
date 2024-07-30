@@ -101,7 +101,7 @@ define([
         this.loadThumbnail = function (data) {
           if (data.componentID === self.componentID) {
             var filteredScreen = this.screens.filter(function (screen) {
-              return screen._screendID === data.id
+              return screen._screenID === data.id
             });
             var screen = filteredScreen[0];
             //console.log('screen: ', screen);
@@ -118,7 +118,7 @@ define([
           var self = this;
           if (data.componentID === self.componentID) {
             var filteredScreen = this.screens.filter(function (screen) {
-              return screen._screendID === data.id
+              return screen._screenID === data.id
             });
             var screen = filteredScreen[0];
             var imageSrc = screen._graphic.src;
@@ -126,7 +126,6 @@ define([
             screen.incorrectFallback = self.model.get('_incorrectFallback');
             if (screen) {
               if (self.currentViewData && self.currentViewData.screenView) {
-                Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container') });
                 self.currentViewData.screenView.remove();
               }
               this.loadImage(imageSrc).then(function () {
@@ -134,20 +133,19 @@ define([
                 const wrapper = self.$el.find('.simulation-widget');
                 wrapper.toggleClass('full-width', fullWidth);
                 self.currentViewData = {
-                  screenID: screen._screendID,
+                  screenID: screen._screenID,
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
                 }
                 self.screenHistory.push(self.currentViewData.screenID);
                 //console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
-                Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container') });
                 if (callback) callback();
               });
             }
           }
         };
         //console.log('after this.screenHistory: ', this.screenHistory);
-        var screenID = this.screens[0]._screendID;
+        var screenID = this.screens[0]._screenID;
         this.loadThumbnail({ id: screenID, componentID: this.componentID });
       }
       this.$('.simulation-widget').imageready(this.setReadyStatus.bind(this));
@@ -166,11 +164,12 @@ define([
       var self = this;
       self.screenHistory = [];
       //console.log('start simulation this: ', this);
-      var screenID = this.screens[0]._screendID;
+      var screenID = this.screens[0]._screenID;
       this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
           self.$el.find('.simulation-toolbar').show();
           self.$el.find('.start-simulation').addClass('display-none');
           self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
+        Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
       });
 
     },
@@ -182,10 +181,10 @@ define([
       }
       self.$el.find('.simulation-toolbar').hide();
       if (self.currentViewData && self.currentViewData.screenView) {
-        Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container') });
+        Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
         self.currentViewData.screenView.remove();
       }
-      var screenID = this.screens[0]._screendID;
+      var screenID = this.screens[0]._screenID;
       this.loadThumbnail({ id: screenID, componentID: this.componentID });
       self.$el.find('.start-simulation').removeClass('display-none');
       self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
