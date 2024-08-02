@@ -15,7 +15,6 @@ define([
 
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
-      ////console.log('simulation screen view this: ', this);
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         var childIndex = index;
@@ -24,6 +23,10 @@ define([
           input: action._actionType === 'input',
           select: action._actionType === 'select',
           click: action._actionType === 'click'
+        };
+        _childItems[childIndex]._prefilled = {
+          placeholder: action._prefilledType === 'placeholder',
+          text: action._prefilledType === 'text'
         };
         if (_childItems[childIndex]._isForm) {
           _childItems[childIndex]._form.forEach(function (action, index) {
@@ -34,17 +37,32 @@ define([
               select: action._actionType === 'select',
               submit: action._actionType === 'submit'
             };
+            _childItems[childIndex]._form[formIndex]._prefilled = {
+              placeholder: action._prefilledType === 'placeholder',
+              text: action._prefilledType === 'text'
+            };
           });
         }
 
       });
       this.model.set('_childItems', _childItems);
+      var screenMessage = this.model.get('body');
+      if (screenMessage) {
+        Adapt.trigger('simulation-notify:prompt', {
+          body: screenMessage,
+          _prompts: [
+            {
+              promptText: "OK"
+            }
+          ]
+        });
+      }
+
     },
 
 
     render: function () {
       var data = this.model.toJSON();
-      //console.log(data);
       var template = Handlebars.templates['simulationScreen'];
       this.$el.html(template(data));
       return this;
@@ -68,11 +86,10 @@ define([
           this.handleInput(e);
           break;
         default:
-        //console.log('Unhandled event type:', eventType);
       }
     },
 
-    handleKeypressSubmit: function(e){
+    handleKeypressSubmit: function (e) {
       if (e.which === 13) {
         this.handleSubmit(e);
       }
@@ -101,7 +118,7 @@ define([
           if (!isMatched) {
             errors.push({
               name: action.title,
-              message: action.matchFailure,
+              message: action.matchFailure || self.model.get('incorrectFallback'),
               userValue: fieldValue
             });
           }
@@ -114,7 +131,7 @@ define([
           if (selectedOption !== correctOptionValue) {
             errors.push({
               name: action.title,
-              message: action.selectFailure,
+              message: action.selectFailure || self.model.get('incorrectFallback'),
               userValue: fieldValue
             });
           }
@@ -123,15 +140,26 @@ define([
       if (errors.length > 0) {
         var template = Handlebars.templates['simulationErrors'];
         var messageHTML = template({ errors: errors });
-        Adapt.trigger('simulation-notify:popup', {
+        Adapt.trigger('simulation-notify:prompt', {
           title: 'Incorrect Action',
-          body: messageHTML
+          body: messageHTML,
+          _prompts: [
+            {
+              promptText: "OK"
+            }
+          ]
         });
       } else {
         if (formModel._isSuccess) {
-          Adapt.trigger('simulation-notify:popup', {
+          Adapt.trigger('simulation-notify:prompt', {
             title: 'Completion Message',
-            body: formModel._successBody
+            body: formModel._successBody,
+            _prompts: [
+              {
+                promptText: "OK",
+                _callbackEvent: 'simulation:exit'
+              }
+            ]
           });
         } else {
           var eventData = {
@@ -149,9 +177,18 @@ define([
       if (action._actionType === 'click') {
         if (action._isFailure || action._isSuccess) {
           var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-          Adapt.trigger('simulation-notify:popup', {
+          var prompts = action._isSuccess ? {
+            promptText: "OK",
+            _callbackEvent: 'simulation:exit',
+          } : {
+            promptText: "OK"
+          }
+          Adapt.trigger('simulation-notify:prompt', {
             title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
-            body: action._isFailure ? failureBody : action._successBody
+            body: action._isFailure ? failureBody : action._successBody,
+            _prompts: [
+              prompts
+            ]
           });
         } else {
           var eventData = {
@@ -174,9 +211,15 @@ define([
         var correctOptionValue = correctOption._selectValue;
         if (selectedOption === correctOptionValue) {
           if (action._isSuccess) {
-            Adapt.trigger('simulation-notify:popup', {
+            Adapt.trigger('simulation-notify:prompt', {
               title: 'Completion Message',
-              body: action._successBody
+              body: action._successBody,
+              _prompts: [
+                {
+                  promptText: "OK",
+                  _callbackEvent: 'simulation:exit',
+                }
+              ]
             });
           } else {
             var eventData = {
@@ -186,11 +229,16 @@ define([
             Adapt.trigger('simulationloadscreen', eventData);
           }
         } else {
-            var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
-            Adapt.trigger('simulation-notify:popup', {
-              title: 'Incorrect Action',
-              body: selectFailure
-            });
+          var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
+          Adapt.trigger('simulation-notify:prompt', {
+            title: 'Incorrect Action',
+            body: selectFailure,
+            _prompts: [
+              {
+                promptText: "OK"
+              }
+            ]
+          });
         }
       }
     },
@@ -200,24 +248,33 @@ define([
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
 
-          var inputString = $(e.target).val();
-          var criteriaList = action._matchTextItems;
-          var isMatched = this.matchString(inputString, criteriaList);
-          if (isMatched) {
-            if (action._isFailure || action._isSuccess) {
-              var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-              Adapt.trigger('simulation-notify:popup', {
-                title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
-                body: action._isFailure ? failureBody : action._successBody
-              });
-            } else {
-              var eventData = {
-                id: action._goTo,
-                componentID: this.model.get('componentID')
-              }
-              Adapt.trigger('simulationloadscreen', eventData);
+        var inputString = $(e.target).val();
+        var criteriaList = action._matchTextItems;
+        var isMatched = this.matchString(inputString, criteriaList);
+        if (isMatched) {
+          if (action._isFailure || action._isSuccess) {
+            var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+            var prompts = action._isSuccess ? {
+              promptText: "OK",
+              _callbackEvent: 'simulation:exit',
+            } : {
+              promptText: "OK"
             }
+            Adapt.trigger('simulation-notify:prompt', {
+              title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
+              body: action._isFailure ? failureBody : action._successBody,
+              _prompts: [
+                prompts
+              ]
+            });
+          } else {
+            var eventData = {
+              id: action._goTo,
+              componentID: this.model.get('componentID')
+            }
+            Adapt.trigger('simulationloadscreen', eventData);
           }
+        }
       }
     },
 
@@ -254,6 +311,6 @@ define([
 
   });
 
-return SimulationScreenView;
+  return SimulationScreenView;
 
 });
