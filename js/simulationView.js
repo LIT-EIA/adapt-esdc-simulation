@@ -126,6 +126,7 @@ define([
             screen.incorrectFallback = self.model.get('_incorrectFallback');
             if (screen) {
               if (self.currentViewData && self.currentViewData.screenView) {
+                Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
                 self.currentViewData.screenView.remove();
               }
               this.loadImage(imageSrc).then(function () {
@@ -136,6 +137,22 @@ define([
                   screenID: screen._screenID,
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
                 }
+
+                if (self.$el.find('.action-container')) {
+                  var observer = new MutationObserver(function (mutations, me) {
+                    var subElement = self.$el.find('.action-container').closest('.simulation-widget');
+                    if (subElement.length) {
+                      Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
+                      me.disconnect(); 
+                    }
+                  });
+  
+                  observer.observe(self.$el[0], {
+                    childList: true,
+                    subtree: true
+                  });
+                }
+
                 self.screenHistory.push(self.currentViewData.screenID);
                 //console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
@@ -169,7 +186,6 @@ define([
           self.$el.find('.simulation-toolbar').show();
           self.$el.find('.start-simulation').addClass('display-none');
           self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
-        Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
       });
 
     },
