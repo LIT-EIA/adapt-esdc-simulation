@@ -47,14 +47,27 @@ define([
       });
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
+      var self = this;
       if (screenMessage) {
-        Adapt.trigger('simulation-notify:prompt', {
-          body: screenMessage,
-          _prompts: [
-            {
-              promptText: "OK"
-            }
-          ]
+        var observer = new MutationObserver(function (mutations, me) {
+          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element');
+          if (subElement.length) {
+            Adapt.trigger('simulation-notify:prompt', {
+              body: screenMessage,
+              _prompts: [
+                {
+                  promptText: "OK"
+                }
+              ],
+              onCloseRefocusEl: subElement
+            });
+            me.disconnect();
+          }
+        });
+
+        observer.observe(self.$el[0], {
+          childList: true,
+          subtree: true
         });
       }
 
@@ -147,7 +160,8 @@ define([
             {
               promptText: "OK"
             }
-          ]
+          ],
+          onCloseRefocusEl: $(e.target)
         });
       } else {
         if (formModel._isSuccess) {
@@ -159,7 +173,8 @@ define([
                 promptText: "OK",
                 _callbackEvent: 'simulation:exit'
               }
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         } else {
           var eventData = {
@@ -188,7 +203,8 @@ define([
             body: action._isFailure ? failureBody : action._successBody,
             _prompts: [
               prompts
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         } else {
           var eventData = {
@@ -219,7 +235,8 @@ define([
                   promptText: "OK",
                   _callbackEvent: 'simulation:exit',
                 }
-              ]
+              ],
+              onCloseRefocusEl: $(e.target)
             });
           } else {
             var eventData = {
@@ -237,7 +254,8 @@ define([
               {
                 promptText: "OK"
               }
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         }
       }
@@ -265,7 +283,8 @@ define([
               body: action._isFailure ? failureBody : action._successBody,
               _prompts: [
                 prompts
-              ]
+              ],
+              onCloseRefocusEl: $(e.target)
             });
           } else {
             var eventData = {
