@@ -15,6 +15,7 @@ define([
 
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
+      var self = this;
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         var childIndex = index;
@@ -45,11 +46,30 @@ define([
         }
 
       });
+      var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
+        var subElement = self.$el.closest('.simulation-wrapper');
+        if (subElement.length) {
+          var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
+          if (toolbarUndoBtn) {
+            if (self.model && self.model.get('_index') == 0) {
+              toolbarUndoBtn.hide();
+            }
+            else {
+              toolbarUndoBtn.show();
+            }
+          }
+        }
+      });
+      simulationWrapperObserver.observe(self.$el[0], {
+        childList: true,
+        subtree: true
+      });
+
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
-      var self = this;
+      
       if (screenMessage) {
-        var observer = new MutationObserver(function (mutations, me) {
+        var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
           var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element');
           if (subElement.length) {
             Adapt.trigger('simulation-notify:prompt', {
@@ -65,7 +85,7 @@ define([
           }
         });
 
-        observer.observe(self.$el[0], {
+        simulationGraphicObserver.observe(self.$el[0], {
           childList: true,
           subtree: true
         });
