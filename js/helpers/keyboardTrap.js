@@ -27,6 +27,7 @@ define([
   }
 
   function stopKeyboardtrap(keyboardTrapObject) {
+    if (!(keyboardTrapObject && keyboardTrapObject.$el && keyboardTrapObject.$el.attr('class'))) return;
     var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.') } :focusable:not(.trap-wrapper):not(.display-none)`);
     if (focusableItems && focusableItems.length > 1) {
       focusableItems.first().off('keydown');

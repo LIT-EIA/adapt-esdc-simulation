@@ -15,6 +15,7 @@ define([
 
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
+      var self = this;
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         var childIndex = index;
@@ -45,16 +46,48 @@ define([
         }
 
       });
+      var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
+        var subElement = self.$el.closest('.simulation-wrapper');
+        if (subElement.length) {
+          var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
+          if (toolbarUndoBtn) {
+            if (self.model && self.model.get('_index') == 0) {
+              toolbarUndoBtn.hide();
+            }
+            else {
+              toolbarUndoBtn.show();
+            }
+          }
+        }
+      });
+      simulationWrapperObserver.observe(self.$el[0], {
+        childList: true,
+        subtree: true
+      });
+
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
+      
       if (screenMessage) {
-        Adapt.trigger('simulation-notify:prompt', {
-          body: screenMessage,
-          _prompts: [
-            {
-              promptText: "OK"
-            }
-          ]
+        var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
+          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element');
+          if (subElement.length) {
+            Adapt.trigger('simulation-notify:prompt', {
+              body: screenMessage,
+              _prompts: [
+                {
+                  promptText: "OK"
+                }
+              ],
+              onCloseRefocusEl: subElement
+            });
+            me.disconnect();
+          }
+        });
+
+        simulationGraphicObserver.observe(self.$el[0], {
+          childList: true,
+          subtree: true
         });
       }
 
@@ -147,7 +180,8 @@ define([
             {
               promptText: "OK"
             }
-          ]
+          ],
+          onCloseRefocusEl: $(e.target)
         });
       } else {
         if (formModel._isSuccess) {
@@ -159,7 +193,8 @@ define([
                 promptText: "OK",
                 _callbackEvent: 'simulation:exit'
               }
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         } else {
           var eventData = {
@@ -188,7 +223,8 @@ define([
             body: action._isFailure ? failureBody : action._successBody,
             _prompts: [
               prompts
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         } else {
           var eventData = {
@@ -219,7 +255,8 @@ define([
                   promptText: "OK",
                   _callbackEvent: 'simulation:exit',
                 }
-              ]
+              ],
+              onCloseRefocusEl: $(e.target)
             });
           } else {
             var eventData = {
@@ -237,7 +274,8 @@ define([
               {
                 promptText: "OK"
               }
-            ]
+            ],
+            onCloseRefocusEl: $(e.target)
           });
         }
       }
@@ -265,7 +303,8 @@ define([
               body: action._isFailure ? failureBody : action._successBody,
               _prompts: [
                 prompts
-              ]
+              ],
+              onCloseRefocusEl: $(e.target)
             });
           } else {
             var eventData = {
