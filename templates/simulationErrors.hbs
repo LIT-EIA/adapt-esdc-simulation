@@ -2,7 +2,7 @@
 
 {{#each errors}}
   <strong>{{name}}</strong>
-  <span style="font-size: 80%;"><em>You have entered: "{{userValue}}"</em></span>
+  <span class="user-input-feedback"><em>{{#if userValue}}You have entered: "{{userValue}}"{{else}}You have not entered anything{{/if}}</em></span>
   <p>{{{message}}}</p>
   <br>
 {{/each}}

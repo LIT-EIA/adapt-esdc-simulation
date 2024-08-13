@@ -2,11 +2,7 @@
 
     .full-screen-style {
         background: inherit;
-        font-size: 140%;
 
-        select {
-            font-size: 120%;
-        }
 
         .simulation-widget {
             overflow-y: scroll;
@@ -57,6 +53,7 @@
 
         &.full-width {
             width: 100%;
+
             .simulation-graphic {
                 width: 100%;
 
@@ -384,4 +381,28 @@
     z-index: 1;
     left: 37.5%;
     top: 41.5%;
+}
+
+.user-input-feedback {
+    background: #fff;
+    color: #0F2A4A;
+    font-weight: bold;
+    padding: 1px 15px;
+    display: inline-block;
+    margin: 0;
+    border-radius: 20px;
+    font-size: 80%;
+    margin-left: 7.5px;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
 }
