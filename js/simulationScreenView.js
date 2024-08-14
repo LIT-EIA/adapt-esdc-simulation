@@ -52,10 +52,10 @@ define([
           var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
           if (toolbarUndoBtn) {
             if (self.model && self.model.get('_index') == 0) {
-              toolbarUndoBtn.hide();
+              toolbarUndoBtn.prop('disabled', true);
             }
             else {
-              toolbarUndoBtn.show();
+              toolbarUndoBtn.prop('disabled', false);
             }
           }
         }
