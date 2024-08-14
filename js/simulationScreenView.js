@@ -67,7 +67,7 @@ define([
 
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
-      
+
       if (screenMessage) {
         var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
           var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element');

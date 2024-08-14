@@ -66,8 +66,10 @@
 
     .simulation-graphic {
         position: relative;
-        display: inline-block;
         max-width: 100%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
         .action-container {
             position: absolute;
@@ -376,11 +378,9 @@
 
 .start-simulation {
     position: absolute;
-    width: 25%;
-    height: 15%;
+    width: auto;
+    min-width: 25%;
     z-index: 1;
-    left: 37.5%;
-    top: 41.5%;
 }
 
 .user-input-feedback {

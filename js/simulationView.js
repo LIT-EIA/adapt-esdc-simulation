@@ -35,6 +35,10 @@ define([
     preRender: function () {
       this.screens = this.model.get('_items');
       this.model.set('active', true);
+      const globals = Adapt.course.get('_globals');
+      var simulation = globals._components._simulation;
+      this.model.set('simulation', simulation);
+      console.log(simulation);
       this.render();
     },
 
@@ -143,10 +147,10 @@ define([
                     var subElement = self.$el.find('.action-container').closest('.simulation-widget');
                     if (subElement.length) {
                       Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
-                      me.disconnect(); 
+                      me.disconnect();
                     }
                   });
-  
+
                   observer.observe(self.$el[0], {
                     childList: true,
                     subtree: true
