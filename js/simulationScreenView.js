@@ -73,10 +73,9 @@ define([
 
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
-
       if (screenMessage) {
         var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
-          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element');
+          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element, .simulation-form-element');
           if (subElement.length) {
             Adapt.trigger('simulation-notify:prompt', {
               body: screenMessage,
@@ -85,7 +84,7 @@ define([
                   promptText: "OK"
                 }
               ],
-              onCloseRefocusEl: subElement
+              onCloseRefocusEl: subElement[0]
             });
             me.disconnect();
           }
@@ -192,7 +191,6 @@ define([
       } else {
         if (formModel._isSuccess) {
           Adapt.trigger('simulation-notify:prompt', {
-            title: 'Completion Message',
             body: formModel._successBody,
             _prompts: [
               {
@@ -225,7 +223,6 @@ define([
             promptText: "OK"
           }
           Adapt.trigger('simulation-notify:prompt', {
-            title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
             body: action._isFailure ? failureBody : action._successBody,
             _prompts: [
               prompts
@@ -254,7 +251,6 @@ define([
         if (selectedOption === correctOptionValue) {
           if (action._isSuccess) {
             Adapt.trigger('simulation-notify:prompt', {
-              title: 'Completion Message',
               body: action._successBody,
               _prompts: [
                 {
@@ -305,7 +301,6 @@ define([
               promptText: "OK"
             }
             Adapt.trigger('simulation-notify:prompt', {
-              title: action._isFailure ? 'Incorrect Action' : 'Completion Message',
               body: action._isFailure ? failureBody : action._successBody,
               _prompts: [
                 prompts

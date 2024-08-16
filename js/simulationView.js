@@ -125,10 +125,10 @@ define([
               return screen._screenID === data.id
             });
             var screen = filteredScreen[0];
-            var imageSrc = screen._graphic.src;
-            screen.componentID = this.componentID;
-            screen.incorrectFallback = self.model.get('_incorrectFallback');
             if (screen) {
+              var imageSrc = screen._graphic.src;
+              screen.componentID = this.componentID;
+              screen.incorrectFallback = self.model.get('_incorrectFallback');
               if (self.currentViewData && self.currentViewData.screenView) {
                 Adapt.trigger('stopkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
                 self.currentViewData.screenView.remove();
@@ -161,6 +161,16 @@ define([
                 //console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
                 if (callback) callback();
+              });
+            } else {
+              Adapt.trigger('simulation-notify:prompt', {
+                title: 'Missing configurations',
+                body: '<strong>ERROR: No screen to go to.</strong><p><span class="error-note-simulation">Note to course creator</span> You need to either: select a <em>GoTo</em> screen for this action, set it as the completion event, or set it as a failure event. ',
+                _prompts: [
+                  {
+                    promptText: "OK"
+                  }
+                ]
               });
             }
           }
