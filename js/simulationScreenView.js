@@ -11,6 +11,7 @@ define([
       'keypress .simulation-action-element': 'handleAction',
       'click .simulation-form .form-submit': 'handleSubmit',
       'keypress .simulation-form .form-submit': 'handleKeypressSubmit',
+      'click .action-container': 'handleFallbackAction'
     },
 
     initialize: function () {
@@ -52,10 +53,15 @@ define([
           var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
           if (toolbarUndoBtn) {
             if (self.model && self.model.get('_index') == 0) {
-              toolbarUndoBtn.prop('disabled', true);
+              toolbarUndoBtn.toggleClass('disabled-undo', true);
+              toolbarUndoBtn.attr('aria-disabled', true);
+              toolbarUndoBtn.attr('aria-label', "Go back | No existing previous steps.");
             }
             else {
-              toolbarUndoBtn.prop('disabled', false);
+              toolbarUndoBtn.toggleClass('disabled-undo', false);
+              toolbarUndoBtn.attr('aria-disabled', false);
+              toolbarUndoBtn.attr('aria-label', "Go back");
+
             }
           }
         }
@@ -314,6 +320,28 @@ define([
             Adapt.trigger('simulationloadscreen', eventData);
           }
         }
+      }
+    },
+
+    handleFallbackAction: function (e) {
+      var target = $(e.target);
+      if (target.hasClass('action-container')) {
+        console.log('youve clicked a wrong spot bud');
+        var focusElement = $(this.previousElement) || this.$el.find('.action-container');
+        var message = this.model.get('_fallbackMessage');
+        if (message) {
+          Adapt.trigger('simulation-notify:prompt', {
+            body: message,
+            _prompts: [
+              {
+                promptText: "OK"
+              }
+            ],
+            onCloseRefocusEl: focusElement
+          });
+        }
+      } else {
+        this.previousElement = document.activeElement;
       }
     },
 

@@ -70,6 +70,7 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        vertical-align: bottom;
 
         .action-container {
             position: absolute;
@@ -406,4 +407,13 @@
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border-width: 0;
+}
+
+.disabled-undo {
+    color: #a9a9a9;
+    cursor: not-allowed;
+
+    svg {
+        fill:#b4b4b4!important;
+    }
 }
