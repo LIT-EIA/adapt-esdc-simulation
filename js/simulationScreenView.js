@@ -189,7 +189,6 @@ define([
         var template = Handlebars.templates['simulationErrors'];
         var messageHTML = template({ errors: errors });
         Adapt.trigger('simulation-notify:prompt', {
-          title: 'Incorrect Action',
           body: messageHTML,
           _prompts: [
             {
@@ -303,7 +302,6 @@ define([
         } else {
           var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
           Adapt.trigger('simulation-notify:prompt', {
-            title: 'Incorrect Action',
             body: selectFailure,
             _prompts: [
               {
