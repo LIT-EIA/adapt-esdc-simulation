@@ -190,15 +190,19 @@ define([
         });
       } else {
         if (formModel._isSuccess) {
+          var bodyData = {
+            _successBody: formModel._successBody,
+            componentID: self.model.get('componentID')
+          }
+          var successBodyTemplate = Handlebars.templates['simulationScreenSuccess'];
           Adapt.trigger('simulation-notify:prompt', {
-            body: formModel._successBody,
-            _prompts: [
-              {
-                promptText: "OK",
-                _callbackEvent: 'simulation:exit'
-              }
-            ],
+            body: successBodyTemplate(bodyData),
             onCloseRefocusEl: $(e.target)
+          });
+          $('.confirm-success').one('click', function(e){
+            var button = $(e.target);
+            var componentID = button.attr('data-component-id');
+            self.handleConfirmSuccess(componentID);
           });
         } else {
           var eventData = {
@@ -211,24 +215,38 @@ define([
     },
 
     handleClick: function (e) {
+      var self = this;
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'click') {
         if (action._isFailure || action._isSuccess) {
           var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-          var prompts = action._isSuccess ? {
-            promptText: "OK",
-            _callbackEvent: 'simulation:exit',
-          } : {
-            promptText: "OK"
-          }
-          Adapt.trigger('simulation-notify:prompt', {
-            body: action._isFailure ? failureBody : action._successBody,
+          if(action._isSuccess){
+            var bodyData = {
+              _successBody: action._successBody,
+              componentID: self.model.get('componentID')
+            }
+            var successBodyTemplate = Handlebars.templates['simulationScreenSuccess'];
+            Adapt.trigger('simulation-notify:prompt', {
+              body: successBodyTemplate(bodyData),
+              onCloseRefocusEl: $(e.target)
+            });
+            $('.confirm-success').one('click', function(e){
+              var button = $(e.target);
+              var componentID = button.attr('data-component-id');
+              self.handleConfirmSuccess(componentID);
+            });
+          } else {
+            Adapt.trigger('simulation-notify:prompt', {
+            body: failureBody,
             _prompts: [
-              prompts
+              {
+                promptText: "OK"
+              }
             ],
             onCloseRefocusEl: $(e.target)
           });
+          }
         } else {
           var eventData = {
             id: action._goTo,
@@ -240,6 +258,7 @@ define([
     },
 
     handleChange: function (e) {
+      var self = this;
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'select') {
@@ -250,15 +269,19 @@ define([
         var correctOptionValue = correctOption._selectValue;
         if (selectedOption === correctOptionValue) {
           if (action._isSuccess) {
+            var bodyData = {
+              _successBody: action._successBody,
+              componentID: self.model.get('componentID')
+            }
+            var successBodyTemplate = Handlebars.templates['simulationScreenSuccess'];
             Adapt.trigger('simulation-notify:prompt', {
-              body: action._successBody,
-              _prompts: [
-                {
-                  promptText: "OK",
-                  _callbackEvent: 'simulation:exit',
-                }
-              ],
+              body: successBodyTemplate(bodyData),
               onCloseRefocusEl: $(e.target)
+            });
+            $('.confirm-success').one('click', function(e){
+              var button = $(e.target);
+              var componentID = button.attr('data-component-id');
+              self.handleConfirmSuccess(componentID);
             });
           } else {
             var eventData = {
@@ -284,6 +307,7 @@ define([
     },
 
     handleInput: function (e) {
+      var self = this;
       var actionId = $(e.target).attr('data-id');
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'input') {
@@ -292,18 +316,29 @@ define([
         var criteriaList = action._matchTextItems;
         var isMatched = this.matchString(inputString, criteriaList);
         if (isMatched) {
-          if (action._isFailure || action._isSuccess) {
-            var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-            var prompts = action._isSuccess ? {
-              promptText: "OK",
-              _callbackEvent: 'simulation:exit',
-            } : {
-              promptText: "OK"
+          if (action._isSuccess) {
+            var bodyData = {
+              _successBody: action._successBody,
+              componentID: self.model.get('componentID')
             }
+            var successBodyTemplate = Handlebars.templates['simulationScreenSuccess'];
             Adapt.trigger('simulation-notify:prompt', {
-              body: action._isFailure ? failureBody : action._successBody,
+              body: successBodyTemplate(bodyData),
+              onCloseRefocusEl: $(e.target)
+            });
+            $('.confirm-success').one('click', function(e){
+              var button = $(e.target);
+              var componentID = button.attr('data-component-id');
+              self.handleConfirmSuccess(componentID);
+            });
+          } else if(action._isFailure){
+            var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+            Adapt.trigger('simulation-notify:prompt', {
+              body: failureBody,
               _prompts: [
-                prompts
+                {
+                  promptText: "OK"
+                }
               ],
               onCloseRefocusEl: $(e.target)
             });
@@ -316,6 +351,12 @@ define([
           }
         }
       }
+    },
+
+    handleConfirmSuccess: function(componentID){
+      Adapt.trigger('simulationSuccess', {
+        componentID: componentID
+      });
     },
 
     handleFallbackAction: function (e) {

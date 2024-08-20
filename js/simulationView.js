@@ -89,6 +89,7 @@ define([
     postRender: function () {
       var self = this;
       this.listenTo(Adapt, 'simulationloadscreen', this.loadScreen);
+      this.listenTo(Adapt, 'simulationSuccess', this.onSimulationSuccess);
       if (this.model.get('active')) {
         var simulation = this.model.get('simulation');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -202,6 +203,13 @@ define([
           self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
       });
 
+    },
+
+    onSimulationSuccess: function(data){
+      if(data.componentID === this.componentID){
+        this.setCompletionStatus();
+        this.onStopSimulation();
+      }
     },
 
     onStopSimulation: function () {
