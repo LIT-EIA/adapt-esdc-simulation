@@ -220,6 +220,23 @@
                         "validators": [],
                         "help": "action type"
                       },
+                      "_fontSize": {
+                        "type": "number",
+                        "default": 12,
+                        "inputType": "Number",
+                        "title": "Font size",
+                        "help": "Font size of the input field.",
+                        "validators": [],
+                        "conditions": {
+                          "or": [
+                            {
+                              "name": "_actionType",
+                              "value": "input,select"
+                            }
+                          ]
+                        },
+                        "translatable": true
+                      },
                       "_prefilledType": {
                         "type": "string",
                         "required": true,
@@ -545,6 +562,23 @@
                       }
                     ]
                   }
+                },
+                "_fontSize": {
+                  "type": "number",
+                  "default": 12,
+                  "inputType": "Number",
+                  "title": "Font size",
+                  "help": "Font size of the input field.",
+                  "validators": [],
+                  "conditions": {
+                    "or": [
+                      {
+                        "name": "_actionType",
+                        "value": "input,select"
+                      }
+                    ]
+                  },
+                  "translatable": true
                 },
                 "_prefilledType": {
                   "type": "string",

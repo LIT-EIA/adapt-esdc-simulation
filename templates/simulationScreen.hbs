@@ -7,13 +7,13 @@
     {{#if type.input}}
     <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text"
       class="input-zone simulation-form-element"
-      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;"
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;font-size:{{_fontSize}}px;"
       {{#if _prefilled.placeholder}} placeholder="{{_prefilledValue}}"{{/if}} {{#if _prefilled.text}} value="{{_prefilledValue}}"{{/if}} />
     {{/if}}
     {{#if type.select}}
     <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options"
       class="select-zone simulation-form-element"
-      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;font-size:{{_fontSize}}px;">
       {{#each _selectOptions}}
       <option value="{{_selectValue}}">{{_selectValue}}</option>
       {{/each}}
@@ -32,13 +32,13 @@
   {{#if type.input}}
   <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text"
     class="input-zone simulation-action-element"
-    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;"
+    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;font-size:{{_fontSize}}px;"
     {{#if _prefilled.placeholder}} placeholder="{{_prefilledValue}}"{{/if}} {{#if _prefilled.text}} value="{{_prefilledValue}}"{{/if}}/>
   {{/if}}
   {{#if type.select}}
   <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options"
     class="select-zone simulation-action-element"
-    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;font-size:{{_fontSize}}px;">
     {{#each _selectOptions}}
     <option value="{{_selectValue}}">{{_selectValue}}</option>
     {{/each}}

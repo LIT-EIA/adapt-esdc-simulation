@@ -26,6 +26,7 @@ define([
           select: action._actionType === 'select',
           click: action._actionType === 'click'
         };
+        _childItems[childIndex]._fontSize = action._fontSize || 12;
         _childItems[childIndex]._prefilled = {
           placeholder: action._prefilledType === 'placeholder',
           text: action._prefilledType === 'text'
@@ -39,6 +40,7 @@ define([
               select: action._actionType === 'select',
               submit: action._actionType === 'submit'
             };
+            _childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
             _childItems[childIndex]._form[formIndex]._prefilled = {
               placeholder: action._prefilledType === 'placeholder',
               text: action._prefilledType === 'text'
@@ -49,6 +51,14 @@ define([
       });
       var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
         var subElement = self.$el.closest('.simulation-wrapper');
+        var simulationGraphicEl;
+        if (subElement.find('.simulation-graphic')) {
+          simulationGraphicEl = subElement.find('.simulation-graphic');
+        }
+
+        var simulationWrapperDefaultWidth = simulationGraphicEl ? simulationGraphicEl.width() : subElement.width();
+
+        self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
         if (subElement.length) {
           var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
           if (toolbarUndoBtn) {
@@ -95,7 +105,7 @@ define([
           subtree: true
         });
       }
-
+      this.listenTo(Adapt, 'device:resize', this.adjustFontSize);
     },
 
 
@@ -338,6 +348,34 @@ define([
       } else {
         this.previousElement = document.activeElement;
       }
+    },
+
+    adjustFontSize: function () {
+      var simulationWrapperCurrentWidth = this.$el.closest('.simulation-graphic') ? this.$el.closest('.simulation-graphic').width() : this.$el.closest('.simulation-wrapper').width();
+      var simulationWrapperDefaultWidth = this.model.get('simulationWrapperDefaultWidth');
+      if (simulationWrapperDefaultWidth == simulationWrapperCurrentWidth) {
+        return;
+      }
+      var self = this;
+      var _childItems = this.model.get('_childItems');
+      _childItems.forEach(function (action, index) {
+        var childIndex = index;
+        if (_childItems[childIndex]._fontSize) {
+          var fontWidthRatio = _childItems[childIndex]._fontSize / simulationWrapperDefaultWidth;
+          _childItems[childIndex]._fontSize = fontWidthRatio * simulationWrapperCurrentWidth;
+        }
+        if (_childItems[childIndex]._isForm) {
+          _childItems[childIndex]._form.forEach(function (action, index) {
+            var formIndex = index;
+            if (_childItems[childIndex]._form[formIndex]._fontSize) {
+              var formFontWidthRatio = _childItems[childIndex]._form[formIndex]._fontSize / simulationWrapperDefaultWidth;
+              _childItems[childIndex]._form[formIndex]._fontSize = formFontWidthRatio * simulationWrapperCurrentWidth;
+            }
+          });
+        }
+      });
+      this.model.set('_childItems', _childItems);
+      this.render();
     },
 
     matchString: function (inputString, criteriaList) {
