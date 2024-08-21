@@ -57,10 +57,10 @@ define([
         }
 
         var simulationWrapperDefaultWidth = simulationGraphicEl ? simulationGraphicEl.width() : subElement.width();
-
         self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
         if (subElement.length) {
           var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
+          var toolbarMessageBtn = subElement.find('.simulation-toolbar .show-instructions');
           if (toolbarUndoBtn) {
             if (self.model && self.model.get('_index') == 0) {
               toolbarUndoBtn.toggleClass('disabled-undo', true);
@@ -71,7 +71,21 @@ define([
               toolbarUndoBtn.toggleClass('disabled-undo', false);
               toolbarUndoBtn.attr('aria-disabled', false);
               toolbarUndoBtn.attr('aria-label', "Go back");
+            }
+          }
 
+          if(toolbarMessageBtn){
+            console.log(self.model)
+            var screenMessage = self.model.get('body');
+            console.log(!screenMessage);
+            if(!screenMessage){
+              toolbarMessageBtn.toggleClass('disabled-message', true);
+              toolbarMessageBtn.attr('aria-disabled', true);
+              toolbarMessageBtn.attr('aria-label', "Show Instructions | No instructions available for this screen.");
+            } else {
+              toolbarMessageBtn.toggleClass('disabled-message', false);
+              toolbarMessageBtn.attr('aria-disabled', false);
+              toolbarMessageBtn.attr('aria-label', "Show Instructions");
             }
           }
         }

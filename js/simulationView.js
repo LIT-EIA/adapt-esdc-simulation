@@ -11,6 +11,7 @@ define([
     events: {
       'click .start-simulation': 'onStartSimulation',
       'click .simulation-toolbar .undo': 'onUndo',
+      'click .simulation-toolbar .show-instructions': 'onShowInstructions',
       'click .simulation-toolbar .exit': 'onStopSimulation',
       'click .simulation-toolbar .expand': 'onExpand',
     },
@@ -50,6 +51,23 @@ define([
         var screenID = self.screenHistory[nextScreenIndex];
         self.loadScreen({ id: screenID, componentID: this.componentID }, function(){
           self.screenHistory = self.screenHistory.slice(0, -2);
+        });
+      }
+    },
+
+    onShowInstructions: function(e){
+      var self = this;
+      var screen = self.currentViewData.screenView;
+      var screenMessage = screen.model.get('body');
+      if(screenMessage){
+        Adapt.trigger('simulation-notify:prompt', {
+          body: screenMessage,
+          _prompts: [
+            {
+              promptText: "OK"
+            }
+          ],
+          onCloseRefocusEl: $(e.target).parent()
         });
       }
     },
