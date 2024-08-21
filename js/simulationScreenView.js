@@ -99,7 +99,7 @@ define([
       var screenMessage = this.model.get('body');
       if (screenMessage) {
         var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
-          var actionContainer = self.$el.find('.action-container');
+          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element, .simulation-form-element');
           if (subElement.length) {
             Adapt.trigger('simulation-notify:prompt', {
               body: screenMessage,
@@ -108,7 +108,7 @@ define([
                   promptText: "OK"
                 }
               ],
-              onCloseRefocusEl: actionContainer[0]
+              onCloseRefocusEl: subElement[0]
             });
             me.disconnect();
           }
