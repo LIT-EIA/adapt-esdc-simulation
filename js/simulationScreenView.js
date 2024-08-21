@@ -17,6 +17,7 @@ define([
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
       var self = this;
+      this.componentID = this.model.get('componentID');
       var _childItems = this.model.get('_childItems')
       _childItems.forEach(function (action, index) {
         var childIndex = index;
@@ -47,17 +48,16 @@ define([
             };
           });
         }
-
+        var simulationWrapperDefaultWidth = 840;
+        self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
       });
       var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
+        self.adjustFontSize();
         var subElement = self.$el.closest('.simulation-wrapper');
         var simulationGraphicEl;
         if (subElement.find('.simulation-graphic')) {
           simulationGraphicEl = subElement.find('.simulation-graphic');
         }
-
-        var simulationWrapperDefaultWidth = simulationGraphicEl ? simulationGraphicEl.width() : subElement.width();
-        self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
         if (subElement.length) {
           var toolbarUndoBtn = subElement.find('.simulation-toolbar .undo');
           var toolbarMessageBtn = subElement.find('.simulation-toolbar .show-instructions');
@@ -74,11 +74,9 @@ define([
             }
           }
 
-          if(toolbarMessageBtn){
-            console.log(self.model)
+          if (toolbarMessageBtn) {
             var screenMessage = self.model.get('body');
-            console.log(!screenMessage);
-            if(!screenMessage){
+            if (!screenMessage) {
               toolbarMessageBtn.toggleClass('disabled-message', true);
               toolbarMessageBtn.attr('aria-disabled', true);
               toolbarMessageBtn.attr('aria-label', "Show Instructions | No instructions available for this screen.");
@@ -222,7 +220,7 @@ define([
             body: successBodyTemplate(bodyData),
             onCloseRefocusEl: $(e.target)
           });
-          $('.confirm-success').one('click', function(e){
+          $('.confirm-success').one('click', function (e) {
             var button = $(e.target);
             var componentID = button.attr('data-component-id');
             self.handleConfirmSuccess(componentID);
@@ -244,7 +242,7 @@ define([
       if (action._actionType === 'click') {
         if (action._isFailure || action._isSuccess) {
           var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
-          if(action._isSuccess){
+          if (action._isSuccess) {
             var bodyData = {
               _successBody: action._successBody,
               componentID: self.model.get('componentID')
@@ -254,21 +252,21 @@ define([
               body: successBodyTemplate(bodyData),
               onCloseRefocusEl: $(e.target)
             });
-            $('.confirm-success').one('click', function(e){
+            $('.confirm-success').one('click', function (e) {
               var button = $(e.target);
               var componentID = button.attr('data-component-id');
               self.handleConfirmSuccess(componentID);
             });
           } else {
             Adapt.trigger('simulation-notify:prompt', {
-            body: failureBody,
-            _prompts: [
-              {
-                promptText: "OK"
-              }
-            ],
-            onCloseRefocusEl: $(e.target)
-          });
+              body: failureBody,
+              _prompts: [
+                {
+                  promptText: "OK"
+                }
+              ],
+              onCloseRefocusEl: $(e.target)
+            });
           }
         } else {
           var eventData = {
@@ -301,7 +299,7 @@ define([
               body: successBodyTemplate(bodyData),
               onCloseRefocusEl: $(e.target)
             });
-            $('.confirm-success').one('click', function(e){
+            $('.confirm-success').one('click', function (e) {
               var button = $(e.target);
               var componentID = button.attr('data-component-id');
               self.handleConfirmSuccess(componentID);
@@ -348,12 +346,12 @@ define([
               body: successBodyTemplate(bodyData),
               onCloseRefocusEl: $(e.target)
             });
-            $('.confirm-success').one('click', function(e){
+            $('.confirm-success').one('click', function (e) {
               var button = $(e.target);
               var componentID = button.attr('data-component-id');
               self.handleConfirmSuccess(componentID);
             });
-          } else if(action._isFailure){
+          } else if (action._isFailure) {
             var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
             Adapt.trigger('simulation-notify:prompt', {
               body: failureBody,
@@ -375,7 +373,7 @@ define([
       }
     },
 
-    handleConfirmSuccess: function(componentID){
+    handleConfirmSuccess: function (componentID) {
       Adapt.trigger('simulationSuccess', {
         componentID: componentID
       });
@@ -404,31 +402,30 @@ define([
     },
 
     adjustFontSize: function () {
-      var simulationWrapperCurrentWidth = this.$el.closest('.simulation-graphic') ? this.$el.closest('.simulation-graphic').width() : this.$el.closest('.simulation-wrapper').width();
+      var componentDiv = $(`div[data-adapt-id="${this.componentID}"]`);
+      var simulationWrapperCurrentWidth = componentDiv.find('.simulation-wrapper').width();
       var simulationWrapperDefaultWidth = this.model.get('simulationWrapperDefaultWidth');
-      if (simulationWrapperDefaultWidth == simulationWrapperCurrentWidth) {
-        return;
-      }
-      var self = this;
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;
         if (_childItems[childIndex]._fontSize) {
           var fontWidthRatio = _childItems[childIndex]._fontSize / simulationWrapperDefaultWidth;
-          _childItems[childIndex]._fontSize = fontWidthRatio * simulationWrapperCurrentWidth;
+          var itemID = _childItems[childIndex].id;
+          var field = componentDiv.find(`[data-id="${itemID}"]`);
+          field.css("font-size", fontWidthRatio * simulationWrapperCurrentWidth);
         }
         if (_childItems[childIndex]._isForm) {
           _childItems[childIndex]._form.forEach(function (action, index) {
             var formIndex = index;
             if (_childItems[childIndex]._form[formIndex]._fontSize) {
               var formFontWidthRatio = _childItems[childIndex]._form[formIndex]._fontSize / simulationWrapperDefaultWidth;
-              _childItems[childIndex]._form[formIndex]._fontSize = formFontWidthRatio * simulationWrapperCurrentWidth;
+              var itemID = _childItems[childIndex]._form[formIndex].id;
+              var field = componentDiv.find(`[data-id="${itemID}"]`);
+              field.css("font-size", formFontWidthRatio * simulationWrapperCurrentWidth);
             }
           });
         }
       });
-      this.model.set('_childItems', _childItems);
-      this.render();
     },
 
     matchString: function (inputString, criteriaList) {
