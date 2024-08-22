@@ -97,6 +97,7 @@
           "_screenID": {
             "type": "string",
             "title": "Screen ID",
+            "noListTitle": true,
             "required": true,
             "default": "",
             "inputType": "UniqueID",
@@ -121,6 +122,7 @@
             "type": "object",
             "required": true,
             "title": "Screen Graphic",
+            "noListTitle": true,
             "properties": {
               "src": {
                 "type": "string",
@@ -146,6 +148,7 @@
           "body": {
             "type": "string",
             "title": "Screen Message",
+            "noListTitle": true,
             "required": false,
             "default": "",
             "inputType": "TextArea",
@@ -209,6 +212,7 @@
                         "required": true,
                         "default": "submit",
                         "title": "Type of action",
+                        "noListTitle": true,
                         "inputType": {
                           "type": "Select",
                           "options": [
@@ -225,6 +229,7 @@
                         "default": 12,
                         "inputType": "Number",
                         "title": "Font size",
+                        "noListTitle": true,
                         "help": "Font size of the input field.",
                         "validators": [],
                         "conditions": {
@@ -242,6 +247,7 @@
                         "required": true,
                         "default": "none",
                         "title": "Type of pre-filled value",
+                        "noListTitle": true,
                         "inputType": {
                           "type": "Select",
                           "options": [
@@ -270,6 +276,7 @@
                         "help": "Title",
                         "translatable": true,
                         "title": "Pre-filled Value",
+                        "noListTitle": true,
                         "conditions": {
                           "and": [
                             {
@@ -287,6 +294,7 @@
                         "type": "array",
                         "required": true,
                         "title": "Match Text",
+                        "noListTitle": true,
                         "validators": [],
                         "items": {
                           "type": "object",
@@ -342,6 +350,7 @@
                         "help": "Body text displayed as failure message",
                         "translatable": true,
                         "title": "Match Text Failure Message",
+                        "noListTitle": true,
                         "conditions": {
                           "and": [
                             {
@@ -355,6 +364,7 @@
                         "type": "array",
                         "required": true,
                         "title": "Select Options",
+                        "noListTitle": true,
                         "validators": [],
                         "items": {
                           "type": "object",
@@ -401,6 +411,7 @@
                         "help": "Body text displayed as failure message",
                         "translatable": true,
                         "title": "Select Failure Message",
+                        "noListTitle": true,
                         "conditions": {
                           "and": [
                             {
@@ -418,6 +429,7 @@
                         "validators": [],
                         "help": "Pin finder",
                         "title": "Pin finder",
+                        "noListTitle": true,
                         "noTitle": true
                       },
                       "_zonefinderSize": {
@@ -427,12 +439,14 @@
                         "inputType": "Text",
                         "validators": [],
                         "help": "Zone finder sizing",
-                        "title": "Zone finder size"
+                        "title": "Zone finder size",
+                        "noListTitle": true
                       },
                       "_position": {
                         "type": "object",
                         "required": false,
                         "title": "Element Size and Position",
+                        "noListTitle": true,
                         "properties": {
                           "_left": {
                             "type": "number",
@@ -498,6 +512,7 @@
                 "_goTo": {
                   "type": "string",
                   "title": "GoTo",
+                  "noListTitle": true,
                   "required": false,
                   "default": "",
                   "inputType": "SelectScreen",
@@ -517,6 +532,7 @@
                   "required": true,
                   "default": "click",
                   "title": "Type of action",
+                  "noListTitle": true,
                   "inputType": {
                     "type": "Select",
                     "options": [
@@ -541,6 +557,7 @@
                   "required": true,
                   "default": "button",
                   "title": "Type of click action",
+                  "noListTitle": true,
                   "inputType": {
                     "type": "Select",
                     "options": [
@@ -568,6 +585,7 @@
                   "default": 12,
                   "inputType": "Number",
                   "title": "Font size",
+                  "noListTitle": true,
                   "help": "Font size of the input field.",
                   "validators": [],
                   "conditions": {
@@ -585,6 +603,7 @@
                   "required": true,
                   "default": "none",
                   "title": "Type of pre-filled value",
+                  "noListTitle": true,
                   "inputType": {
                     "type": "Select",
                     "options": [
@@ -617,6 +636,7 @@
                   "help": "Title",
                   "translatable": true,
                   "title": "Pre-filled Value",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
@@ -638,6 +658,7 @@
                   "type": "array",
                   "required": true,
                   "title": "Match Text",
+                  "noListTitle": true,
                   "validators": [],
                   "items": {
                     "type": "object",
@@ -697,6 +718,7 @@
                   "help": "Body text displayed as failure message",
                   "translatable": true,
                   "title": "Match Text Failure Message",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
@@ -714,6 +736,7 @@
                   "type": "array",
                   "required": true,
                   "title": "Select Options",
+                  "noListTitle": true,
                   "validators": [],
                   "items": {
                     "type": "object",
@@ -764,6 +787,7 @@
                   "help": "Body text displayed as failure message",
                   "translatable": true,
                   "title": "Select Failure Message",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
@@ -803,6 +827,7 @@
                   "validators": [],
                   "help": "Zone finder sizing",
                   "title": "Zone finder size",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
@@ -816,6 +841,7 @@
                   "type": "object",
                   "required": false,
                   "title": "Element Size and Position",
+                  "noListTitle": true,
                   "properties": {
                     "_left": {
                       "type": "number",
@@ -880,6 +906,7 @@
                   "required": false,
                   "default": false,
                   "title": "This action is a failure",
+                  "noListTitle": true,
                   "inputType": "Checkbox",
                   "validators": [],
                   "help": "This action is a failure",
@@ -905,6 +932,7 @@
                   "help": "Body text displayed as failure message",
                   "translatable": true,
                   "title": "Failure Message",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
@@ -923,6 +951,7 @@
                   "required": false,
                   "default": false,
                   "title": "This action triggers completion",
+                  "noListTitle": true,
                   "inputType": "Checkbox",
                   "validators": [],
                   "help": "This action triggers completion",
@@ -944,6 +973,7 @@
                   "help": "Body text displayed as completion message",
                   "translatable": true,
                   "title": "Completion Message",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
