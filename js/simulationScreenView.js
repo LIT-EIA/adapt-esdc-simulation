@@ -50,6 +50,8 @@ define([
         }
         var simulationWrapperDefaultWidth = 840;
         self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
+        var simulationDefaultFocusOutlineWidth = 3;
+        self.model.set('simulationDefaultFocusOutlineWidth', simulationDefaultFocusOutlineWidth);
       });
       var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
         self.adjustFontSize();
@@ -405,6 +407,10 @@ define([
       var componentDiv = $(`div[data-adapt-id="${this.componentID}"]`);
       var simulationWrapperCurrentWidth = componentDiv.find('.simulation-wrapper').width();
       var simulationWrapperDefaultWidth = this.model.get('simulationWrapperDefaultWidth');
+      var simulationDefaultFocusOutlineWidth = this.model.get('simulationDefaultFocusOutlineWidth');
+      var outlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
+      var newOutlineSize = outlineRatio * simulationWrapperCurrentWidth;
+      componentDiv.css(`--simulation-outline-width`, newOutlineSize) + 'px!important';
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;

@@ -1,7 +1,7 @@
 .error-note-simulation {
-        background: #ff1e1e;
-        padding: 5px;
-        border-radius: 5px;
+    background: #ff1e1e;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 .notify-popup blockquote {
@@ -16,7 +16,9 @@
     }
 
     *:focus-visible {
-        outline: 3px solid #CD1C6A !important
+        outline-width: var(--simulation-outline-width)!important;
+        outline-color: #CD1C6A!important;
+        outline-style: solid!important;
     }
 
     .full-screen-style {
@@ -99,11 +101,11 @@
             left: 0;
 
             &:focus {
-                outline: none!important;
+                outline: none !important;
             }
 
             &:focus-visible {
-                outline: none!important;
+                outline: none !important;
             }
 
 
@@ -437,11 +439,12 @@
     border-width: 0;
 }
 
-.disabled-undo, .disabled-message {
+.disabled-undo,
+.disabled-message {
     color: #a9a9a9;
     cursor: not-allowed;
 
     svg {
-        fill:#b4b4b4!important;
+        fill: #b4b4b4 !important;
     }
 }
