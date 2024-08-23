@@ -11,6 +11,7 @@ define([
       'keypress .simulation-action-element': 'handleAction',
       'click .simulation-form .form-submit': 'handleSubmit',
       'keypress .simulation-form .form-submit': 'handleKeypressSubmit',
+      'submit .simulation-form': 'handleOriginalSubmitForm',
       'click .action-container': 'handleFallbackAction'
     },
 
@@ -381,10 +382,14 @@ define([
       });
     },
 
+    handleOriginalSubmitForm: function(e){
+      e.preventDefault();
+    },
+
     handleFallbackAction: function (e) {
       var target = $(e.target);
       if (target.hasClass('action-container')) {
-        console.log('youve clicked a wrong spot bud');
+        console.log('Warning: clicked a spot with no mapping');
         var focusElement = $(this.previousElement) || this.$el.find('.action-container');
         var message = this.model.get('_fallbackMessage');
         if (message) {
