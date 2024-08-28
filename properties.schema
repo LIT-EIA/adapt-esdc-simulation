@@ -97,7 +97,8 @@
           "_screenID": {
             "type": "string",
             "title": "Screen ID",
-            "noListTitle": true,
+            "hiddenListTitle": true,
+            "hiddenField": true,
             "required": true,
             "default": "",
             "inputType": "UniqueID",
@@ -440,7 +441,8 @@
                         "validators": [],
                         "help": "Zone finder sizing",
                         "title": "Zone finder size",
-                        "noListTitle": true
+                        "noListTitle": true,
+                        "hiddenField": true
                       },
                       "_position": {
                         "type": "object",
@@ -709,29 +711,6 @@
                     ]
                   }
                 },
-                "matchFailure": {
-                  "type": "string",
-                  "required": false,
-                  "default": "",
-                  "inputType": "TextArea",
-                  "validators": [],
-                  "help": "Body text displayed as failure message",
-                  "translatable": true,
-                  "title": "Match Text Failure Message",
-                  "noListTitle": true,
-                  "conditions": {
-                    "and": [
-                      {
-                        "name": "_actionType",
-                        "value": "input"
-                      },
-                      {
-                        "name": "_isForm",
-                        "value": "false"
-                      }
-                    ]
-                  }
-                },
                 "_selectOptions": {
                   "type": "array",
                   "required": true,
@@ -828,6 +807,7 @@
                   "help": "Zone finder sizing",
                   "title": "Zone finder size",
                   "noListTitle": true,
+                  "hiddenField": true,
                   "conditions": {
                     "and": [
                       {
