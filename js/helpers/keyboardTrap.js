@@ -6,7 +6,7 @@ define([
 
   function startKeyboardTrap(keyboardTrapObject) {
     if (keyboardTrapObject && keyboardTrapObject.$el) {
-      var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none)`);
+      var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none):not(.action-container)`);
       if (focusableItems && focusableItems.length > 0) {
         focusableItems.first().on('keydown', function (e) {
           var keyCode = e.keyCode || e.which;
