@@ -60,6 +60,15 @@
       "validators": [],
       "help": "Whether completion is based on the learner having viewed all the items - or just having viewed the component"
     },
+    "_setCompletionOnMobile": {
+      "type": "boolean",
+      "required": false,
+      "default": false,
+      "inputType": "Checkbox",
+      "validators": [],
+      "title": "Set Completion On Mobile",
+      "help": "Set completion in view when on mobile displays"
+    },
     "_incorrectFallback": {
       "type": "string",
       "title": "Incorrect Fallback Message",

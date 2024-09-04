@@ -22,6 +22,7 @@ define([
       this.currentViewData;
       this.listenToFullScreenChange();
       this.checkIfResetOnRevisit();
+      this.listenToResize();
     },
 
     checkIfResetOnRevisit: function () {
@@ -102,6 +103,22 @@ define([
         document.mozFullScreenElement ||
         document.msFullscreenElement
       );
+    },
+
+    listenToResize: function () {
+      var element = this.$el.get(0);
+      var completionOnMobileView = this.model.get('_setCompletionOnMobile');
+      var self = this;
+
+      var resizeObserver = new ResizeObserver(function (entries) {
+        for (let entry of entries) {
+          if ($(entry.target).width() <= 580 && completionOnMobileView) {
+            self.setCompletionStatus();
+          }
+        }
+      });
+
+      resizeObserver.observe(element);
     },
 
     postRender: function () {
