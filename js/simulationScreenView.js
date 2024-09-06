@@ -26,7 +26,9 @@ define([
         _childItems[childIndex].type = {
           input: action._actionType === 'input',
           select: action._actionType === 'select',
-          click: action._actionType === 'click'
+          click: action._actionType === 'click',
+          button: action._actionType === 'click' && action._clickType === 'button',
+          link: action._actionType === 'click' && action._clickType === 'link'
         };
         _childItems[childIndex]._fontSize = action._fontSize || 12;
         _childItems[childIndex]._prefilled = {
