@@ -312,12 +312,10 @@
                           "properties": {
                             "_matchValue": {
                               "type": "string",
-                              "required": true,
+                              "required": false,
                               "default": "",
                               "inputType": "Text",
-                              "validators": [
-                                "required"
-                              ],
+                              "validators": [],
                               "help": "Title",
                               "translatable": true,
                               "title": "Text To Match"
@@ -330,6 +328,15 @@
                               "inputType": "Checkbox",
                               "validators": [],
                               "help": "The text will match no matter the case"
+                            },
+                            "_matchEmptyString": {
+                              "type": "boolean",
+                              "required": false,
+                              "default": false,
+                              "title": "Match empty string",
+                              "inputType": "Checkbox",
+                              "validators": [],
+                              "help": "The text will match only if field is left empty"
                             },
                             "_matchRegex": {
                               "type": "boolean",
@@ -677,12 +684,10 @@
                     "properties": {
                       "_matchValue": {
                         "type": "string",
-                        "required": true,
+                        "required": false,
                         "default": "",
                         "inputType": "Text",
-                        "validators": [
-                          "required"
-                        ],
+                        "validators": [],
                         "help": "Title",
                         "translatable": true,
                         "title": "Text To Match"
@@ -695,6 +700,15 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "help": "The text will match no matter the case"
+                      },
+                      "_matchEmptyString": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Match empty string",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "The text will match only if field is left empty"
                       },
                       "_matchRegex": {
                         "type": "boolean",
