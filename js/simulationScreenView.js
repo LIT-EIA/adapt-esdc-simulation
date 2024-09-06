@@ -448,6 +448,7 @@ define([
         var matchValue = criteria._matchValue;
         var caseInsensitive = criteria._caseInsensitive;
         var matchRegex = criteria._matchRegex;
+        var matchEmptyString = criteria._matchEmptyString;
 
         if (matchRegex) {
           var regexFlags = caseInsensitive ? 'i' : '';
@@ -457,7 +458,11 @@ define([
             matched = true;
           }
         } else {
-          if (caseInsensitive) {
+          if(matchEmptyString){
+            if (inputString === '') {
+              matched = true;
+            }
+          } else if (caseInsensitive) {
             if (inputString.toLowerCase() === matchValue.toLowerCase()) {
               matched = true;
             }
