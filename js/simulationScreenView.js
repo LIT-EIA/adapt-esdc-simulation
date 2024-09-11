@@ -21,9 +21,10 @@ define([
       var _childItems = this.model.get('_childItems');
       const today = new Date();
       const formattedDate = today.toISOString().split('T')[0];
+      this.model.set('formattedDate', formattedDate);
       _childItems.forEach(function (action, index) {
         var childIndex = index;
-        if(_childItems[childIndex]._prefilledValue === '{{today}}'){
+        if (_childItems[childIndex]._prefilledValue === '{{today}}') {
           _childItems[childIndex]._prefilledValue = formattedDate;
         }
         _childItems[childIndex].id = `screen-action-${childIndex}`;
@@ -43,7 +44,7 @@ define([
         if (_childItems[childIndex]._isForm) {
           _childItems[childIndex]._form.forEach(function (action, index) {
             var formIndex = index;
-            if(_childItems[childIndex]._form[formIndex]._prefilledValue === '{{today}}'){
+            if (_childItems[childIndex]._form[formIndex]._prefilledValue === '{{today}}') {
               _childItems[childIndex]._form[formIndex]._prefilledValue = formattedDate;
             }
             _childItems[childIndex]._form[formIndex].id = `screen-action-${childIndex}-${formIndex}`;
@@ -451,6 +452,7 @@ define([
     },
 
     matchString: function (inputString, criteriaList) {
+      var self = this;
       var matched = false;
 
       criteriaList.forEach(function (criteria) {
@@ -458,6 +460,7 @@ define([
         var caseInsensitive = criteria._caseInsensitive;
         var matchRegex = criteria._matchRegex;
         var matchEmptyString = criteria._matchEmptyString;
+        var matchUsingDate = criteria._matchUsingDate;
 
         if (matchRegex) {
           var regexFlags = caseInsensitive ? 'i' : '';
@@ -473,6 +476,11 @@ define([
             }
           } else if (caseInsensitive) {
             if (inputString.toLowerCase() === matchValue.toLowerCase()) {
+              matched = true;
+            }
+          } else if (matchUsingDate) {
+            var formattedDate = self.model.get('formattedDate');
+            if (inputString === formattedDate) {
               matched = true;
             }
           } else {

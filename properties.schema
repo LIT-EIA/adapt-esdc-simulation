@@ -362,6 +362,15 @@
                               "validators": [],
                               "help": "The text will match only if field is left empty"
                             },
+                            "_matchUsingDate": {
+                              "type": "boolean",
+                              "required": false,
+                              "default": false,
+                              "title": "Match using today's date",
+                              "inputType": "Checkbox",
+                              "validators": [],
+                              "help": "Match using today's date (yyyy-mm-dd)"
+                            },
                             "_matchRegex": {
                               "type": "boolean",
                               "required": false,
@@ -761,6 +770,15 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "help": "The text will match only if field is left empty"
+                      },
+                      "_matchUsingDate": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Match using today's date",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Match using today's date (yyyy-mm-dd)"
                       },
                       "_matchRegex": {
                         "type": "boolean",
