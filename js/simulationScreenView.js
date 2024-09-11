@@ -18,9 +18,14 @@ define([
       Backbone.View.prototype.initialize.call(this);
       var self = this;
       this.componentID = this.model.get('componentID');
-      var _childItems = this.model.get('_childItems')
+      var _childItems = this.model.get('_childItems');
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0];
       _childItems.forEach(function (action, index) {
         var childIndex = index;
+        if(_childItems[childIndex]._prefilledValue === '{{today}}'){
+          _childItems[childIndex]._prefilledValue = formattedDate;
+        }
         _childItems[childIndex].id = `screen-action-${childIndex}`;
         _childItems[childIndex].type = {
           input: action._actionType === 'input',
@@ -38,6 +43,9 @@ define([
         if (_childItems[childIndex]._isForm) {
           _childItems[childIndex]._form.forEach(function (action, index) {
             var formIndex = index;
+            if(_childItems[childIndex]._form[formIndex]._prefilledValue === '{{today}}'){
+              _childItems[childIndex]._form[formIndex]._prefilledValue = formattedDate;
+            }
             _childItems[childIndex]._form[formIndex].id = `screen-action-${childIndex}-${formIndex}`;
             _childItems[childIndex]._form[formIndex].type = {
               input: action._actionType === 'input',
