@@ -5,7 +5,7 @@
     {{#each _form}}
     <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
     {{#if type.input}}
-    <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text"
+    <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="{{#if type.datepicker}}date{{else}}text{{/if}}"
       class="input-zone simulation-form-element"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;font-size:{{_fontSize}}px;"
       {{#if _prefilled.placeholder}} placeholder="{{_prefilledValue}}"{{/if}} {{#if _prefilled.text}} value="{{_prefilledValue}}"{{/if}} />

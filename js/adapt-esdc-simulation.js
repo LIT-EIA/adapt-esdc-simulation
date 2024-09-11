@@ -3,7 +3,7 @@ define([
 	'./simulationView',
 	'core/js/models/itemsComponentModel',
   './helpers/keyboardTrap',
-  './helpers/simulationNotify'
+  './helpers/simulationNotify',
 ], function (Adapt, SimulationView, ItemsComponentModel, KeyBoardTrapHelper) {
 
 	function loadScript(scriptObject, callback) {
@@ -38,6 +38,7 @@ define([
   Adapt.on('stopkeyboardtrap', function (keyboardTrapObject) {
     KeyBoardTrapHelper.handleStopKeyboardTrap(keyboardTrapObject);
   });
+
 
 	return Adapt.register('simulation', {
 		model: ItemsComponentModel,

@@ -2,7 +2,6 @@ define([
   'core/js/adapt'
 ], function (Adapt) {
   'use strict';
-
   var SimulationScreenView = Backbone.View.extend({
     events: {
       'click .simulation-action-element': 'handleAction',
@@ -28,7 +27,8 @@ define([
           select: action._actionType === 'select',
           click: action._actionType === 'click',
           button: action._actionType === 'click' && action._clickType === 'button',
-          link: action._actionType === 'click' && action._clickType === 'link'
+          link: action._actionType === 'click' && action._clickType === 'link',
+          datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
         };
         _childItems[childIndex]._fontSize = action._fontSize || 12;
         _childItems[childIndex]._prefilled = {
@@ -42,7 +42,8 @@ define([
             _childItems[childIndex]._form[formIndex].type = {
               input: action._actionType === 'input',
               select: action._actionType === 'select',
-              submit: action._actionType === 'submit'
+              submit: action._actionType === 'submit',
+              datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
             };
             _childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
             _childItems[childIndex]._form[formIndex]._prefilled = {
@@ -100,10 +101,10 @@ define([
 
       this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
-      if (screenMessage) {
-        var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
-          var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element, .simulation-form-element');
-          if (subElement.length) {
+      var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
+        var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element, .simulation-form-element');
+        if (subElement.length) {
+          if (screenMessage) {
             Adapt.trigger('simulation-notify:prompt', {
               body: screenMessage,
               _prompts: [
@@ -113,15 +114,15 @@ define([
               ],
               onCloseRefocusEl: subElement[0]
             });
-            me.disconnect();
           }
-        });
+          me.disconnect();
+        }
+      });
 
-        simulationGraphicObserver.observe(self.$el[0], {
-          childList: true,
-          subtree: true
-        });
-      }
+      simulationGraphicObserver.observe(self.$el[0], {
+        childList: true,
+        subtree: true
+      });
       this.listenTo(Adapt, 'device:resize', this.adjustFontSize);
     },
 
@@ -384,7 +385,7 @@ define([
       });
     },
 
-    handleOriginalSubmitForm: function(e){
+    handleOriginalSubmitForm: function (e) {
       e.preventDefault();
     },
 
@@ -458,7 +459,7 @@ define([
             matched = true;
           }
         } else {
-          if(matchEmptyString){
+          if (matchEmptyString) {
             if (inputString === '') {
               matched = true;
             }

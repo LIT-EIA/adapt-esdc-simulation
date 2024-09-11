@@ -234,6 +234,30 @@
                         "validators": [],
                         "help": "action type"
                       },
+                      "_inputType": {
+                        "type": "string",
+                        "required": true,
+                        "default": "text",
+                        "title": "Type of input action",
+                        "noListTitle": true,
+                        "inputType": {
+                          "type": "Select",
+                          "options": [
+                            "text",
+                            "datepicker"
+                          ]
+                        },
+                        "validators": [],
+                        "help": "input type",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            }
+                          ]
+                        }
+                      },
                       "_fontSize": {
                         "type": "number",
                         "default": 12,
@@ -590,6 +614,34 @@
                       {
                         "name": "_actionType",
                         "value": "click"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_inputType": {
+                  "type": "string",
+                  "required": true,
+                  "default": "text",
+                  "title": "Type of input action",
+                  "noListTitle": true,
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "text",
+                      "datepicker"
+                    ]
+                  },
+                  "validators": [],
+                  "help": "input type",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
                       },
                       {
                         "name": "_isForm",
