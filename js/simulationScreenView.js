@@ -8,6 +8,10 @@ define([
       'change .simulation-action-element': 'handleAction',
       'input .simulation-action-element': 'handleAction',
       'keypress .simulation-action-element': 'handleAction',
+      'click .simulation-form-element': 'handleActionForm',
+      'change .simulation-form-element': 'handleActionForm',
+      'input .simulation-form-element': 'handleActionForm',
+      'keypress .simulation-form-element': 'handleActionForm',
       'click .simulation-form .form-submit': 'handleSubmit',
       'keypress .simulation-form .form-submit': 'handleKeypressSubmit',
       'submit .simulation-form': 'handleOriginalSubmitForm',
@@ -164,6 +168,19 @@ define([
       }
     },
 
+    handleActionForm: function (e) {
+      var eventType = e.type;
+      switch (eventType) {
+        case 'change':
+          this.handleChangeForm(e);
+          break;
+        case 'input':
+          this.handleInputForm(e);
+          break;
+        default:
+      }
+    },
+
     handleKeypressSubmit: function (e) {
       if (e.which === 13) {
         this.handleSubmit(e);
@@ -225,6 +242,7 @@ define([
           onCloseRefocusEl: $(e.target)
         });
       } else {
+        self.handleCompleteTask(formModel);
         if (formModel._isSuccess) {
           var bodyData = {
             _successBody: formModel._successBody,
@@ -258,6 +276,7 @@ define([
         if (action._isFailure || action._isSuccess) {
           var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
           if (action._isSuccess) {
+            self.handleCompleteTask(action);
             var bodyData = {
               _successBody: action._successBody,
               componentID: self.model.get('componentID')
@@ -284,6 +303,7 @@ define([
             });
           }
         } else {
+          self.handleCompleteTask(action);
           var eventData = {
             id: action._goTo,
             componentID: this.model.get('componentID')
@@ -304,6 +324,7 @@ define([
         })[0];
         var correctOptionValue = correctOption._selectValue;
         if (selectedOption === correctOptionValue) {
+          self.handleCompleteTask(action);
           if (action._isSuccess) {
             var bodyData = {
               _successBody: action._successBody,
@@ -341,6 +362,29 @@ define([
       }
     },
 
+    handleChangeForm: function (e) {
+      var self = this;
+      var actionId = $(e.target).attr('data-id');
+      var childItems = this.model.get('_childItems');
+      childItems.forEach(function (item) {
+        var form = item._form;
+        if (form.length) {
+          var action = form.find(item => item.id === actionId);
+          if (action._actionType === 'select') {
+            var selectedOption = $(e.target).val();
+            var correctOption = action._selectOptions.filter(function (option) {
+              return option._correctOption === true
+            })[0];
+            var correctOptionValue = correctOption._selectValue;
+            if (selectedOption === correctOptionValue) {
+              self.handleCompleteTask(action);
+            }
+          }
+        }
+
+      })
+    },
+
     handleInput: function (e) {
       var self = this;
       var actionId = $(e.target).attr('data-id');
@@ -351,6 +395,7 @@ define([
         var criteriaList = action._matchTextItems;
         var isMatched = this.matchString(inputString, criteriaList);
         if (isMatched) {
+          self.handleCompleteTask(action);
           if (action._isSuccess) {
             var bodyData = {
               _successBody: action._successBody,
@@ -388,6 +433,26 @@ define([
       }
     },
 
+    handleInputForm: function (e) {
+      var self = this;
+      var actionId = $(e.target).attr('data-id');
+      var childItems = this.model.get('_childItems');
+      childItems.forEach(function (item) {
+        var form = item._form;
+        if (form.length) {
+          var action = form.find(item => item.id === actionId);
+          if (action._actionType === 'input') {
+            var inputString = $(e.target).val();
+            var criteriaList = action._matchTextItems;
+            var isMatched = self.matchString(inputString, criteriaList);
+            if (isMatched) {
+             self.handleCompleteTask(action);
+            }
+          }
+        }
+      })
+    },
+
     handleConfirmSuccess: function (componentID) {
       Adapt.trigger('simulationSuccess', {
         componentID: componentID
@@ -396,6 +461,10 @@ define([
 
     handleOriginalSubmitForm: function (e) {
       e.preventDefault();
+    },
+
+    handleCompleteTask: function(task){
+      console.log('completing task: ' + task.id);
     },
 
     handleFallbackAction: function (e) {
