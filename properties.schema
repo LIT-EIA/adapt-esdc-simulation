@@ -78,7 +78,7 @@
       "validators": [
         "required"
       ],
-      "help": "Body text displayed as general message when you click on a wrong position in a screen",
+      "help": "Body text displayed as general error message when no other feedback is provided or when you use unmapped area errors.",
       "translatable": true
     },
     "_items": {
@@ -100,7 +100,7 @@
             "validators": [
               "required"
             ],
-            "help": "Title used for editing",
+            "help": "Title used for editing (reference)",
             "translatable": true
           },
           "_screenID": {
@@ -125,7 +125,7 @@
             "validators": [
               "required"
             ],
-            "help": "Title visible on the screen",
+            "help": "Title visible to screen readers",
             "translatable": true
           },
           "_graphic": {
@@ -183,7 +183,7 @@
                   "default": "",
                   "inputType": "Text",
                   "validators": [],
-                  "help": "Title",
+                  "help": "This must be the visible label of this field on the image",
                   "translatable": true,
                   "title": "Element Name"
                 },
@@ -194,7 +194,7 @@
                   "title": "This element is a form (element group)",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "This element requires multiple fields and a submit button"
+                  "help": "A form requires multiple fields and a submit button"
                 },
                 "_form": {
                   "type": "array",
@@ -597,7 +597,7 @@
                   "default": "",
                   "inputType": "SelectScreen",
                   "validators": [],
-                  "help": "goTo screen",
+                  "help": "Choose which screen to load on validation of this element",
                   "conditions": {
                     "and": [
                       {
@@ -622,7 +622,7 @@
                     ]
                   },
                   "validators": [],
-                  "help": "action type",
+                  "help": "Select the type of action for the element from the options Click (Button), Input (Type), Select (Dropdown List)",
                   "conditions": {
                     "and": [
                       {
@@ -646,7 +646,7 @@
                     ]
                   },
                   "validators": [],
-                  "help": "click type",
+                  "help": "Select the type of click for the element",
                   "conditions": {
                     "and": [
                       {
@@ -674,7 +674,7 @@
                     ]
                   },
                   "validators": [],
-                  "help": "input type",
+                  "help": "Select the type of input for the element",
                   "conditions": {
                     "and": [
                       {
@@ -694,7 +694,7 @@
                   "inputType": "Number",
                   "title": "Font size",
                   "noListTitle": true,
-                  "help": "Font size of the input field.",
+                  "help": "Select the font size of the element. Once the font size works good for one screen size, it will readjust for others.",
                   "validators": [],
                   "conditions": {
                     "or": [
@@ -721,7 +721,7 @@
                     ]
                   },
                   "validators": [],
-                  "help": "pre-filled type",
+                  "help": "Select the type prefill for the element from options placeholder (help text, suggestion) or text (text is pre-typed for the user).",
                   "conditions": {
                     "and": [
                       {
@@ -741,7 +741,7 @@
                   "default": "",
                   "inputType": "Text",
                   "validators": [],
-                  "help": "Tip: You can use {{today}} to prefill with today's date",
+                  "help": "Enter the text/value to be inserted as prefill. Tip: You can use {{today}} to prefill with today's date.",
                   "translatable": true,
                   "title": "Pre-filled Value",
                   "noListTitle": true,
@@ -778,7 +778,7 @@
                         "default": "",
                         "inputType": "Text",
                         "validators": [],
-                        "help": "Title",
+                        "help": "Value to match with user input",
                         "translatable": true,
                         "title": "Text To Match"
                       },
@@ -789,7 +789,7 @@
                         "title": "Case insensitive",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "The text will match no matter the case"
+                        "help": "The text will match no matter if uppercase or lower case"
                       },
                       "_matchEmptyString": {
                         "type": "boolean",
@@ -816,7 +816,7 @@
                         "title": "Match with regex",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "Use regex expression as match text"
+                        "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns."
                       }
                     }
                   },
@@ -918,7 +918,7 @@
                   "default": "",
                   "inputType": "Text",
                   "validators": [],
-                  "help": "This is the label that will be use to list this task",
+                  "help": "This is the label that will be used to list this action as task",
                   "translatable": true,
                   "title": "Task Label",
                   "noListTitle": true,
@@ -1040,7 +1040,7 @@
                   "noListTitle": true,
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "This action is a failure",
+                  "help": "If you select this option, the validation will be inverted. Example use: Clicking on a button that causes errors or issues in the original software.",
                   "conditions": {
                     "and": [
                       {
@@ -1085,7 +1085,7 @@
                   "noListTitle": true,
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "This action triggers completion",
+                  "help": "If enabled, upon validation of this element, the simulation will come to an end and track complete.",
                   "conditions": {
                     "and": [
                       {
