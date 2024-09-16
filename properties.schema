@@ -471,6 +471,35 @@
                           ]
                         }
                       },
+                      "_trackAsTask": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Track as task",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this option will add this action to the list of tasks shown to learners"
+                      },
+                      "_taskLabel": {
+                        "type": "string",
+                        "required": false,
+                        "default": "",
+                        "inputType": "Text",
+                        "validators": [],
+                        "help": "This is the label that will be use to list this task",
+                        "translatable": true,
+                        "title": "Task Label",
+                        "noListTitle": true,
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_trackAsTask",
+                              "value": "true"
+                            }
+                          ]
+                        }
+                      },
                       "_zonefinder": {
                         "type": "string",
                         "required": false,
@@ -869,6 +898,35 @@
                       {
                         "name": "_isForm",
                         "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_trackAsTask": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Track as task",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this option will add this action to the list of tasks shown to learners"
+                },
+                "_taskLabel": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "Text",
+                  "validators": [],
+                  "help": "This is the label that will be use to list this task",
+                  "translatable": true,
+                  "title": "Task Label",
+                  "noListTitle": true,
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_trackAsTask",
+                        "value": "true"
                       }
                     ]
                   }

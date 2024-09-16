@@ -40,27 +40,34 @@ define([
       const globals = Adapt.course.get('_globals');
       var simulation = globals._components._simulation;
       this.model.set('simulation', simulation);
-      console.log(simulation);
+      console.log(this.screens);
+      var tasks = this.screens.flatMap(screen =>
+        screen._childItems.flatMap(item =>
+          (item._isForm ? item._form : [item])
+          .filter(subItem => subItem._trackAsTask)
+        )
+      );
+      this.model.set('tasks', tasks);
       this.render();
     },
 
-    onUndo: function(){
+    onUndo: function () {
       var self = this;
-      if(self.screenHistory.length > 1){
+      if (self.screenHistory.length > 1) {
         var screenIndex = self.screenHistory.length - 1;
         var nextScreenIndex = screenIndex - 1;
         var screenID = self.screenHistory[nextScreenIndex];
-        self.loadScreen({ id: screenID, componentID: this.componentID }, function(){
+        self.loadScreen({ id: screenID, componentID: this.componentID }, function () {
           self.screenHistory = self.screenHistory.slice(0, -2);
         });
       }
     },
 
-    onShowInstructions: function(e){
+    onShowInstructions: function (e) {
       var self = this;
       var screen = self.currentViewData.screenView;
       var screenMessage = screen.model.get('body');
-      if(screenMessage){
+      if (screenMessage) {
         Adapt.trigger('simulation-notify:prompt', {
           body: screenMessage,
           _prompts: [
@@ -73,7 +80,7 @@ define([
       }
     },
 
-    onExpand: function(){
+    onExpand: function () {
       if (this.isBrowserFullScreen()) {
         document.exitFullscreen();
       } else {
@@ -233,15 +240,15 @@ define([
       //console.log('start simulation this: ', this);
       var screenID = this.screens[0]._screenID;
       this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
-          self.$el.find('.simulation-toolbar').show();
-          self.$el.find('.start-simulation').addClass('display-none');
-          self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
+        self.$el.find('.simulation-toolbar').show();
+        self.$el.find('.start-simulation').addClass('display-none');
+        self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
       });
 
     },
 
-    onSimulationSuccess: function(data){
-      if(data.componentID === this.componentID){
+    onSimulationSuccess: function (data) {
+      if (data.componentID === this.componentID) {
         this.setCompletionStatus();
         this.onStopSimulation();
       }
@@ -249,7 +256,7 @@ define([
 
     onStopSimulation: function () {
       var self = this;
-      if(self.isBrowserFullScreen()){
+      if (self.isBrowserFullScreen()) {
         document.exitFullscreen();
       }
       self.$el.find('.simulation-toolbar').hide();

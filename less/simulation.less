@@ -95,6 +95,64 @@
         }
     }
 
+    .simulation-task-list {
+            background-color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: calc(100% - 18px);
+            position: relative;
+            margin-bottom: 15px;
+
+          .checkbox-group {
+            border: 1px solid #e5e5e5;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            label {
+                cursor: default !important;
+            }
+          }
+
+          .checkbox-group.checked {
+            background-color: #1c4e8a;
+          }
+
+          input[type=checkbox] {
+            visibility: hidden;
+          }
+
+          input[type=checkbox] ~ label {
+            position: relative;
+          }
+
+          input[type=checkbox] ~ label:before {
+            content: "";
+            position: absolute;
+            border: 1px solid #e5e5e5;
+            height: 14px;
+            font-size: 12px;
+            aspect-ratio: 1;
+            top: 3.5px;
+            left: -30px;
+            border-radius: 3px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #ffffff;
+          }
+
+          input[type=checkbox]:checked ~ label {
+            color: #ffffff;
+          }
+
+          input[type=checkbox]:checked ~ label:before {
+            content: "✔";
+            color: #1c4e8a;
+          }
+    }
+
     .simulation-graphic {
         position: relative;
         max-width: 100%;

@@ -446,7 +446,7 @@ define([
             var criteriaList = action._matchTextItems;
             var isMatched = self.matchString(inputString, criteriaList);
             if (isMatched) {
-             self.handleCompleteTask(action);
+              self.handleCompleteTask(action);
             }
           }
         }
@@ -463,8 +463,17 @@ define([
       e.preventDefault();
     },
 
-    handleCompleteTask: function(task){
-      console.log('completing task: ' + task.id);
+    handleCompleteTask: function (task) {
+      console.log(task._taskLabel);
+      var taskList = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group`);
+      taskList.each(function (index) {
+        var label = $(this).find('label')[0].innerText;
+        if(label === task._taskLabel){
+          $(taskList[index]).addClass('checked');
+          $(taskList[index]).find('input[type="checkbox"]').prop('checked', true);
+        }
+      })
+
     },
 
     handleFallbackAction: function (e) {
