@@ -40,13 +40,21 @@ define([
       const globals = Adapt.course.get('_globals');
       var simulation = globals._components._simulation;
       this.model.set('simulation', simulation);
-      console.log(this.screens);
-      var tasks = this.screens.flatMap(screen =>
-        screen._childItems.flatMap(item =>
-          (item._isForm ? item._form : [item])
-          .filter(subItem => subItem._trackAsTask)
-        )
-      );
+      var tasks = [];
+      this.screens.forEach(screen => {
+        screen._childItems.forEach(item => {
+          let itemsToProcess = item._isForm ? item._form : [];
+          itemsToProcess.forEach(subItem => {
+            if (subItem._trackAsTask) {
+              tasks.push(subItem);
+            }
+          });
+          if (item._trackAsTask) {
+            tasks.push(item);
+          }
+        });
+      });
+
       this.model.set('tasks', tasks);
       this.render();
     },
