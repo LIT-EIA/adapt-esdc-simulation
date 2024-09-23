@@ -3,11 +3,23 @@
   {{#if active}}
   <div class="simulation-wrapper">
     {{#if tasks}}
-    <div class="simulation-task-list">
-      {{#each tasks}}
-      <div data-task-id="{{id}}" class="checkbox-group">
+    <div class="simulation-task-list after">
+      <div data-task-id="{{id}}" class="checkbox-group auto-task">
         <input type="checkbox" id="checkbox1" disabled>
-        <label for="checkbox1">{{{_taskLabel}}} {{id}}</label>
+        <label for="checkbox1"><span>Start Simulation</span></label>
+      </div>
+      {{#each tasks}}
+      <div data-task-id="{{id}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
+        <input type="checkbox" id="checkbox1" disabled>
+        <label for="checkbox1"><span>{{{_taskLabel}}}</span></label>
+      </div>
+      {{/each}}
+    </div>
+    <div class="simulation-task-list current">
+      {{#each tasks}}
+      <div data-task-id="{{id}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
+        <input type="checkbox" id="checkbox1" disabled>
+        <label for="checkbox1"><span>{{{_taskLabel}}}</span></label>
       </div>
       {{/each}}
     </div>

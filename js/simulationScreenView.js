@@ -22,54 +22,10 @@ define([
       Backbone.View.prototype.initialize.call(this);
       var self = this;
       this.componentID = this.model.get('componentID');
-      var _childItems = this.model.get('_childItems');
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
-      this.model.set('formattedDate', formattedDate);
-      _childItems.forEach(function (action, index) {
-        var childIndex = index;
-        if (_childItems[childIndex]._prefilledValue === '{{today}}') {
-          _childItems[childIndex]._prefilledValue = formattedDate;
-        }
-        _childItems[childIndex].id = `screen-action-${childIndex}`;
-        _childItems[childIndex].type = {
-          input: action._actionType === 'input',
-          select: action._actionType === 'select',
-          click: action._actionType === 'click',
-          button: action._actionType === 'click' && action._clickType === 'button',
-          link: action._actionType === 'click' && action._clickType === 'link',
-          datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
-        };
-        _childItems[childIndex]._fontSize = action._fontSize || 12;
-        _childItems[childIndex]._prefilled = {
-          placeholder: action._prefilledType === 'placeholder',
-          text: action._prefilledType === 'text'
-        };
-        if (_childItems[childIndex]._isForm) {
-          _childItems[childIndex]._form.forEach(function (action, index) {
-            var formIndex = index;
-            if (_childItems[childIndex]._form[formIndex]._prefilledValue === '{{today}}') {
-              _childItems[childIndex]._form[formIndex]._prefilledValue = formattedDate;
-            }
-            _childItems[childIndex]._form[formIndex].id = `screen-action-${childIndex}-${formIndex}`;
-            _childItems[childIndex]._form[formIndex].type = {
-              input: action._actionType === 'input',
-              select: action._actionType === 'select',
-              submit: action._actionType === 'submit',
-              datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
-            };
-            _childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
-            _childItems[childIndex]._form[formIndex]._prefilled = {
-              placeholder: action._prefilledType === 'placeholder',
-              text: action._prefilledType === 'text'
-            };
-          });
-        }
-        var simulationWrapperDefaultWidth = 840;
-        self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
-        var simulationDefaultFocusOutlineWidth = 3;
-        self.model.set('simulationDefaultFocusOutlineWidth', simulationDefaultFocusOutlineWidth);
-      });
+      var simulationWrapperDefaultWidth = 840;
+      self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
+      var simulationDefaultFocusOutlineWidth = 3;
+      self.model.set('simulationDefaultFocusOutlineWidth', simulationDefaultFocusOutlineWidth);
       var simulationWrapperObserver = new MutationObserver(function (mutations, me) {
         self.adjustFontSize();
         var subElement = self.$el.closest('.simulation-wrapper');
@@ -112,7 +68,6 @@ define([
         subtree: true
       });
 
-      this.model.set('_childItems', _childItems);
       var screenMessage = this.model.get('body');
       var simulationGraphicObserver = new MutationObserver(function (mutations, me) {
         var subElement = self.$el.closest('.simulation-graphic').find('.simulation-action-element, .simulation-form-element');
@@ -464,16 +419,25 @@ define([
     },
 
     handleCompleteTask: function (task) {
-      console.log(task._taskLabel);
-      var taskList = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group`);
-      taskList.each(function (index) {
-        var label = $(this).find('label')[0].innerText;
-        if(label === task._taskLabel){
-          $(taskList[index]).addClass('checked');
-          $(taskList[index]).find('input[type="checkbox"]').prop('checked', true);
-        }
-      })
-
+      if(task._trackAsTask){
+        var currentTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
+        var nextTask = currentTask.next();
+        currentTask.addClass('checked');
+        currentTask.find('input[type="checkbox"]').prop('checked', true);
+        currentTask.removeClass('current-task');
+        currentTask.addClass('previous-task');
+        if(nextTask.length){
+          var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
+          var offset = nextTask[1].offsetTop;
+          setTimeout(function () {
+            currentStickyTaskWrapper[0].scrollTo({
+              top: offset,
+              behavior: 'smooth',
+            })
+          }, 150);
+          nextTask.addClass('current-task');
+        };
+      };
     },
 
     handleFallbackAction: function (e) {
