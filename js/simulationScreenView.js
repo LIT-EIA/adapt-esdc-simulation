@@ -420,22 +420,30 @@ define([
 
     handleCompleteTask: function (task) {
       if(task._trackAsTask){
-        var currentTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
-        var nextTask = currentTask.next();
-        currentTask.addClass('checked');
-        currentTask.find('input[type="checkbox"]').prop('checked', true);
-        currentTask.removeClass('current-task');
-        currentTask.addClass('previous-task');
-        if(nextTask.length){
+        var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
+        completingTask.addClass('checked');
+        completingTask.find('input[type="checkbox"]').prop('checked', true);
+        completingTask.removeClass('current-task');
+        completingTask.addClass('previous-task');
+
+        var nextTasksSticky = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.sticky .checkbox-group:not(.previous-task, .auto-task)`);
+        var nextTaskSticky = nextTasksSticky[0];
+
+        var nextTasksMain = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.after .checkbox-group:not(.previous-task, .auto-task)`);
+        var nextTaskMain = nextTasksMain[0];
+
+        if(nextTaskSticky){
           var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
-          var offset = nextTask[1].offsetTop;
+          var offset = nextTaskSticky.offsetTop;
+          console.log(offset);
           setTimeout(function () {
             currentStickyTaskWrapper[0].scrollTo({
               top: offset,
               behavior: 'smooth',
             })
           }, 150);
-          nextTask.addClass('current-task');
+          $(nextTaskSticky).addClass('current-task');
+          $(nextTaskMain).addClass('current-task');
         };
       };
     },
