@@ -420,22 +420,24 @@ define([
 
     handleCompleteTask: function (task) {
       if(task._trackAsTask){
+        var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);
         var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
+        var completingTaskAria = completingTask.find('.completed-task');
         completingTask.addClass('checked');
         completingTask.find('input[type="checkbox"]').prop('checked', true);
         completingTask.removeClass('current-task');
         completingTask.addClass('previous-task');
+        completingTaskAria.text('Completed');
 
         var nextTasksSticky = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.sticky .checkbox-group:not(.previous-task, .auto-task)`);
         var nextTaskSticky = nextTasksSticky[0];
-
         var nextTasksMain = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.after .checkbox-group:not(.previous-task, .auto-task)`);
         var nextTaskMain = nextTasksMain[0];
+        var nextTaskLabel = $(nextTaskMain).find('div.label').text();
 
-        if(nextTaskSticky){
+        if(nextTaskMain){
           var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
           var offset = nextTaskSticky.offsetTop;
-          console.log(offset);
           setTimeout(function () {
             currentStickyTaskWrapper[0].scrollTo({
               top: offset,
@@ -444,6 +446,8 @@ define([
           }, 150);
           $(nextTaskSticky).addClass('current-task');
           $(nextTaskMain).addClass('current-task');
+          var ariaText = nextTaskLabel ? `Task Completed. Next Task: ${nextTaskLabel}` : 'All tasks completed.';
+          currentTaskAria.text(ariaText);
         };
       };
     },

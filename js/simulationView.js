@@ -315,10 +315,15 @@ define([
           currentStickyTaskWrapper.addClass('sticky');
 
           const autoTask = this.$el.find('.simulation-task-list .auto-task');
+          const autoTaskAria = autoTask.find('.completed-task');
           const firstTask = this.$el.find('.simulation-task-list .first-task');
+          const firstTaskLabel = firstTask.find('div.label').text();
           firstTask.addClass('current-task');
           autoTask.addClass('checked');
           autoTask.find('input[type="checkbox"]').prop('checked', true);
+          autoTaskAria.text('Completed');
+          var currentTaskAria = this.$el.find('.simulation-widget .sr-current-task');
+          currentTaskAria.text(`Current Task: ${firstTaskLabel}`);
         };
 
         this.scrollToTask = function(task){
@@ -384,6 +389,8 @@ define([
       if (self.isBrowserFullScreen()) {
         document.exitFullscreen();
       }
+      var currentTaskAria = this.$el.find('.simulation-widget .sr-current-task');
+      currentTaskAria.empty();
       var currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
       currentStickyTaskWrapper.removeClass('sticky');
       self.$el.find('.simulation-toolbar').hide();

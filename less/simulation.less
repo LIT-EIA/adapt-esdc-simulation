@@ -146,9 +146,8 @@
                 margin-bottom: 0;
             }
 
-            label {
+            div.label .task-label {
                 color: #ffffff;
-
             }
         }
 
@@ -168,11 +167,12 @@
             align-items: center;
             gap: 20px;
             margin-bottom: 5px;
+            margin-left: 0;
             background-color: #ffffff;
 
-            label {
+            div.label {
                 cursor: default !important;
-                span {
+                span.task-label {
                     overflow: hidden;
                     max-height: 23px;
                     display: block;
@@ -186,7 +186,7 @@
                 background: #1c4e8a;
                 border: 1px solid #1c4e8a;
 
-                label {
+                div.label{
                     color: #ffffff;
                 }
             }
@@ -195,17 +195,22 @@
         .checkbox-group.checked {
             background-color: #0f2a4a;
             border: 1px solid #0f2a4a;
+            color: #ffffff;
+            div.label .checkbox:before {
+                content: "✔";
+                color: #0f2a4adb;
+            }
         }
 
-        input[type=checkbox] {
+        div.input {
             visibility: hidden;
         }
 
-        input[type=checkbox]~label {
+        div.input~div.label .checkbox {
             position: relative;
         }
 
-        input[type=checkbox]~label:before {
+        div.input~div.label .checkbox:before {
             content: "";
             position: absolute;
             border: 1px solid #e5e5e5;
@@ -221,11 +226,7 @@
             background-color: #ffffff;
         }
 
-        input[type=checkbox]:checked~label {
-            color: #ffffff;
-        }
-
-        input[type=checkbox]:checked~label:before {
+        div.input:checked~div.label .checkbox:before {
             content: "✔";
             color: #0f2a4adb;
 
