@@ -163,7 +163,7 @@ define([
 
     adjustTaskListWidth: function(){
       var checkboxGroup = this.$el.find('.checkbox-group');
-      var label = checkboxGroup.find('label span');
+      var label = checkboxGroup.find('div.label span.task-label');
       var taskWidth = checkboxGroup.width();
       var maxWidth = taskWidth - 35;
       label.css('max-width', maxWidth + 'px');
