@@ -93,7 +93,6 @@ define([
         });
         self.screens[index] = screen;
       });
-      console.log(this.screens);
       this.model.set('tasks', tasks);
       this.render();
     },
@@ -145,6 +144,7 @@ define([
         } else {
           $(e.target).removeClass('full-screen-style');
         }
+        self.adjustTaskListWidth();
       }
       document.addEventListener('fullscreenchange', handleFullScreenChange);
       document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
@@ -163,9 +163,13 @@ define([
 
     adjustTaskListWidth: function(){
       var checkboxGroup = this.$el.find('.checkbox-group');
+      var checkboxGroupSticky = this.$el.find('.sticky .checkbox-group');
       var label = checkboxGroup.find('div.label span.task-label');
       var taskWidth = checkboxGroup.width();
-      var maxWidth = taskWidth - 35;
+      var taskWidthSticky = checkboxGroupSticky.width();
+      var maxWidthNormal = taskWidth - 35;
+      var maxWidthSticky = taskWidthSticky - 35;
+      var maxWidth = maxWidthNormal >= 400 ? maxWidthNormal : maxWidthSticky;
       label.css('max-width', maxWidth + 'px');
     },
 
@@ -190,6 +194,8 @@ define([
       var self = this;
       this.listenTo(Adapt, 'simulationloadscreen', this.loadScreen);
       this.listenTo(Adapt, 'simulationSuccess', this.onSimulationSuccess);
+      this.listenTo(Adapt, 'device:resize', this.adjustTaskListWidth);
+
       if (this.model.get('active')) {
         var simulation = this.model.get('simulation');
         this.componentID = this.$el.attr('data-adapt-id');
@@ -209,7 +215,6 @@ define([
               return screen._screenID === data.id
             });
             var screen = filteredScreen[0];
-            //console.log('screen: ', screen);
             var imageSrc = screen._graphic.src;
             this.loadImage(imageSrc).then(function () {
               var fullWidth = screen._graphic._forceFullWidth ? true : false;
@@ -259,7 +264,6 @@ define([
                 }
 
                 self.screenHistory.push(self.currentViewData.screenID);
-                //console.log(self.currentViewData.screenView);
                 self.$el.find('.simulation-graphic').append(self.currentViewData.screenView.render().el);
                 if (callback) callback();
               });
