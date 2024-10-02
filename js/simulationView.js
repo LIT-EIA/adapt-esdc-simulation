@@ -123,7 +123,7 @@ define([
               promptText: "OK"
             }
           ],
-          onCloseRefocusEl: $(e.target).parent()
+          onCloseRefocusEl: $(e.target)
         });
       }
     },
@@ -407,6 +407,7 @@ define([
       self.$el.find('.start-simulation').removeClass('display-none');
       self.$el.find('.simulation-graphic').removeClass('sticky-margin');
       self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
+      self.$el.find('.start-simulation').focus();
     }
 
   });
