@@ -50,6 +50,11 @@ define([
         screen._childItems.forEach(function (action, childIndex) {
           if (screen._childItems[childIndex]._isForm) {
             screen._childItems[childIndex]._form.forEach(function (action, formIndex) {
+              if (screen._childItems[childIndex]._form[formIndex]._focusOnElement) {
+                if(!screen.focusOnElement){
+                  screen.focusOnElement = screen._childItems[childIndex]._form[formIndex];
+                }
+              };
               if (screen._childItems[childIndex]._form[formIndex]._trackAsTask) {
                 tasks.push(screen._childItems[childIndex]._form[formIndex]);
               };
@@ -70,6 +75,11 @@ define([
               };
             });
           }
+          if (screen._childItems[childIndex]._focusOnElement) {
+            if(!screen.focusOnElement){
+              screen.focusOnElement = screen._childItems[childIndex]
+            }
+          };
           if (screen._childItems[childIndex]._trackAsTask) {
             tasks.push(screen._childItems[childIndex]);
           };
@@ -252,7 +262,7 @@ define([
                   var observer = new MutationObserver(function (mutations, me) {
                     var subElement = self.$el.find('.action-container').closest('.simulation-widget');
                     if (subElement.length) {
-                      Adapt.trigger('startkeyboardtrap', { $el: self.$el.find('.action-container').closest('.simulation-widget') });
+                      Adapt.trigger('startkeyboardtrap', {focus: screen.focusOnElement, $el: self.$el.find('.action-container').closest('.simulation-widget') });
                       me.disconnect();
                     }
                   });
