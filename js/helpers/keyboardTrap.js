@@ -8,6 +8,11 @@ define([
     if (keyboardTrapObject && keyboardTrapObject.$el) {
       var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none):not(.action-container)`);
       if (focusableItems && focusableItems.length > 0) {
+        if(keyboardTrapObject.focus){
+          var action = keyboardTrapObject.focus;
+          var element = keyboardTrapObject.$el.find(`.action-container [data-id="${action.id}"]`);
+          element.focus();
+        }
         focusableItems.first().on('keydown', function (e) {
           var keyCode = e.keyCode || e.which;
           if (e.type == 'keydown' && keyCode === 9 && e.shiftKey) {

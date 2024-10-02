@@ -3,18 +3,31 @@
   {{#if active}}
   <div class="simulation-wrapper">
     {{#if tasks}}
-    <div class="simulation-task-list">
+    <ul class="simulation-task-list after">
+      <li data-task-id="{{id}}" class="checkbox-group auto-task">
+        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">Start Simulation</span></div>
+      </li>
       {{#each tasks}}
-      <div data-task-id="{{id}}" class="checkbox-group">
-        <input type="checkbox" id="checkbox1" disabled>
-        <label for="checkbox1">{{{_taskLabel}}} {{id}}</label>
-      </div>
+      <li data-task-id="{{id}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
+        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">{{{_taskLabel}}}</span></div>
+      </li>
       {{/each}}
-    </div>
+    </ul>
+    <ul aria-hidden="true" class="simulation-task-list current">
+      {{#each tasks}}
+      <li data-task-id="{{id}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
+        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">{{{_taskLabel}}}</span></div>
+      </li>
+      {{/each}}
+    </ul>
     {{/if}}
     <div class="simulation-notify-area"></div>
     <div class="simulation-widget simulation-{{_id}} component-widget pin">
       <div id="simulation_{{_id}}" class="simulation-graphic" role="region" aria-label="Simulation Window">
+        <div class="sr-current-task sr-only" aria-live="polite"></div>
         <button class="start-simulation">{{ simulation.startSimulationText }}</button>
         <img class="simulation-disabled" />
       </div>

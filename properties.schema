@@ -500,6 +500,16 @@
                           ]
                         }
                       },
+                      "_focusOnElement": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Focus on this element on screen load",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this option will set the keyboard focus on this element when the screen is loaded"
+                      },
                       "_zonefinder": {
                         "type": "string",
                         "required": false,
@@ -930,6 +940,16 @@
                       }
                     ]
                   }
+                },
+                "_focusOnElement": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Focus on this element on screen load",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this option will set the keyboard focus on this element when the screen is loaded"
                 },
                 "_zonefinder": {
                   "type": "string",
