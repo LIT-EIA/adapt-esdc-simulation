@@ -322,6 +322,7 @@ define([
             const task = $(this);
             task.removeClass('checked current-task previous-task');
             task.find('input[type="checkbox"]').prop('checked', false);
+            task.find('.completed-task').empty();
           });
 
           const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
