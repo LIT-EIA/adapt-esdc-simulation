@@ -12,8 +12,6 @@ define([
           var action = keyboardTrapObject.focus;
           var element = keyboardTrapObject.$el.find(`.action-container [data-id="${action.id}"]`);
           element.focus();
-        } else {
-          focusableItems.first().focus();
         }
         focusableItems.first().on('keydown', function (e) {
           var keyCode = e.keyCode || e.which;
