@@ -44,6 +44,10 @@ define([
       var tasks = [];
       const today = new Date();
       const formattedDate = today.toISOString().split('T')[0];
+      var fieldsData = {
+        today: formattedDate
+      };
+      this.model.set('fieldsData', fieldsData);
       this.model.set('formattedDate', formattedDate);
       this.screens.forEach(function (screen, index) {
         screen.formattedDate = formattedDate;
@@ -58,9 +62,6 @@ define([
               if (screen._childItems[childIndex]._form[formIndex]._trackAsTask) {
                 tasks.push(screen._childItems[childIndex]._form[formIndex]);
               };
-              if (screen._childItems[childIndex]._form[formIndex]._prefilledValue === '{{today}}') {
-                screen._childItems[childIndex]._form[formIndex]._prefilledValue = formattedDate;
-              }
               screen._childItems[childIndex]._form[formIndex].id = `screen-action-${index}-${childIndex}-${formIndex}`;
               screen._childItems[childIndex]._form[formIndex].type = {
                 input: action._actionType === 'input',
@@ -83,9 +84,6 @@ define([
           if (screen._childItems[childIndex]._trackAsTask) {
             tasks.push(screen._childItems[childIndex]);
           };
-          if (screen._childItems[childIndex]._prefilledValue === '{{today}}') {
-            screen._childItems[childIndex]._prefilledValue = formattedDate;
-          }
           screen._childItems[childIndex].id = `screen-action-${index}-${childIndex}`;
           screen._childItems[childIndex].type = {
             input: action._actionType === 'input',
@@ -253,6 +251,7 @@ define([
                 var fullWidth = screen._graphic._forceFullWidth ? true : false;
                 const wrapper = self.$el.find('.simulation-widget');
                 wrapper.toggleClass('full-width', fullWidth);
+                screen.fieldsData = self.model.get('fieldsData');
                 self.currentViewData = {
                   screenID: screen._screenID,
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })

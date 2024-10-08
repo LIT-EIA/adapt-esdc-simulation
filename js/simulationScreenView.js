@@ -21,7 +21,32 @@ define([
     initialize: function () {
       Backbone.View.prototype.initialize.call(this);
       var self = this;
+      var prefilledTemplateOptions = this.model.get('fieldsData');
       this.componentID = this.model.get('componentID');
+      var _childItems = this.model.get('_childItems');
+      _childItems.forEach(function (action, index) {
+        var childIndex = index;
+        var templatePrefilledValue = _childItems[childIndex]._prefilledValue;
+        var readableID = self.stringToCamelCase(_childItems[childIndex].title);
+        var previousValue = prefilledTemplateOptions[readableID];
+        prefilledTemplateOptions.previous = previousValue ? previousValue : '';
+        _childItems[childIndex]._previousValue = prefilledTemplateOptions.previous;
+        var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
+        _childItems[childIndex]._prefilledValue = prefilledValue;
+        if (_childItems[childIndex]._isForm) {
+          _childItems[childIndex]._form.forEach(function (action, index) {
+            var formIndex = index;
+            var templatePrefilledValue = _childItems[childIndex]._form[formIndex]._prefilledValue;
+            var readableID = self.stringToCamelCase(_childItems[childIndex]._form[formIndex].title);
+            var previousValue = prefilledTemplateOptions[readableID];
+            prefilledTemplateOptions.previous = previousValue ? previousValue : '';
+            _childItems[childIndex]._form[formIndex]._previousValue = prefilledTemplateOptions.previous;
+            var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
+            _childItems[childIndex]._form[formIndex]._prefilledValue = prefilledValue;
+          });
+        };
+      });
+      console.log(_childItems);
       var simulationWrapperDefaultWidth = 840;
       self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
       var simulationDefaultFocusOutlineWidth = 3;
@@ -154,10 +179,15 @@ define([
       var submitAction = formActions.find(item => item.id === submitId);
 
       var errors = [];
+      var fieldsData = this.model.get('fieldsData');
       $.each(elements, function () {
         var actionId = $(this).attr('data-id');
         var action = formActions.find(item => item.id === actionId);
         var fieldValue = $(this).val();
+        var readableID = self.stringToCamelCase(action.title);
+        if (fieldValue) {
+          fieldsData[readableID] = fieldValue;
+        }
         if (action._actionType === 'input') {
           var inputString = fieldValue;
           var criteriaList = action._matchTextItems;
@@ -184,6 +214,7 @@ define([
           }
         }
       });
+      self.model.set('fieldsData', fieldsData);
       if (errors.length > 0) {
         var template = Handlebars.templates['simulationErrors'];
         var messageHTML = template({ errors: errors });
@@ -221,6 +252,20 @@ define([
           Adapt.trigger('simulationloadscreen', eventData);
         }
       }
+    },
+
+    stringToCamelCase: function (str) {
+      return str
+        .replace(/[^a-zA-Z0-9]+/g, ' ') // Replace special characters with spaces
+        .trim() // Trim leading and trailing spaces
+        .split(' ') // Split the string into words
+        .map(function (word, index) {
+          // Convert the first word to lowercase and the rest to title case
+          return index === 0
+            ? word.toLowerCase()
+            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(''); // Join the words together
     },
 
     handleClick: function (e) {
@@ -419,7 +464,7 @@ define([
     },
 
     handleCompleteTask: function (task) {
-      if(task._trackAsTask){
+      if (task._trackAsTask) {
         var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);
         var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
         var completingTaskAria = completingTask.find('.completed-task');
@@ -435,7 +480,7 @@ define([
         var nextTaskMain = nextTasksMain[0];
         var nextTaskLabel = $(nextTaskMain).find('div.label').text();
 
-        if(nextTaskMain){
+        if (nextTaskMain) {
           var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
           var offset = nextTaskSticky.offsetTop;
           setTimeout(function () {
