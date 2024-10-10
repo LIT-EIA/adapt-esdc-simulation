@@ -26,27 +26,30 @@ define([
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;
-        var templatePrefilledValue = _childItems[childIndex]._prefilledValue;
-        var readableID = self.stringToCamelCase(_childItems[childIndex].title);
+        var child = _childItems[childIndex];
+        var templatePrefilledValue = child._prefilledValue;
+        templatePrefilledValue = child._prefilledWithPrevious ? "{{previous}}" : child._prefilledWithDate ? "{{today}}" : templatePrefilledValue;
+        var readableID = self.stringToCamelCase(child.title);
         var previousValue = prefilledTemplateOptions[readableID];
         prefilledTemplateOptions.previous = previousValue ? previousValue : '';
-        _childItems[childIndex]._previousValue = prefilledTemplateOptions.previous;
+        child._previousValue = prefilledTemplateOptions.previous;
         var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
-        _childItems[childIndex]._prefilledValue = prefilledValue;
-        if (_childItems[childIndex]._isForm) {
-          _childItems[childIndex]._form.forEach(function (action, index) {
+        child._prefilledValueInterpolated = prefilledValue;
+        if (child._isForm) {
+          child._form.forEach(function (action, index) {
             var formIndex = index;
-            var templatePrefilledValue = _childItems[childIndex]._form[formIndex]._prefilledValue;
-            var readableID = self.stringToCamelCase(_childItems[childIndex]._form[formIndex].title);
+            var childForm = _childItems[childIndex]._form[formIndex];
+            var templatePrefilledValue = childForm._prefilledValue;
+            templatePrefilledValue = childForm._prefilledWithPrevious ? "{{previous}}" : childForm._prefilledWithDate ? "{{today}}" : templatePrefilledValue;
+            var readableID = self.stringToCamelCase(childForm.title);
             var previousValue = prefilledTemplateOptions[readableID];
             prefilledTemplateOptions.previous = previousValue ? previousValue : '';
-            _childItems[childIndex]._form[formIndex]._previousValue = prefilledTemplateOptions.previous;
+            childForm._previousValue = prefilledTemplateOptions.previous;
             var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
-            _childItems[childIndex]._form[formIndex]._prefilledValue = prefilledValue;
+            childForm._prefilledValueInterpolated = prefilledValue;
           });
         };
       });
-      console.log(_childItems);
       var simulationWrapperDefaultWidth = 840;
       self.model.set('simulationWrapperDefaultWidth', simulationWrapperDefaultWidth);
       var simulationDefaultFocusOutlineWidth = 3;
@@ -119,12 +122,82 @@ define([
       this.listenTo(Adapt, 'device:resize', this.adjustFontSize);
     },
 
-
     render: function () {
       var data = this.model.toJSON();
       var template = Handlebars.templates['simulationScreen'];
       this.$el.html(template(data));
+      this.postRender();
       return this;
+    },
+
+    postRender: function () {
+      this.setSelectFields();
+      this.setIndicator();
+    },
+
+    setIndicator: function () {
+      var task = this.getFirstScreenTask();
+      if (task) {
+        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
+        var taskWrapper = taskElement.parent();
+        taskWrapper.addClass('indicator');
+      }
+    },
+
+    getFirstScreenTask: function () {
+      var screen = this.model.attributes;
+      var firstTask;
+      screen._childItems.forEach(function (action) {
+        if (action._isForm) {
+          action._form.forEach(function (action) {
+            if (action._trackAsTask) {
+              if (!firstTask) {
+                firstTask = action
+              }
+            };
+          });
+        }
+        if (action._trackAsTask) {
+          if (!firstTask) {
+            firstTask = action
+          }
+        };
+      });
+      return firstTask
+    },
+
+    setSelectFields: function () {
+      var _childItems = this.model.get('_childItems');
+      this.$el.find('.action-container select').each(function () {
+        var select = $(this);
+        var actionId = select.attr('data-id');
+        var action = _childItems.reduce(function (found, item) {
+          if (found) return found;
+          if (item.id === actionId) return item;
+          if (item._isForm) {
+            return item._form.find(function (formItem) {
+              return formItem.id === actionId;
+            }) || null;
+          }
+          return null;
+        }, null);
+        if (action) {
+          var selectedValue = action._selectWithPrevious && action._previousValue
+            ? action._previousValue
+            : action._selectOptions.reduce(function (found, item) {
+              if (item._selectedDefault) {
+                return item._selectValue;
+              }
+              return found;
+            }, null);
+
+          if (selectedValue) {
+            select.find('option').filter(function () {
+              return $(this).text() === selectedValue;
+            }).prop('selected', true);
+          }
+        }
+      });
     },
 
     handleAction: function (e) {
@@ -169,7 +242,7 @@ define([
 
     handleSubmit: function (e) {
       var self = this;
-      var form = $(e.target).parent();
+      var form = $(e.target).parents('.simulation-form');
       var formId = $(form).attr('data-id');
       var formModel = this.model.get('_childItems').find(item => item.id === formId);
       var formActions = formModel._form;
@@ -204,7 +277,7 @@ define([
           var correctOption = action._selectOptions.filter(function (option) {
             return option._correctOption === true
           })[0];
-          var correctOptionValue = correctOption._selectValue;
+          var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
           if (selectedOption !== correctOptionValue) {
             errors.push({
               name: action.title,
@@ -252,20 +325,6 @@ define([
           Adapt.trigger('simulationloadscreen', eventData);
         }
       }
-    },
-
-    stringToCamelCase: function (str) {
-      return str
-        .replace(/[^a-zA-Z0-9]+/g, ' ') // Replace special characters with spaces
-        .trim() // Trim leading and trailing spaces
-        .split(' ') // Split the string into words
-        .map(function (word, index) {
-          // Convert the first word to lowercase and the rest to title case
-          return index === 0
-            ? word.toLowerCase()
-            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
-        })
-        .join(''); // Join the words together
     },
 
     handleClick: function (e) {
@@ -319,10 +378,16 @@ define([
       var action = this.model.get('_childItems').find(item => item.id === actionId);
       if (action._actionType === 'select') {
         var selectedOption = $(e.target).val();
+        var fieldsData = this.model.get('fieldsData');
+        var readableID = self.stringToCamelCase(action.title);
+        if (selectedOption) {
+          fieldsData[readableID] = selectedOption;
+        }
+        self.model.set('fieldsData', fieldsData);
         var correctOption = action._selectOptions.filter(function (option) {
           return option._correctOption === true
         })[0];
-        var correctOptionValue = correctOption._selectValue;
+        var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
         if (selectedOption === correctOptionValue) {
           self.handleCompleteTask(action);
           if (action._isSuccess) {
@@ -372,16 +437,21 @@ define([
           var action = form.find(item => item.id === actionId);
           if (action._actionType === 'select') {
             var selectedOption = $(e.target).val();
+            var fieldsData = self.model.get('fieldsData');
+            var readableID = self.stringToCamelCase(action.title);
+            if (selectedOption) {
+              fieldsData[readableID] = selectedOption;
+            }
+            self.model.set('fieldsData', fieldsData);
             var correctOption = action._selectOptions.filter(function (option) {
               return option._correctOption === true
             })[0];
-            var correctOptionValue = correctOption._selectValue;
+            var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
             if (selectedOption === correctOptionValue) {
               self.handleCompleteTask(action);
             }
           }
         }
-
       })
     },
 
@@ -395,6 +465,12 @@ define([
         var criteriaList = action._matchTextItems;
         var isMatched = this.matchString(inputString, criteriaList);
         if (isMatched) {
+          var fieldsData = this.model.get('fieldsData');
+          var readableID = this.stringToCamelCase(action.title);
+          if (inputString) {
+            fieldsData[readableID] = inputString;
+          }
+          self.model.set('fieldsData', fieldsData);
           self.handleCompleteTask(action);
           if (action._isSuccess) {
             var bodyData = {
@@ -464,7 +540,9 @@ define([
     },
 
     handleCompleteTask: function (task) {
+      var self = this;
       if (task._trackAsTask) {
+        var tasks = self.model.get('tasks');
         var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);
         var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
         var completingTaskAria = completingTask.find('.completed-task');
@@ -493,6 +571,39 @@ define([
           $(nextTaskMain).addClass('current-task');
           var ariaText = nextTaskLabel ? `Task Completed. Next Task: ${nextTaskLabel}` : 'All tasks completed.';
           currentTaskAria.text(ariaText);
+
+          var completingTaskID = completingTask.attr('data-task-id')
+          var nextTaskID = $(nextTaskMain).attr('data-task-id');
+          var nextTaskModel = tasks.find(task => task.id === nextTaskID);
+          var completingTaskModel = tasks.find(task => task.id === completingTaskID);
+
+          if (nextTaskModel._isForm) {
+            var nextTaskTriggerElement = nextTaskModel._form.filter(task => task.type.submit)
+          } else {
+            var nextTaskTriggerElement = [nextTaskModel];
+          }
+
+          if (completingTaskModel._isForm) {
+            var completingTaskTriggerElement = completingTaskModel._form.filter(task => task.type.submit)
+          } else {
+            var completingTaskTriggerElement = [completingTaskModel];
+          }
+
+          if (completingTaskTriggerElement.length) {
+            completingTaskTriggerElement.forEach(function (trigger) {
+              var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-id="${trigger.id}"]`);
+              var triggerWrapper = triggerElement.parent();
+              triggerWrapper.removeClass('indicator');
+            })
+          }
+
+          if (nextTaskTriggerElement.length) {
+            nextTaskTriggerElement.forEach(function (trigger) {
+              var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-id="${trigger.id}"]`);
+              var triggerWrapper = triggerElement.parent();
+              triggerWrapper.addClass('indicator');
+            })
+          }
         };
       };
     },
@@ -530,18 +641,20 @@ define([
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;
-        if (_childItems[childIndex]._fontSize) {
-          var fontWidthRatio = _childItems[childIndex]._fontSize / simulationWrapperDefaultWidth;
-          var itemID = _childItems[childIndex].id;
+        var child = _childItems[childIndex];
+        if (child._fontSize) {
+          var fontWidthRatio = child._fontSize / simulationWrapperDefaultWidth;
+          var itemID = child.id;
           var field = componentDiv.find(`[data-id="${itemID}"]`);
           field.css("font-size", fontWidthRatio * simulationWrapperCurrentWidth);
         }
-        if (_childItems[childIndex]._isForm) {
-          _childItems[childIndex]._form.forEach(function (action, index) {
+        if (child._isForm) {
+          child._form.forEach(function (action, index) {
             var formIndex = index;
-            if (_childItems[childIndex]._form[formIndex]._fontSize) {
-              var formFontWidthRatio = _childItems[childIndex]._form[formIndex]._fontSize / simulationWrapperDefaultWidth;
-              var itemID = _childItems[childIndex]._form[formIndex].id;
+            var childForm = _childItems[childIndex]._form[formIndex];
+            if (childForm._fontSize) {
+              var formFontWidthRatio = childForm._fontSize / simulationWrapperDefaultWidth;
+              var itemID = childForm.id;
               var field = componentDiv.find(`[data-id="${itemID}"]`);
               field.css("font-size", formFontWidthRatio * simulationWrapperCurrentWidth);
             }
@@ -591,6 +704,20 @@ define([
       });
 
       return matched;
+    },
+
+    stringToCamelCase: function (str) {
+      return str
+        .replace(/[^a-zA-Z0-9]+/g, ' ') // Replace special characters with spaces
+        .trim() // Trim leading and trailing spaces
+        .split(' ') // Split the string into words
+        .map(function (word, index) {
+          // Convert the first word to lowercase and the rest to title case
+          return index === 0
+            ? word.toLowerCase()
+            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join(''); // Join the words together
     }
 
   });

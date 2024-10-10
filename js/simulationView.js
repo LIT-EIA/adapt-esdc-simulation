@@ -55,7 +55,7 @@ define([
           if (screen._childItems[childIndex]._isForm) {
             screen._childItems[childIndex]._form.forEach(function (action, formIndex) {
               if (screen._childItems[childIndex]._form[formIndex]._focusOnElement) {
-                if(!screen.focusOnElement){
+                if (!screen.focusOnElement) {
                   screen.focusOnElement = screen._childItems[childIndex]._form[formIndex];
                 }
               };
@@ -77,7 +77,7 @@ define([
             });
           }
           if (screen._childItems[childIndex]._focusOnElement) {
-            if(!screen.focusOnElement){
+            if (!screen.focusOnElement) {
               screen.focusOnElement = screen._childItems[childIndex]
             }
           };
@@ -169,7 +169,7 @@ define([
       );
     },
 
-    adjustTaskListWidth: function(){
+    adjustTaskListWidth: function () {
       var checkboxGroup = this.$el.find('.checkbox-group');
       var checkboxGroupSticky = this.$el.find('.sticky .checkbox-group');
       var label = checkboxGroup.find('div.label span.task-label');
@@ -252,6 +252,7 @@ define([
                 const wrapper = self.$el.find('.simulation-widget');
                 wrapper.toggleClass('full-width', fullWidth);
                 screen.fieldsData = self.model.get('fieldsData');
+                screen.tasks = self.model.get('tasks');
                 self.currentViewData = {
                   screenID: screen._screenID,
                   screenView: new SimulationScreenView({ model: new Backbone.Model(screen) })
@@ -261,7 +262,7 @@ define([
                   var observer = new MutationObserver(function (mutations, me) {
                     var subElement = self.$el.find('.action-container').closest('.simulation-widget');
                     if (subElement.length) {
-                      Adapt.trigger('startkeyboardtrap', {focus: screen.focusOnElement, $el: self.$el.find('.action-container').closest('.simulation-widget') });
+                      Adapt.trigger('startkeyboardtrap', { focus: screen.focusOnElement, $el: self.$el.find('.action-container').closest('.simulation-widget') });
                       me.disconnect();
                     }
                   });
@@ -296,19 +297,19 @@ define([
           });
           var screen = filteredScreen[0];
           var firstTask;
-          screen._childItems.forEach(function (action, childIndex) {
-            if (screen._childItems[childIndex]._isForm) {
-              screen._childItems[childIndex]._form.forEach(function (action, formIndex) {
-                if (screen._childItems[childIndex]._form[formIndex]._trackAsTask) {
-                  if(!firstTask){
-                    firstTask = screen._childItems[childIndex]._form[formIndex]
+          screen._childItems.forEach(function (action) {
+            if (action._isForm) {
+              action._form.forEach(function (action) {
+                if (action._trackAsTask) {
+                  if (!firstTask) {
+                    firstTask = action
                   }
                 };
               });
             }
-            if (screen._childItems[childIndex]._trackAsTask) {
-              if(!firstTask){
-                firstTask = screen._childItems[childIndex]
+            if (action._trackAsTask) {
+              if (!firstTask) {
+                firstTask = action
               }
             };
           });
@@ -340,14 +341,14 @@ define([
           currentTaskAria.text(`Current Task: ${firstTaskLabel}`);
         };
 
-        this.scrollToTask = function(task){
+        this.scrollToTask = function (task) {
           const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
           var currentTask = this.$el.find(`.simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
           var nextTasks = currentTask.nextAll('.checkbox-group');
           currentTask.removeClass('checked previous-task');
           currentTask.addClass('current-task');
           currentTask.find('input[type="checkbox"]').prop('checked', false);
-          nextTasks.each(function(){
+          nextTasks.each(function () {
             const task = $(this);
             task.removeClass('checked current-task previous-task');
             task.find('input[type="checkbox"]').prop('checked', false);

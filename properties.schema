@@ -320,6 +320,74 @@
                             {
                               "name": "_prefilledType",
                               "!value": "none"
+                            },
+                            {
+                              "name": "_prefilledWithPrevious",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_prefilledWithDate",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "_prefilledWithPrevious": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Set pre-filled value with previous user data",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will set the prefilled value based on the learner's lastest data entered in a field with identical name",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            },
+                            {
+                              "name": "_prefilledType",
+                              "!value": "none"
+                            },
+                            {
+                              "name": "_isForm",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_prefilledWithDate",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "_prefilledWithDate": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Set pre-filled value with today's date",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will set the prefilled value with today's date using the format YYYY-MM-DD",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            },
+                            {
+                              "name": "_prefilledType",
+                              "!value": "none"
+                            },
+                            {
+                              "name": "_isForm",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_prefilledWithPrevious",
+                              "value": "false"
                             }
                           ]
                         }
@@ -342,7 +410,19 @@
                               "validators": [],
                               "help": "Title",
                               "translatable": true,
-                              "title": "Text To Match"
+                              "title": "Text To Match",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
                             },
                             "_caseInsensitive": {
                               "type": "boolean",
@@ -351,7 +431,23 @@
                               "title": "Case insensitive",
                               "inputType": "Checkbox",
                               "validators": [],
-                              "help": "The text will match no matter the case"
+                              "help": "The text will match no matter the case",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchRegex",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
                             },
                             "_matchEmptyString": {
                               "type": "boolean",
@@ -360,7 +456,23 @@
                               "title": "Match empty string",
                               "inputType": "Checkbox",
                               "validators": [],
-                              "help": "The text will match only if field is left empty"
+                              "help": "The text will match only if field is left empty",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchRegex",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
                             },
                             "_matchUsingDate": {
                               "type": "boolean",
@@ -369,7 +481,23 @@
                               "title": "Match using today's date",
                               "inputType": "Checkbox",
                               "validators": [],
-                              "help": "Match using today's date (yyyy-mm-dd)"
+                              "help": "Match using today's date (yyyy-mm-dd)",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchRegex",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
                             },
                             "_matchRegex": {
                               "type": "boolean",
@@ -378,7 +506,23 @@
                               "title": "Match with regex",
                               "inputType": "Checkbox",
                               "validators": [],
-                              "help": "Use regex expression as match text"
+                              "help": "Use regex expression as match text",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
                             }
                           }
                         },
@@ -440,9 +584,36 @@
                               "inputType": "Checkbox",
                               "validators": [],
                               "help": "Selecting this option will trigger goTo"
+                            },
+                            "_selectedDefault": {
+                              "type": "boolean",
+                              "required": false,
+                              "default": false,
+                              "title": "Selected by default",
+                              "inputType": "Checkbox",
+                              "validators": [],
+                              "help": "Selecting this option will make this option the option selected by default, otherwise the first option will be selected."
                             }
                           }
                         },
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "select"
+                            }
+                          ]
+                        }
+                      },
+                      "_selectWithPrevious": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Set the selected value with previous user data",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will set the selected value based on the learner's lastest data selected in a field with identical name",
                         "conditions": {
                           "and": [
                             {
@@ -768,6 +939,74 @@
                       {
                         "name": "_isForm",
                         "value": "false"
+                      },
+                      {
+                        "name": "_prefilledWithPrevious",
+                        "value": "false"
+                      },
+                      {
+                        "name": "_prefilledWithDate",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_prefilledWithPrevious": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Set pre-filled value with previous user data",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this will set the prefilled value based on the learner's lastest data entered in a field with identical name",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      },
+                      {
+                        "name": "_prefilledType",
+                        "!value": "none"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      },
+                      {
+                        "name": "_prefilledWithDate",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_prefilledWithDate": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Set pre-filled value with today's date",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this will set the prefilled value with today's date using the format YYYY-MM-DD",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      },
+                      {
+                        "name": "_prefilledType",
+                        "!value": "none"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      },
+                      {
+                        "name": "_prefilledWithPrevious",
+                        "value": "false"
                       }
                     ]
                   }
@@ -790,7 +1029,19 @@
                         "validators": [],
                         "help": "Value to match with user input",
                         "translatable": true,
-                        "title": "Text To Match"
+                        "title": "Text To Match",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       },
                       "_caseInsensitive": {
                         "type": "boolean",
@@ -799,7 +1050,23 @@
                         "title": "Case insensitive",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "The text will match no matter if uppercase or lower case"
+                        "help": "The text will match no matter if uppercase or lower case",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchRegex",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       },
                       "_matchEmptyString": {
                         "type": "boolean",
@@ -808,7 +1075,23 @@
                         "title": "Match empty string",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "The text will match only if field is left empty"
+                        "help": "The text will match only if field is left empty",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_caseInsensitive",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchRegex",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       },
                       "_matchUsingDate": {
                         "type": "boolean",
@@ -817,7 +1100,23 @@
                         "title": "Match using today's date",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "Match using today's date (yyyy-mm-dd)"
+                        "help": "Match using today's date (yyyy-mm-dd)",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_caseInsensitive",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchRegex",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       },
                       "_matchRegex": {
                         "type": "boolean",
@@ -826,7 +1125,23 @@
                         "title": "Match with regex",
                         "inputType": "Checkbox",
                         "validators": [],
-                        "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns."
+                        "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns.",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_caseInsensitive",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       }
                     }
                   },
@@ -873,9 +1188,40 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "help": "Selecting this option will trigger goTo"
+                      },
+                      "_selectedDefault": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Selected by default",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Selecting this option will make this option the option selected by default, otherwise the first option will be selected."
                       }
                     }
                   },
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "select"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_selectWithPrevious": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Set the selected value with previous user data",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this will set the selected value based on the learner's lastest data selected in a field with identical name",
                   "conditions": {
                     "and": [
                       {
@@ -949,7 +1295,15 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "noListTitle": true,
-                  "help": "Selecting this option will set the keyboard focus on this element when the screen is loaded"
+                  "help": "Selecting this option will set the keyboard focus on this element when the screen is loaded",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
                 },
                 "_zonefinder": {
                   "type": "string",

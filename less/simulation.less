@@ -61,6 +61,7 @@
 
             .simulation-graphic {
                 min-height: auto;
+
                 img {
                     width: 100vw;
                 }
@@ -135,7 +136,7 @@
             position: static;
             top: 60px;
             background-color: transparent;
-            margin-top: -63px;
+            margin-top: -62px;
             height: 42px;
             overflow: hidden;
             z-index: 2;
@@ -173,6 +174,7 @@
 
             div.label {
                 cursor: default !important;
+
                 span.task-label {
                     overflow: hidden;
                     max-height: 23px;
@@ -187,7 +189,7 @@
                 background: #1c4e8a;
                 border: 1px solid #1c4e8a;
 
-                div.label{
+                div.label {
                     color: #ffffff;
                 }
             }
@@ -197,6 +199,7 @@
             background-color: #0f2a4a;
             border: 1px solid #0f2a4a;
             color: #ffffff;
+
             div.label .checkbox:before {
                 content: "✔";
                 color: #0f2a4adb;
@@ -256,6 +259,49 @@
             top: 0;
             left: 0;
 
+            .indicator::after {
+                content: "";
+                position: absolute;
+                inset: 0;
+                opacity: 0.3;
+                filter: blur(2px);
+                z-index: 0;
+                background-size: 600% 100%;
+                animation: gradient 5s linear infinite;
+                animation-direction: alternate;
+                background-image: radial-gradient(circle, #F17C58, #E94584, #24AADB, #27DBB1);
+            }
+
+            @keyframes gradient {
+                0% {
+                    background-position: 0%
+                }
+
+                100% {
+                    background-position: 100%
+                }
+            }
+
+            .select-wrapper,
+            .input-wrapper,
+            .button-wrapper {
+                position: absolute;
+                box-sizing: border-box;
+                border: none;
+            }
+
+            .select-wrapper,
+            .input-wrapper {
+                &.indicator::after {
+                    content: "";
+                    position: absolute;
+                    inset: -0.2rem;
+                    z-index: 0;
+                    filter: blur(1px);
+                    opacity: 0.5;
+                }
+            }
+
             &:focus {
                 outline: none !important;
             }
@@ -268,6 +314,9 @@
             .input-zone,
             .select-zone,
             .click-zone {
+                width: 100%;
+                height: 100%;
+                z-index: 1;
                 position: absolute;
                 box-sizing: border-box;
                 border: none;
@@ -276,12 +325,14 @@
             .click-zone {
                 background: transparent;
                 cursor: pointer;
+                position: absolute;
             }
 
             .input-zone,
             .select-zone {
                 background: #fff;
             }
+
         }
 
         img {
