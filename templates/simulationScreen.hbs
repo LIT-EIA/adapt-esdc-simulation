@@ -6,13 +6,13 @@
     {{#each _form}}
     <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
     {{#if type.input}}
-    <div class="input-wrapper" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
-    <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
-      type="{{#if type.datepicker}}date{{else}}text{{/if}}" class="input-zone simulation-form-element"
-      style="font-size:{{_fontSize}}px;"
-      {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}" {{/if}} {{#if _prefilled.text}}
-      value="{{_prefilledValueInterpolated}}" {{/if}} />
-      </div>
+    <div class="input-wrapper"
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
+        type="{{#if type.datepicker}}date{{else}}text{{/if}}" class="input-zone simulation-form-element"
+        style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}"
+        {{/if}} {{#if _prefilled.text}} value="{{_prefilledValueInterpolated}}" {{/if}} />
+    </div>
     {{/if}}
     {{#if type.select}}
     <div class="select-wrapper"
@@ -26,10 +26,21 @@
     </div>
     {{/if}}
     {{#if type.submit}}
-    <div class="button-wrapper" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
-    <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" role="button" tabindex="0"
-      aria-label="{{title}}" class="click-zone simulation-form-element form-submit">
+    <div class="button-wrapper"
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
+        role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
+        class="click-zone simulation-form-element form-submit">
+      </div>
     </div>
+    {{/if}}
+    {{#if type.click}}
+    <div class="button-wrapper"
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
+        role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
+        class="click-zone simulation-form-element">
+      </div>
     </div>
     {{/if}}
     {{/each}}
@@ -40,9 +51,8 @@
   <div class="input-wrapper"
     style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="text"
-      class="input-zone simulation-action-element"
-      style="font-size:{{_fontSize}}px;"
-      {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}" {{/if}} {{#if _prefilled.text}}
+      class="input-zone simulation-action-element" style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}}
+      placeholder="{{_prefilledValueInterpolated}}" {{/if}} {{#if _prefilled.text}}
       value="{{_prefilledValueInterpolated}}" {{/if}} />
   </div>
   {{/if}}
@@ -58,11 +68,12 @@
   </div>
   {{/if}}
   {{#if type.click}}
-  <div class="button-wrapper" style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
-  <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
-    role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
-    class="click-zone simulation-action-element">
-  </div>
+  <div class="button-wrapper"
+    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+    <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
+      role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
+      class="click-zone simulation-action-element">
+    </div>
   </div>
   {{/if}}
   {{/if}}

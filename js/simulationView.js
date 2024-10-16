@@ -67,6 +67,9 @@ define([
                 input: action._actionType === 'input',
                 select: action._actionType === 'select',
                 submit: action._actionType === 'submit',
+                click: action._actionType === 'click',
+                button: action._clickType === 'button',
+                link: action._clickType === 'link',
                 datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
               };
               screen._childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
@@ -89,8 +92,8 @@ define([
             input: action._actionType === 'input',
             select: action._actionType === 'select',
             click: action._actionType === 'click',
-            button: action._actionType === 'click' && action._clickType === 'button',
-            link: action._actionType === 'click' && action._clickType === 'link',
+            button: action._clickType === 'button',
+            link: action._clickType === 'link',
             datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
           };
           screen._childItems[childIndex]._fontSize = action._fontSize || 12;

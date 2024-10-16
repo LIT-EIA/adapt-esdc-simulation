@@ -8,12 +8,13 @@ define([
       'change .simulation-action-element': 'handleAction',
       'input .simulation-action-element': 'handleAction',
       'keypress .simulation-action-element': 'handleAction',
-      'click .simulation-form-element': 'handleActionForm',
       'change .simulation-form-element': 'handleActionForm',
       'input .simulation-form-element': 'handleActionForm',
       'keypress .simulation-form-element': 'handleActionForm',
       'click .simulation-form .form-submit': 'handleSubmit',
       'keypress .simulation-form .form-submit': 'handleKeypressSubmit',
+      'click .simulation-form-element:not(.form-submit)': 'handleAction',
+      'keypress .simulation-form-element:not(.form-submit)': 'handleAction',
       'submit .simulation-form': 'handleOriginalSubmitForm',
       'click .action-container': 'handleFallbackAction'
     },
@@ -133,71 +134,6 @@ define([
     postRender: function () {
       this.setSelectFields();
       this.setIndicator();
-    },
-
-    setIndicator: function () {
-      var task = this.getFirstScreenTask();
-      if (task) {
-        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
-        var taskWrapper = taskElement.parent();
-        taskWrapper.addClass('indicator');
-      }
-    },
-
-    getFirstScreenTask: function () {
-      var screen = this.model.attributes;
-      var firstTask;
-      screen._childItems.forEach(function (action) {
-        if (action._isForm) {
-          action._form.forEach(function (action) {
-            if (action._trackAsTask) {
-              if (!firstTask) {
-                firstTask = action
-              }
-            };
-          });
-        }
-        if (action._trackAsTask) {
-          if (!firstTask) {
-            firstTask = action
-          }
-        };
-      });
-      return firstTask
-    },
-
-    setSelectFields: function () {
-      var _childItems = this.model.get('_childItems');
-      this.$el.find('.action-container select').each(function () {
-        var select = $(this);
-        var actionId = select.attr('data-id');
-        var action = _childItems.reduce(function (found, item) {
-          if (found) return found;
-          if (item.id === actionId) return item;
-          if (item._isForm) {
-            return item._form.find(function (formItem) {
-              return formItem.id === actionId;
-            }) || null;
-          }
-          return null;
-        }, null);
-        if (action) {
-          var selectedValue = action._selectWithPrevious && action._previousValue
-            ? action._previousValue
-            : action._selectOptions.reduce(function (found, item) {
-              if (item._selectedDefault) {
-                return item._selectValue;
-              }
-              return found;
-            }, null);
-
-          if (selectedValue) {
-            select.find('option').filter(function () {
-              return $(this).text() === selectedValue;
-            }).prop('selected', true);
-          }
-        }
-      });
     },
 
     handleAction: function (e) {
@@ -330,7 +266,7 @@ define([
     handleClick: function (e) {
       var self = this;
       var actionId = $(e.target).attr('data-id');
-      var action = this.model.get('_childItems').find(item => item.id === actionId);
+      var action = this.getActionModelById(actionId);
       if (action._actionType === 'click') {
         if (action._isFailure || action._isSuccess) {
           var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
@@ -375,7 +311,7 @@ define([
     handleChange: function (e) {
       var self = this;
       var actionId = $(e.target).attr('data-id');
-      var action = this.model.get('_childItems').find(item => item.id === actionId);
+      var action = this.getActionModelById(actionId);
       if (action._actionType === 'select') {
         var selectedOption = $(e.target).val();
         var fieldsData = this.model.get('fieldsData');
@@ -458,9 +394,8 @@ define([
     handleInput: function (e) {
       var self = this;
       var actionId = $(e.target).attr('data-id');
-      var action = this.model.get('_childItems').find(item => item.id === actionId);
+      var action = this.getActionModelById(actionId);
       if (action._actionType === 'input') {
-
         var inputString = $(e.target).val();
         var criteriaList = action._matchTextItems;
         var isMatched = this.matchString(inputString, criteriaList);
@@ -630,6 +565,76 @@ define([
       }
     },
 
+    getActionModelById: function(actionId){
+      var action = this.model.get('_childItems').reduce(function (found, item) {
+        if (found) return found;
+        if (item.id === actionId) return item;
+        if (item._isForm) {
+          return item._form.find(function (formItem) {
+            return formItem.id === actionId;
+          }) || null;
+        }
+        return null;
+      }, null);
+      return action;
+    },
+
+    getFirstScreenTask: function () {
+      var screen = this.model.attributes;
+      var firstTask;
+      screen._childItems.forEach(function (action) {
+        if (action._isForm) {
+          action._form.forEach(function (action) {
+            if (action._trackAsTask) {
+              if (!firstTask) {
+                firstTask = action
+              }
+            };
+          });
+        }
+        if (action._trackAsTask) {
+          if (!firstTask) {
+            firstTask = action
+          }
+        };
+      });
+      return firstTask
+    },
+
+    setIndicator: function () {
+      var task = this.getFirstScreenTask();
+      if (task) {
+        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
+        var taskWrapper = taskElement.parent();
+        taskWrapper.addClass('indicator');
+      }
+    },
+
+    setSelectFields: function () {
+      var self = this;
+      this.$el.find('.action-container select').each(function () {
+        var select = $(this);
+        var actionId = select.attr('data-id');
+        var action = self.getActionModelById(actionId);
+        if (action) {
+          var selectedValue = action._selectWithPrevious && action._previousValue
+            ? action._previousValue
+            : action._selectOptions.reduce(function (found, item) {
+              if (item._selectedDefault) {
+                return item._selectValue;
+              }
+              return found;
+            }, null);
+
+          if (selectedValue) {
+            select.find('option').filter(function () {
+              return $(this).text() === selectedValue;
+            }).prop('selected', true);
+          }
+        }
+      });
+    },
+
     adjustFontSize: function () {
       var componentDiv = $(`div[data-adapt-id="${this.componentID}"]`);
       var simulationWrapperCurrentWidth = componentDiv.find('.simulation-wrapper').width();
@@ -708,16 +713,15 @@ define([
 
     stringToCamelCase: function (str) {
       return str
-        .replace(/[^a-zA-Z0-9]+/g, ' ') // Replace special characters with spaces
-        .trim() // Trim leading and trailing spaces
-        .split(' ') // Split the string into words
+        .replace(/[^a-zA-Z0-9]+/g, ' ')
+        .trim()
+        .split(' ')
         .map(function (word, index) {
-          // Convert the first word to lowercase and the rest to title case
           return index === 0
             ? word.toLowerCase()
             : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
         })
-        .join(''); // Join the words together
+        .join('');
     }
 
   });

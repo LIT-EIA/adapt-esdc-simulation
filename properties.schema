@@ -228,11 +228,37 @@
                           "options": [
                             "submit",
                             "input",
-                            "select"
+                            "select",
+                            "checkbox",
+                            "click"
                           ]
                         },
                         "validators": [],
                         "help": "action type"
+                      },
+                      "_clickType": {
+                        "type": "string",
+                        "required": true,
+                        "default": "button",
+                        "title": "Type of click action",
+                        "noListTitle": true,
+                        "inputType": {
+                          "type": "Select",
+                          "options": [
+                            "button",
+                            "link"
+                          ]
+                        },
+                        "validators": [],
+                        "help": "Select the type of click for the element",
+                        "conditions": {
+                          "or": [
+                            {
+                              "name": "_actionType",
+                              "value": "submit,click"
+                            }
+                          ]
+                        }
                       },
                       "_inputType": {
                         "type": "string",
@@ -275,6 +301,53 @@
                           ]
                         },
                         "translatable": true
+                      },
+                      "_characterCounter": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Add a character counter",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will add a character counter under the input box. Make sure there is sufficient space on your image.",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            },
+                            {
+                              "name": "_isForm",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "_characterCounterLimit": {
+                        "type": "number",
+                        "default": 500,
+                        "inputType": "Number",
+                        "title": "Character counter limit",
+                        "noListTitle": true,
+                        "help": "Limit size of text that will be accepted in the input field",
+                        "validators": [],
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "input"
+                            },
+                            {
+                              "name": "_characterCounter",
+                              "value": "true"
+                            },
+                            {
+                              "name": "_isForm",
+                              "value": "false"
+                            }
+                          ]
+                        }
                       },
                       "_prefilledType": {
                         "type": "string",
@@ -566,12 +639,10 @@
                           "properties": {
                             "_selectValue": {
                               "type": "string",
-                              "required": true,
+                              "required": false,
                               "default": "",
                               "inputType": "Text",
-                              "validators": [
-                                "required"
-                              ],
+                              "validators": [],
                               "help": "Option to be displayed in dropdown",
                               "translatable": true,
                               "title": "Title"
@@ -638,6 +709,54 @@
                             {
                               "name": "_actionType",
                               "value": "select"
+                            }
+                          ]
+                        }
+                      },
+                      "_checkboxInitialState": {
+                        "type": "string",
+                        "required": true,
+                        "default": "unchecked",
+                        "title": "Checkbox initial state",
+                        "noListTitle": true,
+                        "inputType": {
+                          "type": "Select",
+                          "options": [
+                            "checked",
+                            "unchecked"
+                          ]
+                        },
+                        "validators": [],
+                        "help": "Initial state of the checkbox when screen is loaded",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "checkbox"
+                            }
+                          ]
+                        }
+                      },
+                      "_checkboxMatchState": {
+                        "type": "string",
+                        "required": true,
+                        "default": "checked",
+                        "title": "Checkbox match state",
+                        "noListTitle": true,
+                        "inputType": {
+                          "type": "Select",
+                          "options": [
+                            "checked",
+                            "unchecked"
+                          ]
+                        },
+                        "validators": [],
+                        "help": "State of the checkbox needed for matching and passing validation",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "checkbox"
                             }
                           ]
                         }
@@ -799,7 +918,8 @@
                     "options": [
                       "click",
                       "input",
-                      "select"
+                      "select",
+                      "checkbox"
                     ]
                   },
                   "validators": [],
@@ -884,8 +1004,46 @@
                         "value": "input,select"
                       }
                     ]
-                  },
-                  "translatable": true
+                  }
+                },
+                "_characterCounter": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Add a character counter",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this will add a character counter under the input box. Make sure there is sufficient space on your image.",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      }
+                    ]
+                  }
+                },
+                "_characterCounterLimit": {
+                  "type": "number",
+                  "default": 500,
+                  "inputType": "Number",
+                  "title": "Character counter limit",
+                  "noListTitle": true,
+                  "help": "Limit size of text that will be accepted in the input field",
+                  "validators": [],
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "input"
+                      },
+                      {
+                        "name": "_characterCounter",
+                        "value": "true"
+                      }
+                    ]
+                  }
                 },
                 "_prefilledType": {
                   "type": "string",
@@ -1170,12 +1328,10 @@
                     "properties": {
                       "_selectValue": {
                         "type": "string",
-                        "required": true,
+                        "required": false,
                         "default": "",
                         "inputType": "Text",
-                        "validators": [
-                          "required"
-                        ],
+                        "validators": [],
                         "help": "Option to be displayed in dropdown",
                         "translatable": true,
                         "title": "Title"
@@ -1250,6 +1406,34 @@
                       {
                         "name": "_actionType",
                         "value": "select"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_checkboxInitialState": {
+                  "type": "string",
+                  "required": true,
+                  "default": "unchecked",
+                  "title": "Checkbox initial state",
+                  "noListTitle": true,
+                  "inputType": {
+                    "type": "Select",
+                    "options": [
+                      "checked",
+                      "unchecked"
+                    ]
+                  },
+                  "validators": [],
+                  "help": "Initial state of the checkbox when screen is loaded",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "checkbox"
                       },
                       {
                         "name": "_isForm",
