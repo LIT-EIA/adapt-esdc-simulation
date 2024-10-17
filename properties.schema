@@ -263,13 +263,14 @@
                       "_inputType": {
                         "type": "string",
                         "required": true,
-                        "default": "text",
+                        "default": "textfield",
                         "title": "Type of input action",
                         "noListTitle": true,
                         "inputType": {
                           "type": "Select",
                           "options": [
                             "text",
+                            "multiline",
                             "datepicker"
                           ]
                         },

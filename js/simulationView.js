@@ -70,6 +70,7 @@ define([
                 click: action._actionType === 'click',
                 button: action._clickType === 'button',
                 link: action._clickType === 'link',
+                multiline: action._actionType === 'input' && action._inputType === 'multiline',
                 datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
               };
               screen._childItems[childIndex]._form[formIndex]._position._topCounter = screen._childItems[childIndex]._form[formIndex]._position._top + screen._childItems[childIndex]._form[formIndex]._position._height;
@@ -95,6 +96,7 @@ define([
             click: action._actionType === 'click',
             button: action._clickType === 'button',
             link: action._clickType === 'link',
+            multiline: action._actionType === 'input' && action._inputType === 'multiline',
             datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
           };
           screen._childItems[childIndex]._fontSize = action._fontSize || 12;

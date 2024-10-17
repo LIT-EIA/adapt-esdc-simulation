@@ -69,12 +69,12 @@ define([
             if (self.model && self.model.get('_index') == 0) {
               toolbarUndoBtn.toggleClass('disabled-undo', true);
               toolbarUndoBtn.attr('aria-disabled', true);
-              toolbarUndoBtn.attr('aria-label', "Go back | No existing previous steps.");
+              toolbarUndoBtn.attr('aria-label', "No existing previous steps.");
             }
             else {
               toolbarUndoBtn.toggleClass('disabled-undo', false);
               toolbarUndoBtn.attr('aria-disabled', false);
-              toolbarUndoBtn.attr('aria-label', "Go back");
+              toolbarUndoBtn.attr('aria-label', "");
             }
           }
 
@@ -83,11 +83,11 @@ define([
             if (!screenMessage) {
               toolbarMessageBtn.toggleClass('disabled-message', true);
               toolbarMessageBtn.attr('aria-disabled', true);
-              toolbarMessageBtn.attr('aria-label', "Show Instructions | No instructions available for this screen.");
+              toolbarMessageBtn.attr('aria-label', "No instructions available for this screen.");
             } else {
               toolbarMessageBtn.toggleClass('disabled-message', false);
               toolbarMessageBtn.attr('aria-disabled', false);
-              toolbarMessageBtn.attr('aria-label', "Show Instructions");
+              toolbarMessageBtn.attr('aria-label', "");
             }
           }
         }
