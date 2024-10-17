@@ -264,7 +264,7 @@
                       "_inputType": {
                         "type": "string",
                         "required": true,
-                        "default": "textfield",
+                        "default": "text",
                         "title": "Type of input action",
                         "noListTitle": true,
                         "inputType": {
