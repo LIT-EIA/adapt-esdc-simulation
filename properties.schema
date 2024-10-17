@@ -877,6 +877,69 @@
                             "help": "Height of element"
                           }
                         }
+                      },
+                      "_goTo": {
+                        "type": "string",
+                        "title": "GoTo",
+                        "noListTitle": true,
+                        "required": false,
+                        "default": "",
+                        "inputType": "SelectScreen",
+                        "validators": [],
+                        "help": "Choose which screen to load on validation of this element",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "click"
+                            },
+                            {
+                              "name": "_isFailure",
+                              "!value": "true"
+                            }
+                          ]
+                        }
+                      },
+                      "_isFailure": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "This action is a failure",
+                        "noListTitle": true,
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "If you select this option, the validation will be inverted. Example use: Clicking on a button that causes errors or issues in the original software.",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "click"
+                            }
+                          ]
+                        }
+                      },
+                      "_failureBody": {
+                        "type": "string",
+                        "required": false,
+                        "default": "",
+                        "inputType": "TextArea",
+                        "validators": [],
+                        "help": "Body text displayed as failure message",
+                        "translatable": true,
+                        "title": "Failure Message",
+                        "noListTitle": true,
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_isFailure",
+                              "value": "true"
+                            }, 
+                            {
+                              "name": "_actionType",
+                              "value": "click"
+                            }
+                          ]
+                        }
                       }
                     }
                   },
@@ -885,24 +948,6 @@
                       {
                         "name": "_isForm",
                         "value": "true"
-                      }
-                    ]
-                  }
-                },
-                "_goTo": {
-                  "type": "string",
-                  "title": "GoTo",
-                  "noListTitle": true,
-                  "required": false,
-                  "default": "",
-                  "inputType": "SelectScreen",
-                  "validators": [],
-                  "help": "Choose which screen to load on validation of this element",
-                  "conditions": {
-                    "and": [
-                      {
-                        "name": "_isSuccess",
-                        "!value": "true"
                       }
                     ]
                   }
@@ -1586,6 +1631,24 @@
                       {
                         "name": "_isForm",
                         "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_goTo": {
+                  "type": "string",
+                  "title": "GoTo",
+                  "noListTitle": true,
+                  "required": false,
+                  "default": "",
+                  "inputType": "SelectScreen",
+                  "validators": [],
+                  "help": "Choose which screen to load on validation of this element",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_isSuccess",
+                        "!value": "true"
                       }
                     ]
                   }

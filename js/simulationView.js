@@ -72,6 +72,7 @@ define([
                 link: action._clickType === 'link',
                 datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
               };
+              screen._childItems[childIndex]._form[formIndex]._position._topCounter = screen._childItems[childIndex]._form[formIndex]._position._top + screen._childItems[childIndex]._form[formIndex]._position._height;
               screen._childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
               screen._childItems[childIndex]._form[formIndex]._prefilled = {
                 placeholder: action._prefilledType === 'placeholder',

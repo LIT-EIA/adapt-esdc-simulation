@@ -444,6 +444,17 @@ define([
       }
     },
 
+    updateCharacterCount: function (options) {
+      if (options.action._characterCounter) {
+        var inputString = options.target.val();
+        var charactersLength = inputString.length;
+        var charactersLimit = options.action._characterCounterLimit
+        var charactersLeft = charactersLimit - charactersLength;
+        var counterElement = $(`div[data-adapt-id="${this.componentID}"] .action-container [counter-data-id="${options.action.id}"] span.character-count`);
+        counterElement.text(charactersLeft).toggleClass('zero-character', charactersLeft === 0);
+      }
+    },
+
     handleInputForm: function (e) {
       var self = this;
       var actionId = $(e.target).attr('data-id');
@@ -453,7 +464,9 @@ define([
         if (form.length) {
           var action = form.find(item => item.id === actionId);
           if (action._actionType === 'input') {
-            var inputString = $(e.target).val();
+            var target = $(e.target);
+            self.updateCharacterCount({ target: target, action: action });
+            var inputString = target.val();
             var criteriaList = action._matchTextItems;
             var isMatched = self.matchString(inputString, criteriaList);
             if (isMatched) {
@@ -565,7 +578,7 @@ define([
       }
     },
 
-    getActionModelById: function(actionId){
+    getActionModelById: function (actionId) {
       var action = this.model.get('_childItems').reduce(function (found, item) {
         if (found) return found;
         if (item.id === actionId) return item;
@@ -580,9 +593,9 @@ define([
     },
 
     getFirstScreenTask: function () {
-      var screen = this.model.attributes;
+      var _childItems = this.model.get('_childItems');
       var firstTask;
-      screen._childItems.forEach(function (action) {
+      _childItems.forEach(function (action) {
         if (action._isForm) {
           action._form.forEach(function (action) {
             if (action._trackAsTask) {

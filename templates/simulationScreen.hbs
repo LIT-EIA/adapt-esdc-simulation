@@ -11,8 +11,12 @@
       <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
         type="{{#if type.datepicker}}date{{else}}text{{/if}}" class="input-zone simulation-form-element"
         style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}"
-        {{/if}} {{#if _prefilled.text}} value="{{_prefilledValueInterpolated}}" {{/if}} />
+        {{/if}} {{#if _prefilled.text}} value="{{_prefilledValueInterpolated}}" {{/if}} {{#if _characterCounter}}maxlength="{{_characterCounterLimit}}"{{/if}} />
     </div>
+    {{#if _characterCounter}}
+    <div aria-live="polite" style="top:calc({{_position._topCounter}}% + 4px);left:{{_position._left}}%;"
+       class="input-character-counter" counter-data-id="{{id}}"><span class="character-count">{{_characterCounterLimit}}</span> remaining characters</div>
+    {{/if}}
     {{/if}}
     {{#if type.select}}
     <div class="select-wrapper"
