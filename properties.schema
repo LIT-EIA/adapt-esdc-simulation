@@ -194,7 +194,8 @@
                   "title": "This element is a form (element group)",
                   "inputType": "Checkbox",
                   "validators": [],
-                  "help": "A form requires multiple fields and a submit button"
+                  "help": "A form requires multiple fields and a submit button",
+                  "secondaryLabel": "Tip: Don't forget that a form needs a submit action to run validation"
                 },
                 "_form": {
                   "type": "array",
