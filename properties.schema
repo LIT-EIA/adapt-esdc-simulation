@@ -181,8 +181,8 @@
                   "type": "string",
                   "required": true,
                   "default": "",
-                  "inputType": "Text",
-                  "validators": [],
+                  "inputType": "ReadableID",
+                  "validators": ["required"],
                   "help": "This must be the visible label of this field on the image",
                   "translatable": true,
                   "title": "Element Name"
@@ -212,8 +212,8 @@
                         "type": "string",
                         "required": true,
                         "default": "",
-                        "inputType": "Text",
-                        "validators": [],
+                        "inputType": "ReadableID",
+                        "validators": ["required"],
                         "help": "Title",
                         "translatable": true,
                         "title": "Element Name"
