@@ -221,6 +221,16 @@ define([
               userValue: fieldValue
             });
           }
+        } else if (action._actionType === 'checkbox') {
+          console.log('action type checkbox this: ', $(this));
+          if ((action._checkboxMatchState == 'checked' && !$(this).prop('checked')) ||
+            (action._checkboxMatchState == 'unchecked' && $(this).prop('checked'))) {
+            errors.push({
+              name: action.title,
+              message: action.matchFailure || self.model.get('incorrectFallback'),
+              userValue: $(this).prop('checked') ? 'checked' : 'unchecked'
+            });
+          }
         }
       });
       self.model.set('fieldsData', fieldsData);
@@ -360,6 +370,43 @@ define([
             onCloseRefocusEl: $(e.target)
           });
         }
+      } else if (action._actionType === 'checkbox') {
+        console.log('action checkbox single: ', action);
+
+        // This block of code (_isSuccess, ) is repetitive, maybe we can create a function instead
+        if (action._isSuccess) {
+          var bodyData = {
+            _successBody: action._successBody,
+            componentID: self.model.get('componentID')
+          }
+          var successBodyTemplate = Handlebars.templates['simulationScreenSuccess'];
+          Adapt.trigger('simulation-notify:prompt', {
+            body: successBodyTemplate(bodyData),
+            onCloseRefocusEl: $(e.target)
+          });
+          $('.confirm-success').one('click', function (e) {
+            var button = $(e.target);
+            var componentID = button.attr('data-component-id');
+            self.handleConfirmSuccess(componentID);
+          });
+        } else if (action._isFailure) {
+          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+          Adapt.trigger('simulation-notify:prompt', {
+            body: failureBody,
+            _prompts: [
+              {
+                promptText: "OK"
+              }
+            ],
+            onCloseRefocusEl: $(e.target)
+          });
+        } else {
+          var eventData = {
+            id: action._goTo,
+            componentID: this.model.get('componentID')
+          }
+          Adapt.trigger('simulationloadscreen', eventData);
+        } 
       }
     },
 
@@ -386,6 +433,11 @@ define([
             if (selectedOption === correctOptionValue) {
               self.handleCompleteTask(action);
             }
+          }  else if (action._actionType === 'checkbox') {
+            if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) || 
+            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked'))) {
+              self.handleCompleteTask(action);
+            }
           }
         }
       })
@@ -407,6 +459,7 @@ define([
           }
           self.model.set('fieldsData', fieldsData);
           self.handleCompleteTask(action);
+          // This block of code (_isSuccess, ) is repetitive, maybe we can create a function instead
           if (action._isSuccess) {
             var bodyData = {
               _successBody: action._successBody,

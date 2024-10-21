@@ -57,6 +57,13 @@
       </div>
     </div>
     {{/if}}
+    {{#if type.checkbox}}
+    <div class="input-wrapper"
+      style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+      <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="checkbox"
+        class="click-zone simulation-form-element" {{#ifValueEquals _checkboxInitialState "checked"}}checked{{/ifValueEquals}} />
+    </div>
+    {{/if}}
     {{/each}}
   </form>
   {{else}}
@@ -96,6 +103,14 @@
       role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
       class="click-zone simulation-action-element">
     </div>
+  </div>
+  {{/if}}
+  {{#if type.checkbox}}
+  <div class="input-wrapper"
+    style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
+    <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
+      type="checkbox" class="click-zone simulation-action-element" 
+      {{#ifValueEquals _checkboxInitialState "checked"}}checked{{/ifValueEquals}} />
   </div>
   {{/if}}
   {{/if}}

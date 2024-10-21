@@ -71,7 +71,8 @@ define([
                 button: action._clickType === 'button',
                 link: action._clickType === 'link',
                 multiline: action._actionType === 'input' && action._inputType === 'multiline',
-                datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
+                datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
+                checkbox: action._actionType === 'checkbox'
               };
               screen._childItems[childIndex]._form[formIndex]._position._topCounter = screen._childItems[childIndex]._form[formIndex]._position._top + screen._childItems[childIndex]._form[formIndex]._position._height;
               screen._childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
@@ -97,7 +98,8 @@ define([
             button: action._clickType === 'button',
             link: action._clickType === 'link',
             multiline: action._actionType === 'input' && action._inputType === 'multiline',
-            datepicker: action._actionType === 'input' && action._inputType === 'datepicker'
+            datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
+            checkbox: action._actionType === 'checkbox'
           };
           screen._childItems[childIndex]._fontSize = action._fontSize || 12;
           screen._childItems[childIndex]._prefilled = {
