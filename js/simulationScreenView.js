@@ -437,7 +437,8 @@ define([
             }
           }  else if (action._actionType === 'checkbox') {
             if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) || 
-            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked'))) {
+            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) || 
+            action._checkboxMatchState == 'both') {
               self.handleCompleteTask(action);
             }
           }
