@@ -284,6 +284,7 @@
 
             .select-wrapper,
             .input-wrapper,
+            .checkbox-wrapper,
             .button-wrapper {
                 position: absolute;
                 box-sizing: border-box;
@@ -292,6 +293,17 @@
 
             .select-wrapper,
             .input-wrapper {
+                &.indicator::after {
+                    content: "";
+                    position: absolute;
+                    inset: -0.2rem;
+                    z-index: 0;
+                    filter: blur(1px);
+                    opacity: 0.5;
+                }
+            }
+
+            .checkbox-wrapper {
                 &.indicator::after {
                     content: "";
                     position: absolute;
