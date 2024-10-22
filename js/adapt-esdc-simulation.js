@@ -39,11 +39,6 @@ define([
     KeyBoardTrapHelper.handleStopKeyboardTrap(keyboardTrapObject);
   });
 
-  Handlebars.registerHelper('ifValueEquals', function (value, text, block) {
-    return (value === text) ? block.fn(this) : block.inverse(this);
-  });
-
-
 	return Adapt.register('simulation', {
 		model: ItemsComponentModel,
 		view: SimulationView

@@ -36,6 +36,7 @@ define([
         child._previousValue = prefilledTemplateOptions.previous;
         var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
         child._prefilledValueInterpolated = prefilledValue;
+        child._isCheckedByDefault = action._checkboxInitialState == 'checked';
         if (child._isForm) {
           child._form.forEach(function (action, index) {
             var formIndex = index;
@@ -48,6 +49,7 @@ define([
             childForm._previousValue = prefilledTemplateOptions.previous;
             var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
             childForm._prefilledValueInterpolated = prefilledValue;
+            childForm._isCheckedByDefault = action._checkboxInitialState == 'checked';
           });
         };
       });
