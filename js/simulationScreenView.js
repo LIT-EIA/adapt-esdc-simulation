@@ -25,6 +25,7 @@ define([
       var prefilledTemplateOptions = this.model.get('fieldsData');
       this.componentID = this.model.get('componentID');
       var _childItems = this.model.get('_childItems');
+      var acceptedCheckboxValues = ['true', true, '1', 1, 'on', 'checked', 'false', false, 'off', 'unchecked'];
       _childItems.forEach(function (action, index) {
         var childIndex = index;
         var child = _childItems[childIndex];
@@ -36,7 +37,6 @@ define([
         child._previousValue = prefilledTemplateOptions.previous;
         var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
         child._prefilledValueInterpolated = prefilledValue;
-        child._isCheckedByDefault = action._checkboxInitialState == 'checked';
         if (child._isForm) {
           child._form.forEach(function (action, index) {
             var formIndex = index;
@@ -49,7 +49,6 @@ define([
             childForm._previousValue = prefilledTemplateOptions.previous;
             var prefilledValue = Handlebars.compile(templatePrefilledValue)(prefilledTemplateOptions);
             childForm._prefilledValueInterpolated = prefilledValue;
-            childForm._isCheckedByDefault = action._checkboxInitialState == 'checked';
           });
         };
       });
@@ -135,6 +134,7 @@ define([
 
     postRender: function () {
       this.setSelectFields();
+      this.setCheckboxFields();
       this.setIndicator();
     },
 
@@ -195,6 +195,9 @@ define([
         var actionId = $(this).attr('data-id');
         var action = formActions.find(item => item.id === actionId);
         var fieldValue = $(this).val();
+        if (action._actionType === 'checkbox') {
+          fieldValue = $(this).prop('checked') ? 'checked' : 'unchecked';
+        }
         var readableID = self.stringToCamelCase(action.title);
         if (fieldValue) {
           fieldsData[readableID] = fieldValue;
@@ -224,7 +227,6 @@ define([
             });
           }
         } else if (action._actionType === 'checkbox') {
-          console.log('action type checkbox this: ', $(this));
           if ((action._checkboxMatchState == 'checked' && !$(this).prop('checked')) ||
             (action._checkboxMatchState == 'unchecked' && $(this).prop('checked'))) {
             errors.push({
@@ -373,7 +375,6 @@ define([
           });
         }
       } else if (action._actionType === 'checkbox') {
-        console.log('action checkbox single: ', action);
 
         // This block of code (_isSuccess, ) is repetitive, maybe we can create a function instead
         if (action._isSuccess) {
@@ -545,7 +546,8 @@ define([
 
     handleCompleteTask: function (task) {
       var self = this;
-      if (task._trackAsTask) {
+      console.log('task: ', task);
+      if (task && task._trackAsTask) {
         var tasks = self.model.get('tasks');
         var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);
         var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
@@ -615,7 +617,6 @@ define([
     handleFallbackAction: function (e) {
       var target = $(e.target);
       if (target.hasClass('action-container')) {
-        console.log('Warning: clicked a spot with no mapping');
         var focusElement = $(this.previousElement) || this.$el.find('.action-container');
         var message = this.model.get('_fallbackMessage');
         if (message) {
@@ -699,6 +700,24 @@ define([
             select.find('option').filter(function () {
               return $(this).text() === selectedValue;
             }).prop('selected', true);
+          }
+        }
+      });
+    },
+
+    setCheckboxFields: function () {
+      var self = this;
+      this.$el.find('.action-container input[type="checkbox"]').each(function () {
+        var checkbox = $(this);
+        var actionId = checkbox.attr('data-id');
+        var action = self.getActionModelById(actionId);
+        if (action) {
+          var checkboxValue = action._checkboxWithPrevious && action._previousValue
+            ? action._previousValue
+            : action._checkboxInitialState;
+
+          if (checkboxValue) {
+            checkbox.prop('checked', checkboxValue === 'checked');
           }
         }
       });

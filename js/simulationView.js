@@ -350,24 +350,26 @@ define([
         };
 
         this.scrollToTask = function (task) {
-          const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
-          var currentTask = this.$el.find(`.simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
-          var nextTasks = currentTask.nextAll('.checkbox-group');
-          currentTask.removeClass('checked previous-task');
-          currentTask.addClass('current-task');
-          currentTask.find('input[type="checkbox"]').prop('checked', false);
-          nextTasks.each(function () {
-            const task = $(this);
-            task.removeClass('checked current-task previous-task');
-            task.find('input[type="checkbox"]').prop('checked', false);
-          })
-          var offset = currentTask[1].offsetTop;
-          setTimeout(function () {
-            currentStickyTaskWrapper[0].scrollTo({
-              top: offset,
-              behavior: 'smooth',
+          if (task) {
+            const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
+            var currentTask = this.$el.find(`.simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
+            var nextTasks = currentTask.nextAll('.checkbox-group');
+            currentTask.removeClass('checked previous-task');
+            currentTask.addClass('current-task');
+            currentTask.find('input[type="checkbox"]').prop('checked', false);
+            nextTasks.each(function () {
+              const task = $(this);
+              task.removeClass('checked current-task previous-task');
+              task.find('input[type="checkbox"]').prop('checked', false);
             })
-          }, 150);
+            var offset = currentTask[1].offsetTop;
+            setTimeout(function () {
+              currentStickyTaskWrapper[0].scrollTo({
+                top: offset,
+                behavior: 'smooth',
+              })
+            }, 150);
+          }
         }
 
         this.adjustTaskListWidth();

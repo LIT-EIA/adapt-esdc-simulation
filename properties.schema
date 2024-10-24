@@ -739,6 +739,24 @@
                           ]
                         }
                       },
+                      "_checkboxWithPrevious": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Set the checkbox value with previous user data",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will set the checkbox value based on the learner's lastest data selected in a field with identical name",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "checkbox"
+                            }
+                          ]
+                        }
+                      },
                       "_checkboxMatchState": {
                         "type": "string",
                         "required": true,
@@ -1477,6 +1495,28 @@
                   },
                   "validators": [],
                   "help": "Initial state of the checkbox when screen is loaded",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "checkbox"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "_checkboxWithPrevious": {
+                  "type": "boolean",
+                  "required": false,
+                  "default": false,
+                  "title": "Set the checkbox value with previous user data",
+                  "inputType": "Checkbox",
+                  "validators": [],
+                  "noListTitle": true,
+                  "help": "Selecting this will set the checkbox value based on the learner's lastest data selected in a field with identical name",
                   "conditions": {
                     "and": [
                       {
