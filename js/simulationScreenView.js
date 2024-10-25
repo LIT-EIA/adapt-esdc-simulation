@@ -231,7 +231,7 @@ define([
             (action._checkboxMatchState == 'unchecked' && $(this).prop('checked'))) {
             errors.push({
               name: action.title,
-              message: action.matchFailure || self.model.get('incorrectFallback'),
+              message: action.checkboxFailure || self.model.get('incorrectFallback'),
               userValue: $(this).prop('checked') ? 'checked' : 'unchecked'
             });
           }
@@ -393,7 +393,7 @@ define([
             self.handleConfirmSuccess(componentID);
           });
         } else if (action._isFailure) {
-          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+          var failureBody = action.checkboxFailure ? action.checkboxFailure : this.model.get('incorrectFallback');
           Adapt.trigger('simulation-notify:prompt', {
             body: failureBody,
             _prompts: [
@@ -546,7 +546,6 @@ define([
 
     handleCompleteTask: function (task) {
       var self = this;
-      console.log('task: ', task);
       if (task && task._trackAsTask) {
         var tasks = self.model.get('tasks');
         var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);

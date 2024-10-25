@@ -774,6 +774,25 @@
                           ]
                         }
                       },
+                      "checkboxFailure": {
+                        "type": "string",
+                        "required": false,
+                        "default": "",
+                        "inputType": "TextArea",
+                        "validators": [],
+                        "help": "Body text displayed as failure message",
+                        "translatable": true,
+                        "title": "Checkbox Failure Message",
+                        "noListTitle": true,
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "checkbox"
+                            }
+                          ]
+                        }
+                      },
                       "_trackAsTask": {
                         "type": "boolean",
                         "required": false,
@@ -1501,6 +1520,29 @@
                   "validators": [],
                   "noListTitle": true,
                   "help": "Selecting this will set the checkbox value based on the learner's lastest data selected in a field with identical name",
+                  "conditions": {
+                    "and": [
+                      {
+                        "name": "_actionType",
+                        "value": "checkbox"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
+                    ]
+                  }
+                },
+                "checkboxFailure": {
+                  "type": "string",
+                  "required": false,
+                  "default": "",
+                  "inputType": "TextArea",
+                  "validators": [],
+                  "help": "Body text displayed as failure message",
+                  "translatable": true,
+                  "title": "Checkbox Failure Message",
+                  "noListTitle": true,
                   "conditions": {
                     "and": [
                       {
