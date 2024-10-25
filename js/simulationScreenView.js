@@ -215,11 +215,14 @@ define([
           }
         } else if (action._actionType === 'select') {
           var selectedOption = fieldValue;
-          var correctOption = action._selectOptions.filter(function (option) {
+          var correctOptions = action._selectOptions.filter(function (option) {
             return option._correctOption === true
-          })[0];
-          var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
-          if (selectedOption !== correctOptionValue) {
+          });
+          var hasMatchingValue = correctOptions.some(function (option) {
+            return option._selectValue === selectedOption;
+          });
+          var noCorrectOptions = correctOptions.length === 0;
+          if (!hasMatchingValue && !noCorrectOptions) {
             errors.push({
               name: action.title,
               message: action.selectFailure || self.model.get('incorrectFallback'),
@@ -334,11 +337,15 @@ define([
           fieldsData[readableID] = selectedOption;
         }
         self.model.set('fieldsData', fieldsData);
-        var correctOption = action._selectOptions.filter(function (option) {
+        var correctOptions = action._selectOptions.filter(function (option) {
           return option._correctOption === true
-        })[0];
-        var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
-        if (selectedOption === correctOptionValue) {
+        });
+        var hasMatchingValue = correctOptions.some(function (option) {
+          return option._selectValue === selectedOption;
+        });
+        console.log('hasMatchingValue', hasMatchingValue)
+        var noCorrectOptions = correctOptions.length === 0;
+        if (hasMatchingValue || noCorrectOptions) {
           self.handleCompleteTask(action);
           if (action._isSuccess) {
             var bodyData = {
@@ -409,7 +416,7 @@ define([
             componentID: this.model.get('componentID')
           }
           Adapt.trigger('simulationloadscreen', eventData);
-        } 
+        }
       }
     },
 
@@ -429,16 +436,19 @@ define([
               fieldsData[readableID] = selectedOption;
             }
             self.model.set('fieldsData', fieldsData);
-            var correctOption = action._selectOptions.filter(function (option) {
+            var correctOptions = action._selectOptions.filter(function (option) {
               return option._correctOption === true
-            })[0];
-            var correctOptionValue = correctOption ? correctOption._selectValue : selectedOption;
-            if (selectedOption === correctOptionValue) {
+            });
+            var hasMatchingValue = correctOptions.some(function (option) {
+              return option._selectValue === selectedOption;
+            });
+            var noCorrectOptions = correctOptions.length === 0;
+            if (hasMatchingValue || noCorrectOptions) {
               self.handleCompleteTask(action);
             }
           }  else if (action._actionType === 'checkbox') {
-            if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) || 
-            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) || 
+            if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) ||
+            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) ||
             action._checkboxMatchState == 'both') {
               self.handleCompleteTask(action);
             }
