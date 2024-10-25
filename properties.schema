@@ -516,10 +516,6 @@
                                   {
                                     "name": "_matchUsingDate",
                                     "value": "false"
-                                  },
-                                  {
-                                    "name": "_matchRegex",
-                                    "value": "false"
                                   }
                                 ]
                               }
@@ -584,10 +580,6 @@
                               "help": "Use regex expression as match text",
                               "conditions": {
                                 "and": [
-                                  {
-                                    "name": "_caseInsensitive",
-                                    "value": "false"
-                                  },
                                   {
                                     "name": "_matchEmptyString",
                                     "value": "false"
@@ -1284,10 +1276,6 @@
                             {
                               "name": "_matchUsingDate",
                               "value": "false"
-                            },
-                            {
-                              "name": "_matchRegex",
-                              "value": "false"
                             }
                           ]
                         }
@@ -1352,10 +1340,6 @@
                         "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns.",
                         "conditions": {
                           "and": [
-                            {
-                              "name": "_caseInsensitive",
-                              "value": "false"
-                            },
                             {
                               "name": "_matchEmptyString",
                               "value": "false"
