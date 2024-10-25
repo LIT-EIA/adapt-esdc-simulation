@@ -774,6 +774,7 @@ define([
         var caseInsensitive = criteria._caseInsensitive;
         var matchRegex = criteria._matchRegex;
         var matchEmptyString = criteria._matchEmptyString;
+        var matchNotEmptyString = criteria._matchNotEmptyString;
         var matchUsingDate = criteria._matchUsingDate;
 
         if (matchRegex) {
@@ -786,6 +787,10 @@ define([
         } else {
           if (matchEmptyString) {
             if (inputString === '') {
+              matched = true;
+            }
+          } else if (matchNotEmptyString) {
+            if (inputString !== '') {
               matched = true;
             }
           } else if (caseInsensitive) {
