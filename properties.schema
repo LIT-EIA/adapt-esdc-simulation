@@ -842,7 +842,15 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "noListTitle": true,
-                        "help": "Selecting this option will add this action to the list of tasks shown to learners"
+                        "help": "Selecting this option will add this action to the list of tasks shown to learners",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "!value": "submit"
+                            }
+                          ]
+                        }
                       },
                       "_taskLabel": {
                         "type": "string",
@@ -859,6 +867,10 @@
                             {
                               "name": "_trackAsTask",
                               "value": "true"
+                            },
+                            {
+                              "name": "_actionType",
+                              "!value": "submit"
                             }
                           ]
                         }
@@ -1029,7 +1041,7 @@
                   "type": "string",
                   "required": true,
                   "default": "click",
-                  "title": "Type of action",
+                  "title": "Type of navigation action",
                   "noListTitle": true,
                   "inputType": {
                     "type": "Select",
@@ -1082,13 +1094,12 @@
                 "_inputType": {
                   "type": "string",
                   "required": true,
-                  "default": "text",
+                  "default": "datepicker",
                   "title": "Type of input action",
                   "noListTitle": true,
                   "inputType": {
                     "type": "Select",
                     "options": [
-                      "text",
                       "datepicker"
                     ]
                   },
@@ -1123,53 +1134,6 @@
                       }
                     ],
                     "and": [
-                      {
-                        "name": "_isForm",
-                        "value": "false"
-                      }
-                    ]
-                  }
-                },
-                "_characterCounter": {
-                  "type": "boolean",
-                  "required": false,
-                  "default": false,
-                  "title": "Add a character counter",
-                  "inputType": "Checkbox",
-                  "validators": [],
-                  "noListTitle": true,
-                  "help": "Selecting this will add a character counter under the input box. Make sure there is sufficient space on your image.",
-                  "conditions": {
-                    "and": [
-                      {
-                        "name": "_actionType",
-                        "value": "input"
-                      },
-                      {
-                        "name": "_isForm",
-                        "value": "false"
-                      }
-                    ]
-                  }
-                },
-                "_characterCounterLimit": {
-                  "type": "number",
-                  "default": 500,
-                  "inputType": "Number",
-                  "title": "Character counter limit",
-                  "noListTitle": true,
-                  "help": "Limit size of text that will be accepted in the input field",
-                  "validators": [],
-                  "conditions": {
-                    "and": [
-                      {
-                        "name": "_actionType",
-                        "value": "input"
-                      },
-                      {
-                        "name": "_characterCounter",
-                        "value": "true"
-                      },
                       {
                         "name": "_isForm",
                         "value": "false"
@@ -1323,98 +1287,7 @@
                         "conditions": {
                           "and": [
                             {
-                              "name": "_matchEmptyString",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchNotEmptyString",
-                              "value": "false"
-                            },
-                            {
                               "name": "_matchUsingDate",
-                              "value": "false"
-                            }
-                          ]
-                        }
-                      },
-                      "_caseInsensitive": {
-                        "type": "boolean",
-                        "required": false,
-                        "default": false,
-                        "title": "Case insensitive",
-                        "inputType": "Checkbox",
-                        "validators": [],
-                        "help": "The text will match no matter if uppercase or lower case",
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_matchEmptyString",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchNotEmptyString",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchUsingDate",
-                              "value": "false"
-                            }
-                          ]
-                        }
-                      },
-                      "_matchEmptyString": {
-                        "type": "boolean",
-                        "required": false,
-                        "default": false,
-                        "title": "Match empty string",
-                        "inputType": "Checkbox",
-                        "validators": [],
-                        "help": "The text will match only if field is left empty",
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_caseInsensitive",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchUsingDate",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchRegex",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchNotEmptyString",
-                              "value": "false"
-                            }
-                          ]
-                        }
-                      },
-                      "_matchNotEmptyString": {
-                        "type": "boolean",
-                        "required": false,
-                        "default": false,
-                        "title": "Match not-empty string",
-                        "inputType": "Checkbox",
-                        "validators": [],
-                        "help": "The text will match as long as it's not left empty",
-                        "conditions": {
-                          "and": [
-                            {
-                              "name": "_caseInsensitive",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchUsingDate",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchRegex",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchEmptyString",
                               "value": "false"
                             }
                           ]
@@ -1430,18 +1303,6 @@
                         "help": "Match using today's date (yyyy-mm-dd)",
                         "conditions": {
                           "and": [
-                            {
-                              "name": "_caseInsensitive",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchEmptyString",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchNotEmptyString",
-                              "value": "false"
-                            },
                             {
                               "name": "_matchRegex",
                               "value": "false"
@@ -1459,14 +1320,6 @@
                         "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns.",
                         "conditions": {
                           "and": [
-                            {
-                              "name": "_matchEmptyString",
-                              "value": "false"
-                            },
-                            {
-                              "name": "_matchNotEmptyString",
-                              "value": "false"
-                            },
                             {
                               "name": "_matchUsingDate",
                               "value": "false"
