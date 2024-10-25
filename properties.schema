@@ -216,13 +216,13 @@
                         "validators": ["required"],
                         "help": "Title",
                         "translatable": true,
-                        "title": "Element Name"
+                        "title": "Form Element Name"
                       },
                       "_actionType": {
                         "type": "string",
                         "required": true,
                         "default": "submit",
-                        "title": "Type of action",
+                        "title": "Type of form action",
                         "noListTitle": true,
                         "inputType": {
                           "type": "Select",
@@ -318,10 +318,6 @@
                             {
                               "name": "_actionType",
                               "value": "input"
-                            },
-                            {
-                              "name": "_isForm",
-                              "value": "false"
                             }
                           ]
                         }
@@ -343,10 +339,6 @@
                             {
                               "name": "_characterCounter",
                               "value": "true"
-                            },
-                            {
-                              "name": "_isForm",
-                              "value": "false"
                             }
                           ]
                         }
@@ -470,7 +462,7 @@
                       "_matchTextItems": {
                         "type": "array",
                         "required": true,
-                        "title": "Match Text",
+                        "title": "Match Items",
                         "noListTitle": true,
                         "validators": [],
                         "items": {
@@ -483,13 +475,17 @@
                               "default": "",
                               "inputType": "Text",
                               "validators": [],
-                              "help": "Title",
+                              "help": "Text to match or regular expression (regex)",
                               "translatable": true,
                               "title": "Text To Match",
                               "conditions": {
                                 "and": [
                                   {
                                     "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchNotEmptyString",
                                     "value": "false"
                                   },
                                   {
@@ -511,6 +507,10 @@
                                 "and": [
                                   {
                                     "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchNotEmptyString",
                                     "value": "false"
                                   },
                                   {
@@ -541,6 +541,39 @@
                                   {
                                     "name": "_matchRegex",
                                     "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchNotEmptyString",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
+                            },
+                            "_matchNotEmptyString": {
+                              "type": "boolean",
+                              "required": false,
+                              "default": false,
+                              "title": "Match not-empty string",
+                              "inputType": "Checkbox",
+                              "validators": [],
+                              "help": "The text will match as long as it's not left empty",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchRegex",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
                                   }
                                 ]
                               }
@@ -564,6 +597,10 @@
                                     "value": "false"
                                   },
                                   {
+                                    "name": "_matchNotEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
                                     "name": "_matchRegex",
                                     "value": "false"
                                   }
@@ -582,6 +619,10 @@
                                 "and": [
                                   {
                                     "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchNotEmptyString",
                                     "value": "false"
                                   },
                                   {
@@ -1080,6 +1121,12 @@
                         "name": "_actionType",
                         "value": "input,select"
                       }
+                    ],
+                    "and": [
+                      {
+                        "name": "_isForm",
+                        "value": "false"
+                      }
                     ]
                   }
                 },
@@ -1097,6 +1144,10 @@
                       {
                         "name": "_actionType",
                         "value": "input"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
                       }
                     ]
                   }
@@ -1118,6 +1169,10 @@
                       {
                         "name": "_characterCounter",
                         "value": "true"
+                      },
+                      {
+                        "name": "_isForm",
+                        "value": "false"
                       }
                     ]
                   }
@@ -1249,7 +1304,7 @@
                 "_matchTextItems": {
                   "type": "array",
                   "required": true,
-                  "title": "Match Text",
+                  "title": "Match Items",
                   "noListTitle": true,
                   "validators": [],
                   "items": {
@@ -1272,6 +1327,10 @@
                               "value": "false"
                             },
                             {
+                              "name": "_matchNotEmptyString",
+                              "value": "false"
+                            },
+                            {
                               "name": "_matchUsingDate",
                               "value": "false"
                             }
@@ -1290,6 +1349,10 @@
                           "and": [
                             {
                               "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchNotEmptyString",
                               "value": "false"
                             },
                             {
@@ -1320,6 +1383,39 @@
                             {
                               "name": "_matchRegex",
                               "value": "false"
+                            },
+                            {
+                              "name": "_matchNotEmptyString",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "_matchNotEmptyString": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Match not-empty string",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "The text will match as long as it's not left empty",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_caseInsensitive",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchRegex",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchEmptyString",
+                              "value": "false"
                             }
                           ]
                         }
@@ -1343,6 +1439,10 @@
                               "value": "false"
                             },
                             {
+                              "name": "_matchNotEmptyString",
+                              "value": "false"
+                            },
+                            {
                               "name": "_matchRegex",
                               "value": "false"
                             }
@@ -1361,6 +1461,10 @@
                           "and": [
                             {
                               "name": "_matchEmptyString",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchNotEmptyString",
                               "value": "false"
                             },
                             {
