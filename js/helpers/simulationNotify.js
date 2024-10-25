@@ -36,7 +36,7 @@ define([
         _type: 'popup',
         _isCancellable: true,
         _showCloseButton: true,
-        _closeOnShadowClick: true,
+        _closeOnShadowClick: false,
       });
 
       if (notifyObject._type === 'push') {
