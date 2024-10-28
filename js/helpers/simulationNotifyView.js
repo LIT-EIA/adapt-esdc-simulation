@@ -2,8 +2,15 @@ define([
   'core/js/adapt',
   'core/js/views/notifyView'
 ], function (Adapt, NotifyView) {
-  
+
   var SimulationNotifyView = NotifyView.extend({
+
+    className: function () {
+      var classes = 'simulation-notify notify ';
+      classes += (this.model.get('_classes') || '');
+      return classes;
+    },
+
     render: function () {
       var data = this.model.toJSON();
       var template = Handlebars.templates.notify;

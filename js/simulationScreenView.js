@@ -739,7 +739,9 @@ define([
       var simulationDefaultFocusOutlineWidth = this.model.get('simulationDefaultFocusOutlineWidth');
       var outlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
       var newOutlineSize = outlineRatio * simulationWrapperCurrentWidth;
-      componentDiv.css(`--simulation-outline-width`, newOutlineSize) + 'px!important';
+      var newOutlineInsetSize = newOutlineSize * -1;
+      componentDiv.css(`--simulation-outline-width`, newOutlineSize);
+      componentDiv.css(`--simulation-outline-inset-width`, newOutlineInsetSize);
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;
