@@ -400,7 +400,7 @@ define([
             self.handleConfirmSuccess(componentID);
           });
         } else if (action._isFailure) {
-          var failureBody = action.matchFailure ? action.matchFailure : this.model.get('incorrectFallback');
+          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
           Adapt.trigger('simulation-notify:prompt', {
             body: failureBody,
             _prompts: [
