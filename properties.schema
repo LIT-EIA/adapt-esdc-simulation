@@ -1498,29 +1498,6 @@
                     ]
                   }
                 },
-                "checkboxFailure": {
-                  "type": "string",
-                  "required": false,
-                  "default": "",
-                  "inputType": "TextArea",
-                  "validators": [],
-                  "help": "Body text displayed as failure message",
-                  "translatable": true,
-                  "title": "Checkbox Failure Message",
-                  "noListTitle": true,
-                  "conditions": {
-                    "and": [
-                      {
-                        "name": "_actionType",
-                        "value": "checkbox"
-                      },
-                      {
-                        "name": "_isForm",
-                        "value": "false"
-                      }
-                    ]
-                  }
-                },
                 "_trackAsTask": {
                   "type": "boolean",
                   "required": false,
