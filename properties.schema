@@ -768,6 +768,10 @@
                             {
                               "name": "_actionType",
                               "value": "checkbox"
+                            },
+                            {
+                              "name": "_checkboxWithPrevious",
+                              "value": "false"
                             }
                           ]
                         }
@@ -1463,6 +1467,10 @@
                       },
                       {
                         "name": "_isForm",
+                        "value": "false"
+                      },
+                      {
+                        "name": "_checkboxWithPrevious",
                         "value": "false"
                       }
                     ]
