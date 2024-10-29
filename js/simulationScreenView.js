@@ -25,7 +25,6 @@ define([
       var prefilledTemplateOptions = this.model.get('fieldsData');
       this.componentID = this.model.get('componentID');
       var _childItems = this.model.get('_childItems');
-      var acceptedCheckboxValues = ['true', true, '1', 1, 'on', 'checked', 'false', false, 'off', 'unchecked'];
       _childItems.forEach(function (action, index) {
         var childIndex = index;
         var child = _childItems[childIndex];
@@ -383,6 +382,14 @@ define([
         }
       } else if (action._actionType === 'checkbox') {
 
+        var checkboxState = $(e.target).prop('checked') ? 'checked' : 'unchecked';;
+        var fieldsData = this.model.get('fieldsData');
+        var readableID = self.stringToCamelCase(action.title);
+        if (checkboxState) {
+          fieldsData[readableID] = checkboxState;
+        }
+        self.model.set('fieldsData', fieldsData);
+
         // This block of code (_isSuccess, ) is repetitive, maybe we can create a function instead
         if (action._isSuccess) {
           var bodyData = {
@@ -410,6 +417,7 @@ define([
             ],
             onCloseRefocusEl: $(e.target)
           });
+          $(e.target).prop('checked', !(checkboxState === 'checked'))
         } else {
           var eventData = {
             id: action._goTo,
