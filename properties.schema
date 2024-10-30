@@ -4,20 +4,84 @@
   "id": "http://jsonschema.net",
   "$ref": "http://localhost/plugins/content/component/model.schema",
   "globals": {
-    "ariaRegion": {
-      "type": "string",
-      "required": true,
-      "default": "Simulation with input, select and button areas.",
-      "inputType": "Text",
-      "validators": [],
-      "translatable": true
-    },
-    "startSimulationText": {
+    "simulationWindow": {
+      "title": "Simulation Window Aria Region",
       "type": "string",
       "required": false,
-      "default": "Start Simulation",
+      "default": "",
       "inputType": "Text",
       "validators": [],
+      "placeholder": "Simulation Window / Fenêtre de simulation",
+      "translatable": true
+    },
+    "simulationControls": {
+      "title": "Control Bar Aria Region",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Simulation Controls / Contrôles de simulation",
+      "translatable": true
+    },
+    "startSimulation": {
+      "title": "Start Simulation Button Text",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Start Simulation / Commencer la simulation",
+      "translatable": true
+    },
+    "goBack": {
+      "title": "Go Back Button Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Go Back / Retour",
+      "translatable": true
+    },
+    "showInstructions": {
+      "title": "Show Instructions Button Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Show Instructions / Afficher les instructions",
+      "translatable": true
+    },
+    "exitSimulation": {
+      "title": "Exit Simulation Button Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Exit Simulation / Quitter la simulation",
+      "translatable": true
+    },
+    "fullScreen": {
+      "title": "Full Screen Button Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Full Screen / Plein écran",
+      "translatable": true
+    },
+    "mobileMessage": {
+      "title": "Error Message On Mobile Devices",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "This activity simulates a desktop experience and will require a larger monitor to complete. / Cette activité simule l'expérience d'un ordinateur de bureau et nécessite un écran plus grand pour être réalisée.",
       "translatable": true
     }
   },
