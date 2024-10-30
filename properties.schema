@@ -984,7 +984,11 @@
                             },
                             {
                               "name": "_isFailure",
-                              "!value": "true"
+                              "value": "false"
+                            },
+                            {
+                              "name": "_isSuccess",
+                              "value": "false"
                             }
                           ]
                         }
@@ -1659,7 +1663,11 @@
                     "and": [
                       {
                         "name": "_isSuccess",
-                        "!value": "true"
+                        "value": "false"
+                      },
+                      {
+                        "name": "_isFailure",
+                        "value": "false"
                       }
                     ]
                   }
