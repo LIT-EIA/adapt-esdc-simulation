@@ -10,7 +10,8 @@ define(function () {
       "adapt-simulation-show-instructions": globals.showInstructions,
       "adapt-simulation-exit": globals.exitSimulation,
       "adapt-simulation-full-screen": globals.fullScreen,
-      "adapt-simulation-mobile-message": globals.mobileMessage
+      "adapt-simulation-mobile-message": globals.mobileMessage,
+      "adapt-simulation-remaining-characters": globals.remainingCharacters
     }
   }
 

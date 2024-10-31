@@ -9,7 +9,8 @@ define(function () {
       "adapt-simulation-show-instructions": "Show Instructions",
       "adapt-simulation-exit": "Exit Simulation",
       "adapt-simulation-full-screen": "Full Screen",
-      "adapt-simulation-mobile-message": "This activity simulates a desktop experience and will require a larger monitor to complete."
+      "adapt-simulation-mobile-message": "This activity simulates a desktop experience and will require a larger monitor to complete.",
+      "adapt-simulation-remaining-characters": "{{_characterCounterLimit}} remaining characters"
     }
   }
 

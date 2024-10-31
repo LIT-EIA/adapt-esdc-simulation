@@ -525,8 +525,10 @@ define([
         var charactersLength = inputString.length;
         var charactersLimit = options.action._characterCounterLimit
         var charactersLeft = charactersLimit - charactersLength;
-        var counterElement = $(`div[data-adapt-id="${this.componentID}"] .action-container [counter-data-id="${options.action.id}"] span.character-count`);
-        counterElement.text(charactersLeft).toggleClass('zero-character', charactersLeft === 0);
+        var counterElement = $(`div[data-adapt-id="${this.componentID}"] .action-container [counter-data-id="${options.action.id}"]`);
+        var data = { _characterCounterLimit: charactersLeft };
+        var charactersLeftString = $.i18n.translate('adapt-simulation-remaining-characters', {data})
+        counterElement.text(charactersLeftString).toggleClass('zero-character', charactersLeft === 0);
       }
     },
 
