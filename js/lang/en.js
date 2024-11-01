@@ -10,7 +10,10 @@ define(function () {
       "adapt-simulation-exit": "Exit Simulation",
       "adapt-simulation-full-screen": "Full Screen",
       "adapt-simulation-mobile-message": "This activity simulates a desktop experience and will require a larger monitor to complete.",
-      "adapt-simulation-remaining-characters": "{{_characterCounterLimit}} remaining characters"
+      "adapt-simulation-remaining-characters": "{{_characterCounterLimit}} remaining characters",
+      "adapt-simulation-issues-detected": "Issues detected with the following fields:",
+      "adapt-simulation-you-have-entered": "You have entered: \"{{userValue}}\"",
+      "adapt-simulation-you-have-not-entered": "You have not entered anything"
     }
   }
 

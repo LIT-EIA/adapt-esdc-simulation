@@ -93,6 +93,36 @@
       "validators": [],
       "placeholder": "{{_characterCounterLimit}} remaining characters / {{_characterCounterLimit}} caractères restant",
       "translatable": true
+    },
+    "issuesDetected": {
+      "title": "Issues Detected in Form Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Issues detected with the following fields: / Problèmes détectés dans les champs suivants :",
+      "translatable": true
+    },
+    "youEntered": {
+      "title": "User Input Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "You have entered: \"{{userValue}}\" / Vous avez saisi : « {{userValue}} »",
+      "translatable": true
+    },
+    "notEntered": {
+      "title": "User No-Input Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "You have not entered anything / Vous n'avez rien saisi",
+      "translatable": true
     }
   },
   "properties": {

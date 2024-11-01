@@ -11,7 +11,10 @@ define(function () {
       "adapt-simulation-exit": globals.exitSimulation,
       "adapt-simulation-full-screen": globals.fullScreen,
       "adapt-simulation-mobile-message": globals.mobileMessage,
-      "adapt-simulation-remaining-characters": globals.remainingCharacters
+      "adapt-simulation-remaining-characters": globals.remainingCharacters,
+      "adapt-simulation-issues-detected": globals.issuesDetected,
+      "adapt-simulation-you-have-entered": globals.youEntered,
+      "adapt-simulation-you-have-not-entered": globals.notEntered
     }
   }
 
