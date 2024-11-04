@@ -417,7 +417,11 @@ define([
             ],
             onCloseRefocusEl: $(e.target)
           });
-          $(e.target).prop('checked', !(checkboxState === 'checked'))
+          $(e.target).prop('checked', !(checkboxState === 'checked'));
+          if (checkboxState) {
+            fieldsData[readableID] = checkboxState === 'checked' ? 'unchecked' : 'checked';
+          }
+          self.model.set('fieldsData', fieldsData);
         } else {
           var eventData = {
             id: action._goTo,
