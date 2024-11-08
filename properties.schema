@@ -171,7 +171,7 @@
       "inputType": "Checkbox",
       "validators": [],
       "title": "Set Completion On Mobile",
-      "help": "Set completion in view when on mobile displays"
+      "help": "Set completion \"In View\" when on mobile displays"
     },
     "_incorrectFallback": {
       "type": "string",
@@ -801,7 +801,7 @@
                               "title": "Selected by default",
                               "inputType": "Checkbox",
                               "validators": [],
-                              "help": "Selecting this option will make this option the option selected by default, otherwise the first option will be selected."
+                              "help": "Selecting this option will make it the option selected by default, otherwise the first option will be selected."
                             }
                           }
                         },
