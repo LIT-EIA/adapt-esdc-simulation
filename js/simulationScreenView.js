@@ -751,11 +751,20 @@ define([
       var simulationWrapperCurrentWidth = componentDiv.find('.simulation-wrapper').width();
       var simulationWrapperDefaultWidth = this.model.get('simulationWrapperDefaultWidth');
       var simulationDefaultFocusOutlineWidth = this.model.get('simulationDefaultFocusOutlineWidth');
-      var outlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
-      var newOutlineSize = outlineRatio * simulationWrapperCurrentWidth;
+      var simulationButtonFocusOutlineWidth = simulationDefaultFocusOutlineWidth - 1;
+      var simulationButtonFocusGradientWidth = simulationDefaultFocusOutlineWidth + 1;
+      var defaultOutlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;      var defaultOutilneRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
+      var buttonOutlineRatio = simulationButtonFocusOutlineWidth / simulationWrapperDefaultWidth;
+      var buttonGradientRatio = simulationButtonFocusGradientWidth / simulationWrapperDefaultWidth;
+      var newOutlineSize = defaultOutlineRatio * simulationWrapperCurrentWidth;
+      var newButtonOutlineSize = buttonOutlineRatio * simulationWrapperCurrentWidth;
+      var newButtonGradientSize = buttonGradientRatio * simulationWrapperCurrentWidth;
       var newOutlineInsetSize = newOutlineSize * -1;
+      var newButtonOutlineInsetSize = newButtonOutlineSize * -1;
       componentDiv.css(`--simulation-outline-width`, newOutlineSize);
       componentDiv.css(`--simulation-outline-inset-width`, newOutlineInsetSize);
+      componentDiv.css(`--simulation-outline-button-inset-width`, newButtonOutlineInsetSize);
+      componentDiv.css(`--simulation-outline-button-gradient-size`, newButtonGradientSize);
       var _childItems = this.model.get('_childItems');
       _childItems.forEach(function (action, index) {
         var childIndex = index;
