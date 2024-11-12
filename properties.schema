@@ -124,7 +124,7 @@
       "placeholder": "You have left this field empty / Vous avez laissé ce champ vide",
       "translatable": true
     },
-    "adapt-simulation-no-option-selected": {
+    "noOptionSelected": {
       "title": "User No-Dropdown Label",
       "type": "string",
       "required": false,
