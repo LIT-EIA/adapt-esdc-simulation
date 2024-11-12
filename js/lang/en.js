@@ -13,7 +13,8 @@ define(function () {
       "adapt-simulation-remaining-characters": "{{_characterCounterLimit}} remaining characters",
       "adapt-simulation-issues-detected": "Issues detected with the following fields:",
       "adapt-simulation-you-have-entered": "You have entered: \"{{userValue}}\"",
-      "adapt-simulation-you-have-not-entered": "You have not entered anything"
+      "adapt-simulation-you-have-left-input-empty": "You have left this field empty",
+      "adapt-simulation-no-option-selected": "No option has been selected"
     }
   }
 

@@ -114,14 +114,24 @@
       "placeholder": "You have entered: \"{{userValue}}\" / Vous avez saisi : « {{userValue}} »",
       "translatable": true
     },
-    "notEntered": {
+    "inputEmpty": {
       "title": "User No-Input Label",
       "type": "string",
       "required": false,
       "default": "",
       "inputType": "Text",
       "validators": [],
-      "placeholder": "You have not entered anything / Vous n'avez rien saisi",
+      "placeholder": "You have left this field empty / Vous avez laissé ce champ vide",
+      "translatable": true
+    },
+    "adapt-simulation-no-option-selected": {
+      "title": "User No-Dropdown Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "No option has been selected / Aucune option n'a été sélectionnée",
       "translatable": true
     }
   },

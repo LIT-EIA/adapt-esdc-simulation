@@ -2,7 +2,17 @@
 
 {{#each errors}}
   <strong>{{name}}</strong>
-  <span class="user-input-feedback"><em>{{#if userValue}}{{t 'adapt-simulation-you-have-entered' this }}{{else}}{{t 'adapt-simulation-you-have-not-entered'}}{{/if}}</em></span>
+  <span class="user-input-feedback"><em>
+    {{#if userValue}}
+      {{t 'adapt-simulation-you-have-entered' this }}
+    {{else}}
+      {{#if type.input}}
+        {{t 'adapt-simulation-you-have-left-input-empty'}}
+      {{/if}}
+      {{#if type.select}}
+        {{t 'adapt-simulation-no-option-selected'}}
+      {{/if}}
+    {{/if}}</em></span>
   <p>{{{message}}}</p>
   <br>
 {{/each}}

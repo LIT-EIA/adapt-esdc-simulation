@@ -13,7 +13,8 @@ define(function () {
       "adapt-simulation-remaining-characters": "{{_characterCounterLimit}} caractères restant",
       "adapt-simulation-issues-detected": "Problèmes détectés dans les champs suivants :",
       "adapt-simulation-you-have-entered": "Vous avez saisi : « {{userValue}} »",
-      "adapt-simulation-you-have-not-entered": "Vous n'avez rien saisi"
+      "adapt-simulation-you-have-left-input-empty": "Vous avez laissé ce champ vide",
+      "adapt-simulation-no-option-selected": "Aucune option n'a été sélectionnée"
 
     }
   }

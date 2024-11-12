@@ -207,6 +207,7 @@ define([
           var isMatched = self.matchString(inputString, criteriaList);
           if (!isMatched) {
             errors.push({
+              type: action.type,
               name: action.title,
               message: action.matchFailure || self.model.get('incorrectFallback'),
               userValue: fieldValue
@@ -223,6 +224,7 @@ define([
           var noCorrectOptions = correctOptions.length === 0;
           if (!hasMatchingValue && !noCorrectOptions) {
             errors.push({
+              type: action.type,
               name: action.title,
               message: action.selectFailure || self.model.get('incorrectFallback'),
               userValue: fieldValue
@@ -232,6 +234,7 @@ define([
           if ((action._checkboxMatchState == 'checked' && !$(this).prop('checked')) ||
             (action._checkboxMatchState == 'unchecked' && $(this).prop('checked'))) {
             errors.push({
+              type: action.type,
               name: action.title,
               message: action.checkboxFailure || self.model.get('incorrectFallback'),
               userValue: $(this).prop('checked') ? 'checked' : 'unchecked'

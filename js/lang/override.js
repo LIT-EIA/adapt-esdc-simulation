@@ -14,7 +14,8 @@ define(function () {
       "adapt-simulation-remaining-characters": globals.remainingCharacters,
       "adapt-simulation-issues-detected": globals.issuesDetected,
       "adapt-simulation-you-have-entered": globals.youEntered,
-      "adapt-simulation-you-have-not-entered": globals.notEntered
+      "adapt-simulation-you-have-left-input-empty": globals.inputEmpty,
+      "adapt-simulation-no-option-selected": globals.noOptionSelected
     }
   }
 
