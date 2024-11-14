@@ -161,6 +161,7 @@ define([
           $(e.target).removeClass('full-screen-style');
         }
         self.adjustTaskListWidth();
+        self.adjustTaskScroll();
       }
       document.addEventListener('fullscreenchange', handleFullScreenChange);
       document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
@@ -187,6 +188,16 @@ define([
       var maxWidthSticky = taskWidthSticky - 35;
       var maxWidth = maxWidthNormal >= 400 ? maxWidthNormal : maxWidthSticky;
       label.css('max-width', maxWidth + 'px');
+    },
+
+    adjustTaskScroll: function () {
+      var currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current')[0];
+      var currentTask = currentStickyTaskWrapper.find('.current-task')[0];
+      if (currentTask) {
+        currentStickyTaskWrapper.scrollTo({
+          top: currentTask.offsetTop
+        })
+      }
     },
 
     listenToResize: function () {
