@@ -39,6 +39,7 @@
         outline-width: var(--simulation-outline-width) !important;
         outline-color: #CD1C6A !important;
         outline-style: solid !important;
+        filter: blur(0px) !important;
     }
 
     .full-screen-style {
@@ -372,10 +373,10 @@
                 background: transparent;
                 cursor: pointer;
                 position: absolute;
-                transition: all 0.3s;
+                transition: box-shadow 0.3s;
+                filter: blur(4px);
                 &:hover {
                     box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05), 0 3px 6px rgba(0, 0, 0, 0.2);
-                    filter: blur(4px);
                 }
             }
 
