@@ -183,7 +183,7 @@ define([
       var formId = $(form).attr('data-id');
       var formModel = this.model.get('_childItems').find(item => item.id === formId);
       var formActions = formModel._form;
-      var elements = $(form).find('input, select');
+      var elements = $(form).find('input, select, textarea');
 
       var submitId = $(e.target).attr('data-id');
       var submitAction = formActions.find(item => item.id === submitId);
@@ -201,7 +201,7 @@ define([
         if (fieldValue) {
           fieldsData[readableID] = fieldValue;
         }
-        if (action._actionType === 'input') {
+        if (['input', 'textarea'].includes(action._actionType)) {
           var inputString = fieldValue;
           var criteriaList = action._matchTextItems;
           var isMatched = self.matchString(inputString, criteriaList);
