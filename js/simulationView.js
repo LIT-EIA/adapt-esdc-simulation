@@ -351,6 +351,8 @@ define([
             task.find('.completed-task').empty();
           });
 
+          if (taskList.length < 1) return;
+
           const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
           currentStickyTaskWrapper[0].scrollTo({ top: 0 });
           currentStickyTaskWrapper.addClass('sticky');
