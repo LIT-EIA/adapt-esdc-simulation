@@ -132,6 +132,7 @@ define([
     },
 
     postRender: function () {
+      this.setScroll();
       this.setSelectFields();
       this.setCheckboxFields();
       this.setIndicator();
@@ -461,10 +462,10 @@ define([
             if (hasMatchingValue || noCorrectOptions) {
               self.handleCompleteTask(action);
             }
-          }  else if (action._actionType === 'checkbox') {
+          } else if (action._actionType === 'checkbox') {
             if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) ||
-            (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) ||
-            action._checkboxMatchState == 'both') {
+              (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) ||
+              action._checkboxMatchState == 'both') {
               self.handleCompleteTask(action);
             }
           }
@@ -534,7 +535,7 @@ define([
         var charactersLeft = charactersLimit - charactersLength;
         var counterElement = $(`div[data-adapt-id="${this.componentID}"] .action-container [counter-data-id="${options.action.id}"]`);
         var data = { _characterCounterLimit: charactersLeft };
-        var charactersLeftString = $.i18n.translate('adapt-simulation-remaining-characters', {data})
+        var charactersLeftString = $.i18n.translate('adapt-simulation-remaining-characters', { data })
         counterElement.text(charactersLeftString).toggleClass('zero-character', charactersLeft === 0);
       }
     },
@@ -697,12 +698,14 @@ define([
       return firstTask
     },
 
-    setIndicator: function () {
-      var task = this.getFirstScreenTask();
-      if (task) {
-        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
-        var taskWrapper = taskElement.parent();
-        taskWrapper.addClass('indicator');
+    setScroll: function () {
+      var focusOnElement = this.model.get('focusOnElement');
+      if (!focusOnElement) {
+        var simulationWidget = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget`);
+        var simulationWidgetWrapper = simulationWidget[0];
+        var offset = simulationWidget.offset().top - 100;
+        window.scrollTo({ top: offset });
+        simulationWidgetWrapper.scrollTo({top: 0});
       }
     },
 
@@ -749,6 +752,15 @@ define([
       });
     },
 
+    setIndicator: function () {
+      var task = this.getFirstScreenTask();
+      if (task) {
+        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
+        var taskWrapper = taskElement.parent();
+        taskWrapper.addClass('indicator');
+      }
+    },
+
     adjustFontSize: function () {
       var componentDiv = $(`div[data-adapt-id="${this.componentID}"]`);
       var simulationWrapperCurrentWidth = componentDiv.find('.simulation-wrapper').width();
@@ -756,7 +768,7 @@ define([
       var simulationDefaultFocusOutlineWidth = this.model.get('simulationDefaultFocusOutlineWidth');
       var simulationButtonFocusOutlineWidth = simulationDefaultFocusOutlineWidth - 1;
       var simulationButtonFocusGradientWidth = simulationDefaultFocusOutlineWidth + 1;
-      var defaultOutlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;      var defaultOutilneRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
+      var defaultOutlineRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth; var defaultOutilneRatio = simulationDefaultFocusOutlineWidth / simulationWrapperDefaultWidth;
       var buttonOutlineRatio = simulationButtonFocusOutlineWidth / simulationWrapperDefaultWidth;
       var buttonGradientRatio = simulationButtonFocusGradientWidth / simulationWrapperDefaultWidth;
       var newOutlineSize = defaultOutlineRatio * simulationWrapperCurrentWidth;

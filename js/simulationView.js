@@ -162,6 +162,7 @@ define([
         }
         self.adjustTaskListWidth();
         self.adjustTaskScroll();
+        self.adjustPageScroll();
       }
       document.addEventListener('fullscreenchange', handleFullScreenChange);
       document.addEventListener('webkitfullscreenchange', handleFullScreenChange);
@@ -192,12 +193,18 @@ define([
 
     adjustTaskScroll: function () {
       var currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current')[0];
-      var currentTask = currentStickyTaskWrapper.find('.current-task')[0];
+      var currentTask = $(currentStickyTaskWrapper).find('.current-task')[0];
       if (currentTask) {
         currentStickyTaskWrapper.scrollTo({
           top: currentTask.offsetTop
         })
       }
+    },
+
+    adjustPageScroll: function () {
+        var simulationWidget = this.$el.find('.simulation-widget');
+        var offset = simulationWidget.offset().top - 100;
+        window.scrollTo({ top: offset });
     },
 
     listenToResize: function () {
