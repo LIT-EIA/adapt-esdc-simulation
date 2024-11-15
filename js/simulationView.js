@@ -203,8 +203,10 @@ define([
 
     adjustPageScroll: function () {
         var simulationWidget = this.$el.find('.simulation-widget');
+        var simulationWidgetWrapper = simulationWidget[0];
         var offset = simulationWidget.offset().top - 100;
         window.scrollTo({ top: offset });
+        simulationWidgetWrapper.scrollTo({top: 0});
     },
 
     listenToResize: function () {
