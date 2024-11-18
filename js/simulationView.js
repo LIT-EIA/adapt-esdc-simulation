@@ -59,7 +59,7 @@ define([
                   screen.focusOnElement = screen._childItems[childIndex]._form[formIndex];
                 }
               };
-              if (screen._childItems[childIndex]._form[formIndex]._trackAsTask) {
+              if (screen._childItems[childIndex]._form[formIndex]._trackAsTask && screen._childItems[childIndex]._form[formIndex]._actionType !== 'submit') {
                 tasks.push(screen._childItems[childIndex]._form[formIndex]);
               };
               screen._childItems[childIndex]._form[formIndex].id = `screen-action-${index}-${childIndex}-${formIndex}`;
