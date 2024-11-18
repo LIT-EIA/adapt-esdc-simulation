@@ -210,7 +210,7 @@ define([
             errors.push({
               type: action.type,
               name: action.title,
-              message: action.matchFailure || self.model.get('incorrectFallback'),
+              message: action.matchFailure || $.i18n.translate('adapt-simulation-fallback-error'),
               userValue: fieldValue
             });
           }
@@ -227,7 +227,7 @@ define([
             errors.push({
               type: action.type,
               name: action.title,
-              message: action.selectFailure || self.model.get('incorrectFallback'),
+              message: action.selectFailure || $.i18n.translate('adapt-simulation-fallback-error'),
               userValue: fieldValue
             });
           }
@@ -237,7 +237,7 @@ define([
             errors.push({
               type: action.type,
               name: action.title,
-              message: action.checkboxFailure || self.model.get('incorrectFallback'),
+              message: action.checkboxFailure || $.i18n.translate('adapt-simulation-fallback-error'),
               userValue: $(this).prop('checked') ? 'checked' : 'unchecked'
             });
           }
@@ -289,7 +289,7 @@ define([
       var action = this.getActionModelById(actionId);
       if (action._actionType === 'click') {
         if (action._isFailure || action._isSuccess) {
-          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+          var failureBody = action._failureBody ? action._failureBody : $.i18n.translate('adapt-simulation-fallback-error');
           if (action._isSuccess) {
             self.handleCompleteTask(action);
             var bodyData = {
@@ -373,7 +373,7 @@ define([
             Adapt.trigger('simulationloadscreen', eventData);
           }
         } else {
-          var selectFailure = action.selectFailure ? action.selectFailure : this.model.get('incorrectFallback');
+          var selectFailure = action.selectFailure ? action.selectFailure : $.i18n.translate('adapt-simulation-fallback-error');
           Adapt.trigger('simulation-notify:prompt', {
             body: selectFailure,
             _prompts: [
@@ -411,7 +411,7 @@ define([
             self.handleConfirmSuccess(componentID);
           });
         } else if (action._isFailure) {
-          var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+          var failureBody = action._failureBody ? action._failureBody : $.i18n.translate('adapt-simulation-fallback-error');
           Adapt.trigger('simulation-notify:prompt', {
             body: failureBody,
             _prompts: [
@@ -506,7 +506,7 @@ define([
               self.handleConfirmSuccess(componentID);
             });
           } else if (action._isFailure) {
-            var failureBody = action._failureBody ? action._failureBody : this.model.get('incorrectFallback');
+            var failureBody = action._failureBody ? action._failureBody : $.i18n.translate('adapt-simulation-fallback-error');
             Adapt.trigger('simulation-notify:prompt', {
               body: failureBody,
               _prompts: [
@@ -642,6 +642,7 @@ define([
     },
 
     handleFallbackAction: function (e) {
+      /* DISABLED FOR NOW
       var target = $(e.target);
       if (target.hasClass('action-container')) {
         var focusElement = $(this.previousElement) || this.$el.find('.action-container');
@@ -660,6 +661,7 @@ define([
       } else {
         this.previousElement = document.activeElement;
       }
+      */
     },
 
     getActionModelById: function (actionId) {
