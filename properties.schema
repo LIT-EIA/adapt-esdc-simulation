@@ -94,6 +94,16 @@
       "placeholder": "{{_characterCounterLimit}} remaining characters / {{_characterCounterLimit}} caractères restant",
       "translatable": true
     },
+    "incorrectFallback": {
+      "title": "Incorrect Fallback Message",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Sorry, you did something wrong / Désolé, vous avez fait une erreur",
+      "translatable": true
+    },
     "issuesDetected": {
       "title": "Issues Detected in Form Label",
       "type": "string",
@@ -182,18 +192,6 @@
       "validators": [],
       "title": "Set Completion On Mobile",
       "help": "Set completion \"In View\" when on mobile displays"
-    },
-    "_incorrectFallback": {
-      "type": "string",
-      "title": "Incorrect Fallback Message",
-      "required": true,
-      "default": "You did something wrong.",
-      "inputType": "TextArea",
-      "validators": [
-        "required"
-      ],
-      "help": "Body text displayed as generic error message if left unedited - it is recommended you create specific error messages for all interactions.",
-      "translatable": true
     },
     "_items": {
       "type": "array",

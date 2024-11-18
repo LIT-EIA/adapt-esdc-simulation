@@ -14,7 +14,8 @@ define(function () {
       "adapt-simulation-issues-detected": "Issues detected with the following fields:",
       "adapt-simulation-you-have-entered": "You have entered: \"{{userValue}}\"",
       "adapt-simulation-you-have-left-input-empty": "You have left this field empty",
-      "adapt-simulation-no-option-selected": "No option has been selected"
+      "adapt-simulation-no-option-selected": "No option has been selected",
+      "adapt-simulation-fallback-error": "Sorry, you did something wrong"
     }
   }
 
