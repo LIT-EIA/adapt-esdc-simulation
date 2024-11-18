@@ -31,7 +31,17 @@
       "default": "",
       "inputType": "Text",
       "validators": [],
-      "placeholder": "Start Simulation / Commencer la simulation",
+      "placeholder": "Start Simulation / Débuter la simulation",
+      "translatable": true
+    },
+    "restartSimulation": {
+      "title": "Restart Simulation Button Text",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Restart Simulation / Redémarrer la simulation",
       "translatable": true
     },
     "goBack": {

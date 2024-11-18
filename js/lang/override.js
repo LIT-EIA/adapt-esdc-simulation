@@ -6,6 +6,7 @@ define(function () {
       "adapt-simulation-window": globals.simulationWindow,
       "adapt-simulation-controls": globals.simulationControls,
       "adapt-simulation-start-simulation": globals.startSimulation,
+      "adapt-simulation-restart-simulation": globals.restartSimulation,
       "adapt-simulation-go-back": globals.goBack,
       "adapt-simulation-show-instructions": globals.showInstructions,
       "adapt-simulation-exit": globals.exitSimulation,

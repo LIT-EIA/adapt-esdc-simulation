@@ -447,10 +447,14 @@ define([
       }
       var screenID = this.screens[0]._screenID;
       this.loadThumbnail({ id: screenID, componentID: this.componentID });
-      self.$el.find('.start-simulation').removeClass('display-none');
+      var startSimulationButton = self.$el.find('.start-simulation');
+      if(self.model.get('_isInteractionComplete')){
+        startSimulationButton.text($.i18n.translate('adapt-simulation-restart-simulation'));
+      }
       self.$el.find('.simulation-graphic').removeClass('sticky-margin');
       self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
-      self.$el.find('.start-simulation').focus();
+      startSimulationButton.removeClass('display-none');
+      startSimulationButton.focus();
     }
 
   });

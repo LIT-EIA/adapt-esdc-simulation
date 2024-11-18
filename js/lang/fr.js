@@ -4,7 +4,8 @@ define(function () {
     return {
       "adapt-simulation-window": "Fenêtre de simulation",
       "adapt-simulation-controls": "Contrôles de simulation",
-      "adapt-simulation-start-simulation": "Commencer la simulation",
+      "adapt-simulation-start-simulation": "Débuter la simulation",
+      "adapt-simulation-restart-simulation": "Redémarrer la simulation",
       "adapt-simulation-go-back": "Retour",
       "adapt-simulation-show-instructions": "Afficher les instructions",
       "adapt-simulation-exit": "Quitter la simulation",
