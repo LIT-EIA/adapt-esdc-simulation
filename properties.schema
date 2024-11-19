@@ -102,10 +102,11 @@
       "inputType": "Text",
       "validators": [],
       "placeholder": "{{_characterCounterLimit}} remaining characters / {{_characterCounterLimit}} caractères restant",
+      "help": "This is the label used for the character counters. Use {{_characterCounterLimit}} in your text to display the numbers of the remaining characters.",
       "translatable": true
     },
     "incorrectFallback": {
-      "title": "Incorrect Fallback Message",
+      "title": "Incorrect Feedback Fallback Message",
       "type": "string",
       "required": false,
       "default": "",
@@ -132,6 +133,7 @@
       "inputType": "Text",
       "validators": [],
       "placeholder": "You have entered: \"{{userValue}}\" / Vous avez saisi : « {{userValue}} »",
+      "help": "This is the label used to display what the user has entered in feedback. Use {{userValue}} in your text to display the their input.",
       "translatable": true
     },
     "inputEmpty": {
