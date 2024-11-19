@@ -554,7 +554,7 @@ define([
             var inputString = target.val();
             var criteriaList = action._matchTextItems;
             var isMatched = self.matchString(inputString, criteriaList);
-            if (isMatched) {
+            if (isMatched || criteriaList.length < 1) {
               self.handleCompleteTask(action);
             }
           }

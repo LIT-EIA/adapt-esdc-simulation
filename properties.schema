@@ -584,6 +584,7 @@
                         "type": "array",
                         "required": true,
                         "title": "Match Items",
+                        "help": "In this field, you can define conditions to validate the input. If no match items are specified, the input will automatically be marked as completed, regardless of the content entered, when the input is being tracked as a task.",
                         "noListTitle": true,
                         "validators": [],
                         "items": {
