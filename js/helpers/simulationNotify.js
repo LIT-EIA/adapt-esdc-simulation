@@ -16,18 +16,14 @@ define([
     initialize: function () {
       this.notifyPushes = new NotifyPushCollection();
       this.listenTo(Adapt, {
-        'simulation-notify:popup': this._deprecated.bind(this, 'popup'),
-        'simulation-notify:alert': this._deprecated.bind(this, 'alert'),
-        'simulation-notify:prompt': this._deprecated.bind(this, 'prompt'),
-        'simulation-notify:push': this._deprecated.bind(this, 'push')
+        'simulation-notify:popup': this._process.bind(this, 'popup'),
+        'simulation-notify:alert': this._process.bind(this, 'alert'),
+        'simulation-notify:prompt': this._process.bind(this, 'prompt'),
+        'simulation-notify:push': this._process.bind(this, 'push')
       });
     },
 
-    _deprecated: function (type, notifyObject) {
-      if (this._warn && (this._warnFirstOnly && !this._hasWarned)) {
-        Adapt.log.warn('NOTIFY DEPRECATED: Adapt.trigger(\'notify:' + type + '\', notifyObject); is no longer supported, please use Adapt.notify.' + type + '(notifyObject);');
-        this._hasWarned = true;
-      }
+    _process: function (type, notifyObject) {
       return this.create(notifyObject, { _type: type });
     },
 
