@@ -13,13 +13,13 @@
         class="input-zone simulation-form-element"
         style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}"
         {{/if}} {{#if _characterCounter}}maxlength="{{_characterCounterLimit}}"
-        {{/if}}>{{#if _prefilled.text}}{{_prefilledValueInterpolated}}{{/if}}</textarea>
+        {{/if}} focusable="true">{{#if _prefilled.text}}{{_prefilledValueInterpolated}}{{/if}}</textarea>
       {{else}}
       <input id="simulation_element_{{@index}}_{{../../componentID}}" data-id="{{id}}"
         type="{{#if type.datepicker}}date{{else}}text{{/if}}" class="input-zone simulation-form-element"
         style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}"
         {{/if}} {{#if _prefilled.text}} value="{{_prefilledValueInterpolated}}" {{/if}} {{#if
-        _characterCounter}}maxlength="{{_characterCounterLimit}}" {{/if}} />
+        _characterCounter}}maxlength="{{_characterCounterLimit}}" {{/if}} focusable="true" />
       {{/if}}
     </div>
     {{#if _characterCounter}}
@@ -31,7 +31,7 @@
     <div class="select-wrapper"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
       <select id="simulation_element_{{@index}}_{{../../componentID}}" data-id="{{id}}" name="options" id="options"
-        class="select-zone simulation-form-element" style="font-size:{{_fontSize}}px;">
+        class="select-zone simulation-form-element" style="font-size:{{_fontSize}}px;" focusable="true">
         {{#each _selectOptions}}
         <option value="{{_selectValue}}">{{_selectValue}}</option>
         {{/each}}
@@ -43,7 +43,7 @@
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
       <div id="simulation_element_{{@index}}_{{../../componentID}}" data-id="{{id}}"
         role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
-        class="click-zone simulation-form-element form-submit">
+        class="click-zone simulation-form-element form-submit" focusable="true">
       </div>
     </div>
     {{/if}}
@@ -52,7 +52,7 @@
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
       <div id="simulation_element_{{@index}}_{{../../componentID}}" data-id="{{id}}"
         role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
-        class="click-zone simulation-form-element">
+        class="click-zone simulation-form-element" focusable="true">
       </div>
     </div>
     {{/if}}
@@ -60,7 +60,7 @@
     <div class="checkbox-wrapper"
       style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
       <input id="simulation_element_{{@index}}_{{../../componentID}}" data-id="{{id}}" type="checkbox"
-        class="checkbox-zone simulation-form-element" />
+        class="checkbox-zone simulation-form-element" focusable="true" />
     </div>
     {{/if}}
     {{/each}}
@@ -75,12 +75,12 @@
         class="input-zone simulation-form-element"
         style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}} placeholder="{{_prefilledValueInterpolated}}"
         {{/if}} {{#if _characterCounter}}maxlength="{{_characterCounterLimit}}"
-        {{/if}}>{{#if _prefilled.text}}{{_prefilledValueInterpolated}}{{/if}}</textarea>
+        {{/if}} focusable="true">{{#if _prefilled.text}}{{_prefilledValueInterpolated}}{{/if}}</textarea>
       {{else}}
     <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" type="{{#if type.datepicker}}date{{else}}text{{/if}}"
       class="input-zone simulation-action-element" style="font-size:{{_fontSize}}px;" {{#if _prefilled.placeholder}}
       placeholder="{{_prefilledValueInterpolated}}" {{/if}} {{#if _prefilled.text}}
-      value="{{_prefilledValueInterpolated}}" {{/if}} />
+      value="{{_prefilledValueInterpolated}}" {{/if}} focusable="true" />
       {{/if}}
   </div>
   {{/if}}
@@ -88,7 +88,7 @@
   <div class="select-wrapper"
     style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" name="options" id="options"
-      class="select-zone simulation-action-element" style="font-size:{{_fontSize}}px;">
+      class="select-zone simulation-action-element" style="font-size:{{_fontSize}}px;" focusable="true">
       {{#each _selectOptions}}
       <option value="{{_selectValue}}">{{_selectValue}}</option>
       {{/each}}
@@ -100,7 +100,7 @@
     style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     <div id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
       role="{{#if type.button}}button{{/if}}{{#if type.link}}link{{/if}}" tabindex="0" aria-label="{{title}}"
-      class="click-zone simulation-action-element">
+      class="click-zone simulation-action-element" focusable="true">
     </div>
   </div>
   {{/if}}
@@ -108,7 +108,7 @@
   <div class="checkbox-wrapper"
     style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     <input id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}"
-      type="checkbox" class="checkbox-zone simulation-action-element" />
+      type="checkbox" class="checkbox-zone simulation-action-element" focusable="true" />
   </div>
   {{/if}}
   {{/if}}

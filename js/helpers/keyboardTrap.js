@@ -1,12 +1,11 @@
 // LICENCE https://github.com/adaptlearning/adapt_authoring/blob/master/LICENSE
 define([
-  './jquery-ui.min'
 ], function () {
   var mutationObserverMap = {};
 
   function startKeyboardTrap(keyboardTrapObject) {
     if (keyboardTrapObject && keyboardTrapObject.$el) {
-      var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none):not(.action-container)`);
+      var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} [focusable="true"]:not(.trap-wrapper):not(.display-none):not(.action-container)`);
       if (focusableItems && focusableItems.length > 0) {
         if(keyboardTrapObject.focus){
           var action = keyboardTrapObject.focus;
@@ -33,7 +32,7 @@ define([
 
   function stopKeyboardtrap(keyboardTrapObject) {
     if (!(keyboardTrapObject && keyboardTrapObject.$el && keyboardTrapObject.$el.attr('class'))) return;
-    var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.') } :focusable:not(.trap-wrapper):not(.display-none)`);
+    var focusableItems = $(`.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.') } [focusable="true"]:not(.trap-wrapper):not(.display-none)`);
     if (focusableItems && focusableItems.length > 1) {
       focusableItems.first().off('keydown');
       focusableItems.last().off('keydown');
@@ -47,7 +46,7 @@ define([
         var node = document.getElementsByClassName(elClassName)[0];
         var config = { attributes: true, childList: true, subtree: true };
         var callback = (mutationList, observer) => {
-          var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} :focusable:not(.trap-wrapper):not(.display-none)`);
+          var focusableItems = $(`${keyboardTrapObject.$el.attr('id') ? '#' + keyboardTrapObject.$el.attr('id') : ''}.${keyboardTrapObject.$el.attr('class').replace(/[\n\s]/g, '.')} [focusable="true"]:not(.trap-wrapper):not(.display-none)`);
           if (mutationObserverMap[elClassName] && !mutationObserverMap[elClassName]['startedKeyboardTrap']) {
             if (focusableItems.length > 1) {
               startKeyboardTrap(keyboardTrapObject);
