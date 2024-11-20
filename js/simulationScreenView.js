@@ -206,7 +206,7 @@ define([
           var inputString = fieldValue;
           var criteriaList = action._matchTextItems;
           var isMatched = self.matchString(inputString, criteriaList);
-          if (!isMatched) {
+          if (!isMatched && criteriaList.length > 0) {
             errors.push({
               type: action.type,
               name: action.title,
