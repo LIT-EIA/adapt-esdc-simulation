@@ -220,6 +220,7 @@ define([
             self.setCompletionStatus();
           }
           self.adjustTaskListWidth();
+          self.adjustTaskScroll();
         }
       });
 
