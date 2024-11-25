@@ -209,9 +209,7 @@
       "type": "array",
       "required": true,
       "title": "Simulation Screens",
-      "validators": [
-        "minimumItems2"
-      ],
+      "validators": [],
       "items": {
         "type": "object",
         "required": true,

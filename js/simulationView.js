@@ -37,6 +37,7 @@ define([
     preRender: function () {
       var self = this;
       this.screens = this.model.get('_items');
+      if (!this.screens) return;
       this.model.set('active', true);
       const globals = Adapt.course.get('_globals');
       var simulation = globals._components._simulation;
