@@ -37,81 +37,83 @@ define([
     preRender: function () {
       var self = this;
       this.screens = this.model.get('_items');
-      if (!this.screens) return;
-      this.model.set('active', true);
-      const globals = Adapt.course.get('_globals');
-      var simulation = globals._components._simulation;
-      this.model.set('simulation', simulation);
-      var tasks = [];
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0];
-      var fieldsData = {
-        today: formattedDate
-      };
-      this.model.set('fieldsData', fieldsData);
-      this.model.set('formattedDate', formattedDate);
-      this.screens.forEach(function (screen, index) {
-        screen.formattedDate = formattedDate;
-        screen._childItems.forEach(function (action, childIndex) {
-          if (screen._childItems[childIndex]._isForm) {
-            screen._childItems[childIndex]._form.forEach(function (action, formIndex) {
-              if (screen._childItems[childIndex]._form[formIndex]._focusOnElement) {
-                if (!screen.focusOnElement) {
-                  screen.focusOnElement = screen._childItems[childIndex]._form[formIndex];
-                }
-              };
-              if (screen._childItems[childIndex]._form[formIndex]._trackAsTask && screen._childItems[childIndex]._form[formIndex]._actionType !== 'submit') {
-                tasks.push(screen._childItems[childIndex]._form[formIndex]);
-              };
-              screen._childItems[childIndex]._form[formIndex].id = `screen-action-${index}-${childIndex}-${formIndex}`;
-              screen._childItems[childIndex]._form[formIndex].type = {
-                input: action._actionType === 'input',
-                select: action._actionType === 'select',
-                submit: action._actionType === 'submit',
-                click: action._actionType === 'click',
-                button: action._clickType === 'button',
-                link: action._clickType === 'link',
-                multiline: action._actionType === 'input' && action._inputType === 'multiline',
-                datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
-                checkbox: action._actionType === 'checkbox'
-              };
-              screen._childItems[childIndex]._form[formIndex]._position._topCounter = screen._childItems[childIndex]._form[formIndex]._position._top + screen._childItems[childIndex]._form[formIndex]._position._height;
-              screen._childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
-              screen._childItems[childIndex]._form[formIndex]._prefilled = {
-                placeholder: action._prefilledType === 'placeholder',
-                text: action._prefilledType === 'text'
-              };
-            });
-          }
-          if (screen._childItems[childIndex]._focusOnElement) {
-            if (!screen.focusOnElement) {
-              screen.focusOnElement = screen._childItems[childIndex]
+      if (this.screens.length >= 1){
+        this.model.set('active', true);
+        const globals = Adapt.course.get('_globals');
+        var simulation = globals._components._simulation;
+        this.model.set('simulation', simulation);
+        var tasks = [];
+        const today = new Date();
+        const formattedDate = today.toISOString().split('T')[0];
+        var fieldsData = {
+          today: formattedDate
+        };
+        this.model.set('fieldsData', fieldsData);
+        this.model.set('formattedDate', formattedDate);
+        this.screens.forEach(function (screen, index) {
+          screen.formattedDate = formattedDate;
+          screen._childItems.forEach(function (action, childIndex) {
+            if (screen._childItems[childIndex]._isForm) {
+              screen._childItems[childIndex]._form.forEach(function (action, formIndex) {
+                if (screen._childItems[childIndex]._form[formIndex]._focusOnElement) {
+                  if (!screen.focusOnElement) {
+                    screen.focusOnElement = screen._childItems[childIndex]._form[formIndex];
+                  }
+                };
+                if (screen._childItems[childIndex]._form[formIndex]._trackAsTask && screen._childItems[childIndex]._form[formIndex]._actionType !== 'submit') {
+                  tasks.push(screen._childItems[childIndex]._form[formIndex]);
+                };
+                screen._childItems[childIndex]._form[formIndex].id = `screen-action-${index}-${childIndex}-${formIndex}`;
+                screen._childItems[childIndex]._form[formIndex].type = {
+                  input: action._actionType === 'input',
+                  isNumericInput: action._actionType === 'input' && action._isNumericInput,
+                  select: action._actionType === 'select',
+                  submit: action._actionType === 'submit',
+                  click: action._actionType === 'click',
+                  button: action._clickType === 'button',
+                  link: action._clickType === 'link',
+                  multiline: action._actionType === 'input' && action._inputType === 'multiline',
+                  datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
+                  checkbox: action._actionType === 'checkbox'
+                };
+                screen._childItems[childIndex]._form[formIndex]._position._topCounter = screen._childItems[childIndex]._form[formIndex]._position._top + screen._childItems[childIndex]._form[formIndex]._position._height;
+                screen._childItems[childIndex]._form[formIndex]._fontSize = action._fontSize || 12;
+                screen._childItems[childIndex]._form[formIndex]._prefilled = {
+                  placeholder: action._prefilledType === 'placeholder',
+                  text: action._prefilledType === 'text'
+                };
+              });
             }
-          };
-          if (screen._childItems[childIndex]._trackAsTask) {
-            tasks.push(screen._childItems[childIndex]);
-          };
-          screen._childItems[childIndex].id = `screen-action-${index}-${childIndex}`;
-          screen._childItems[childIndex].type = {
-            input: action._actionType === 'input',
-            select: action._actionType === 'select',
-            click: action._actionType === 'click',
-            button: action._clickType === 'button',
-            link: action._clickType === 'link',
-            multiline: action._actionType === 'input' && action._inputType === 'multiline',
-            datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
-            checkbox: action._actionType === 'checkbox'
-          };
-          screen._childItems[childIndex]._fontSize = action._fontSize || 12;
-          screen._childItems[childIndex]._prefilled = {
-            placeholder: action._prefilledType === 'placeholder',
-            text: action._prefilledType === 'text'
-          };
+            if (screen._childItems[childIndex]._focusOnElement) {
+              if (!screen.focusOnElement) {
+                screen.focusOnElement = screen._childItems[childIndex]
+              }
+            };
+            if (screen._childItems[childIndex]._trackAsTask) {
+              tasks.push(screen._childItems[childIndex]);
+            };
+            screen._childItems[childIndex].id = `screen-action-${index}-${childIndex}`;
+            screen._childItems[childIndex].type = {
+              input: action._actionType === 'input',
+              select: action._actionType === 'select',
+              click: action._actionType === 'click',
+              button: action._clickType === 'button',
+              link: action._clickType === 'link',
+              multiline: action._actionType === 'input' && action._inputType === 'multiline',
+              datepicker: action._actionType === 'input' && action._inputType === 'datepicker',
+              checkbox: action._actionType === 'checkbox'
+            };
+            screen._childItems[childIndex]._fontSize = action._fontSize || 12;
+            screen._childItems[childIndex]._prefilled = {
+              placeholder: action._prefilledType === 'placeholder',
+              text: action._prefilledType === 'text'
+            };
+          });
+          self.screens[index] = screen;
         });
-        self.screens[index] = screen;
-      });
-      this.model.set('tasks', tasks);
-      this.render();
+        this.model.set('tasks', tasks);
+        this.render();
+      }
     },
 
     onUndo: function () {
