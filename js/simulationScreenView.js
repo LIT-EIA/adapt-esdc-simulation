@@ -346,7 +346,6 @@ define([
         var hasMatchingValue = correctOptions.some(function (option) {
           return option._selectValue === selectedOption;
         });
-        console.log('hasMatchingValue', hasMatchingValue)
         var noCorrectOptions = correctOptions.length === 0;
         if (hasMatchingValue || noCorrectOptions) {
           self.handleCompleteTask(action);
@@ -444,14 +443,13 @@ define([
         var form = item._form;
         if (form.length) {
           var action = form.find(item => item.id === actionId);
+          var fieldsData = self.model.get('fieldsData');
+          var readableID = self.stringToCamelCase(action.title);
           if (action._actionType === 'select') {
             var selectedOption = $(e.target).val();
-            var fieldsData = self.model.get('fieldsData');
-            var readableID = self.stringToCamelCase(action.title);
             if (selectedOption) {
               fieldsData[readableID] = selectedOption;
             }
-            self.model.set('fieldsData', fieldsData);
             var correctOptions = action._selectOptions.filter(function (option) {
               return option._correctOption === true
             });
@@ -463,12 +461,17 @@ define([
               self.handleCompleteTask(action);
             }
           } else if (action._actionType === 'checkbox') {
-            if ((action._checkboxMatchState == 'checked' && $(e.target).prop('checked')) ||
-              (action._checkboxMatchState == 'unchecked' && !$(e.target).prop('checked')) ||
+            var isChecked = $(e.target).prop('checked');
+            if(isChecked){
+              fieldsData[readableID] = isChecked ? 'checked' : 'unchecked';
+            }
+            if ((action._checkboxMatchState == 'checked' && isChecked) ||
+              (action._checkboxMatchState == 'unchecked' && !isChecked) ||
               action._checkboxMatchState == 'both') {
               self.handleCompleteTask(action);
             }
           }
+          self.model.set('fieldsData', fieldsData);
         }
       })
     },
@@ -552,6 +555,12 @@ define([
             var target = $(e.target);
             self.updateCharacterCount({ target: target, action: action });
             var inputString = target.val();
+            var fieldsData = self.model.get('fieldsData');
+            var readableID = self.stringToCamelCase(action.title);
+            if (inputString) {
+              fieldsData[readableID] = inputString;
+            }
+            self.model.set('fieldsData', fieldsData);
             var criteriaList = action._matchTextItems;
             var isMatched = self.matchString(inputString, criteriaList);
             if (isMatched || criteriaList.length < 1) {
