@@ -764,11 +764,19 @@ define([
     },
 
     setIndicator: function () {
+      var self = this;
       var task = this.getFirstScreenTask();
       if (task) {
-        var taskElement = this.$el.find(`[data-id="${task.id}"]`);
-        var taskWrapper = taskElement.parent();
-        taskWrapper.addClass('indicator');
+        if (task._isForm) {
+          var firstTaskTriggerElement = task._form.filter(task => task.type.submit)
+        } else {
+          var firstTaskTriggerElement = [task];
+        }
+        firstTaskTriggerElement.forEach(function (trigger) {
+          var triggerElement = self.$el.find(`[data-id="${trigger.id}"]`);
+          var triggerWrapper = triggerElement.parent();
+          triggerWrapper.addClass('indicator');
+        })
       }
     },
 
