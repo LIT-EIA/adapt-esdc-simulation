@@ -155,6 +155,16 @@
       "validators": [],
       "placeholder": "No option has been selected / Aucune option n'a été sélectionnée",
       "translatable": true
+    },
+    "actionNotCompleted": {
+      "title": "Action Not Completed Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Action not completed / Action non complétée",
+      "translatable": true
     }
   },
   "properties": {
@@ -378,6 +388,47 @@
                             {
                               "name": "_actionType",
                               "value": "submit,click"
+                            }
+                          ]
+                        }
+                      },
+                      "_clickFormBlocking": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Block form submit for this click",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "noListTitle": true,
+                        "help": "Selecting this will block form submit for this action and return the error message as part of form feedback",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "click"
+                            }
+                          ]
+                        }
+                      },
+                      "clickFailure": {
+                        "type": "string",
+                        "required": false,
+                        "default": "",
+                        "inputType": "TextArea",
+                        "validators": [],
+                        "help": "Explain to learners why this click is required at this stage.",
+                        "translatable": true,
+                        "title": "Click Failure Message",
+                        "noListTitle": true,
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_actionType",
+                              "value": "click"
+                            },
+                            {
+                              "name": "_clickFormBlocking",
+                              "value": "true"
                             }
                           ]
                         }

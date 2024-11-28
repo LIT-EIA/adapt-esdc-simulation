@@ -184,7 +184,7 @@ define([
       var formId = $(form).attr('data-id');
       var formModel = this.model.get('_childItems').find(item => item.id === formId);
       var formActions = formModel._form;
-      var elements = $(form).find('input, select, textarea');
+      var elements = $(form).find('input, select, textarea, .click-zone');
 
       var submitId = $(e.target).attr('data-id');
       var submitAction = formActions.find(item => item.id === submitId);
@@ -241,6 +241,12 @@ define([
               userValue: $(this).prop('checked') ? 'checked' : 'unchecked'
             });
           }
+        } else if (action._actionType === 'click' && action._clickFormBlocking && action.clickFailure) {
+          errors.push({
+            type: action.type,
+            name: action.title,
+            message: action.clickFailure || $.i18n.translate('adapt-simulation-fallback-error')
+          });
         }
       });
       self.model.set('fieldsData', fieldsData);

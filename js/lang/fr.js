@@ -16,7 +16,8 @@ define(function () {
       "adapt-simulation-you-have-entered": "Vous avez saisi : « {{userValue}} »",
       "adapt-simulation-you-have-left-input-empty": "Vous avez laissé ce champ vide",
       "adapt-simulation-no-option-selected": "Aucune option n'a été sélectionnée",
-      "adapt-simulation-fallback-error": "Désolé, vous avez fait une erreur"
+      "adapt-simulation-fallback-error": "Désolé, vous avez fait une erreur",
+      "adapt-simulation-action-not-completed": "Action non complétée"
     }
   }
 
