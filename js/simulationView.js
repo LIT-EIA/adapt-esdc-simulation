@@ -37,7 +37,7 @@ define([
     preRender: function () {
       var self = this;
       this.screens = this.model.get('_items');
-      if (this.screens.length >= 1){
+      if (this.screens.length >= 1) {
         this.model.set('active', true);
         const globals = Adapt.course.get('_globals');
         var simulation = globals._components._simulation;
@@ -82,6 +82,7 @@ define([
                   placeholder: action._prefilledType === 'placeholder',
                   text: action._prefilledType === 'text'
                 };
+                screen._childItems[childIndex]._form[formIndex].readableID = self.getReadableID(screen._childItems[childIndex]._form[formIndex]);
               });
             }
             if (screen._childItems[childIndex]._focusOnElement) {
@@ -108,12 +109,33 @@ define([
               placeholder: action._prefilledType === 'placeholder',
               text: action._prefilledType === 'text'
             };
+            screen._childItems[childIndex].readableID = self.getReadableID(screen._childItems[childIndex]);
           });
           self.screens[index] = screen;
         });
-        this.model.set('tasks', tasks);
+        const uniqueTasks = tasks.filter((value, index, self) => {
+          return self.findIndex(obj => obj.readableID === value.readableID) === index;
+        });
+        this.model.set('tasks', uniqueTasks);
         this.render();
       }
+    },
+
+    getReadableID: function (action) {
+      return this.stringToCamelCase(action.title);
+    },
+
+    stringToCamelCase: function (str) {
+      return str
+        .replace(/[^a-zA-Z0-9]+/g, ' ')
+        .trim()
+        .split(' ')
+        .map(function (word, index) {
+          return index === 0
+            ? word.toLowerCase()
+            : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+        })
+        .join('');
     },
 
     onUndo: function () {
@@ -122,6 +144,20 @@ define([
         var screenIndex = self.screenHistory.length - 1;
         var nextScreenIndex = screenIndex - 1;
         var screenID = self.screenHistory[nextScreenIndex];
+        var screenIndex = this.screens.findIndex(screen => screen._screenID === screenID);
+        var screen = this.screens[screenIndex];
+        screen._childItems.forEach(function (action) {
+          if (action._isForm) {
+            action._form.forEach(function (formAction) {
+              if (formAction._trackAsTask) {
+                formAction.taskCompleted = false;
+              };
+            });
+          }
+          if (action._trackAsTask) {
+            action.taskCompleted = false;
+          };
+        });
         self.loadScreen({ id: screenID, componentID: this.componentID }, function () {
           self.screenHistory = self.screenHistory.slice(0, -2);
         });
@@ -205,11 +241,11 @@ define([
     },
 
     adjustPageScroll: function () {
-        var simulationWidget = this.$el.find('.simulation-widget');
-        var simulationWidgetWrapper = simulationWidget[0];
-        var offset = simulationWidget.offset().top - 100;
-        window.scrollTo({ top: offset });
-        simulationWidgetWrapper.scrollTo({top: 0});
+      var simulationWidget = this.$el.find('.simulation-widget');
+      var simulationWidgetWrapper = simulationWidget[0];
+      var offset = simulationWidget.offset().top - 100;
+      window.scrollTo({ top: offset });
+      simulationWidgetWrapper.scrollTo({ top: 0 });
     },
 
     listenToResize: function () {
@@ -350,6 +386,7 @@ define([
 
         this.setTaskList = function () {
           const taskList = this.$el.find('.simulation-task-list .checkbox-group');
+          // Reset all tasks' visual states
           taskList.each(function () {
             const task = $(this);
             task.removeClass('checked current-task previous-task');
@@ -357,22 +394,37 @@ define([
             task.find('.completed-task').empty();
           });
 
+          // Exit early if no tasks are found
           if (taskList.length < 1) return;
 
+          // Handle current sticky task
           const currentStickyTaskWrapper = this.$el.find('.simulation-task-list.current');
           currentStickyTaskWrapper[0].scrollTo({ top: 0 });
           currentStickyTaskWrapper.addClass('sticky');
 
+          // Set auto-task as completed
           const autoTask = this.$el.find('.simulation-task-list .auto-task');
           const autoTaskAria = autoTask.find('.completed-task');
-          const firstTask = this.$el.find('.simulation-task-list .first-task');
-          const firstTaskLabel = firstTask.find('div.label').text();
-          firstTask.addClass('current-task');
           autoTask.addClass('checked');
           autoTask.find('input[type="checkbox"]').prop('checked', true);
           autoTaskAria.text('Completed');
-          var currentTaskAria = this.$el.find('.simulation-widget .sr-current-task');
+
+          // Mark the first task as the current task
+          const firstTask = this.$el.find('.simulation-task-list .first-task');
+          const firstTaskLabel = firstTask.find('div.label').text();
+          firstTask.addClass('current-task');
+
+          // Update the screen reader text
+          const currentTaskAria = this.$el.find('.simulation-widget .sr-current-task');
           currentTaskAria.text(`Current Task: ${firstTaskLabel}`);
+
+          // Reset tasks status in the model
+          let tasks = this.model.get('tasks');
+          tasks = tasks.map(function (task) {
+            task.taskCompleted = false;
+            return task;
+          });
+          this.model.set('tasks', tasks);
         };
 
         this.scrollToTask = function (task) {
@@ -452,7 +504,7 @@ define([
       var screenID = this.screens[0]._screenID;
       this.loadThumbnail({ id: screenID, componentID: this.componentID });
       var startSimulationButton = self.$el.find('.start-simulation');
-      if(self.model.get('_isInteractionComplete')){
+      if (self.model.get('_isInteractionComplete')) {
         startSimulationButton.text($.i18n.translate('adapt-simulation-restart-simulation'));
       }
       self.$el.find('.simulation-graphic').removeClass('sticky-margin');

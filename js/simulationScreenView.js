@@ -468,7 +468,7 @@ define([
             }
           } else if (action._actionType === 'checkbox') {
             var isChecked = $(e.target).prop('checked');
-            if(isChecked){
+            if (isChecked) {
               fieldsData[readableID] = isChecked ? 'checked' : 'unchecked';
             }
             if ((action._checkboxMatchState == 'checked' && isChecked) ||
@@ -589,71 +589,81 @@ define([
 
     handleCompleteTask: function (task) {
       var self = this;
+      var tasks = this.model.get('tasks');
       if (task && task._trackAsTask) {
-        var tasks = self.model.get('tasks');
         var currentTaskAria = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget .sr-current-task`);
-        var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-id="${task.id}"]`);
+        var completingTask = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list .checkbox-group[data-task-readable-id="${task.readableID}"]`);
         var completingTaskAria = completingTask.find('.completed-task');
+
+        // Complete the current task
         completingTask.addClass('checked');
         completingTask.find('input[type="checkbox"]').prop('checked', true);
         completingTask.removeClass('current-task');
         completingTask.addClass('previous-task');
         completingTaskAria.text('Completed');
 
-        var nextTasksSticky = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.sticky .checkbox-group:not(.previous-task, .auto-task)`);
-        var nextTaskSticky = nextTasksSticky[0];
-        var nextTasksMain = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.after .checkbox-group:not(.previous-task, .auto-task)`);
-        var nextTaskMain = nextTasksMain[0];
-        var nextTaskLabel = $(nextTaskMain).find('div.label').text();
+        // Update task completion status
+        var completingTaskID = completingTask.attr('data-task-readable-id');
+        var completingTaskModel = tasks.find(task => task.readableID === completingTaskID);
+        completingTaskModel.taskCompleted = true;
 
-        if (nextTaskMain) {
-          var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
-          var offset = nextTaskSticky.offsetTop;
-          setTimeout(function () {
-            currentStickyTaskWrapper[0].scrollTo({
-              top: offset,
-              behavior: 'smooth',
-            })
-          }, 150);
-          $(nextTaskSticky).addClass('current-task');
-          $(nextTaskMain).addClass('current-task');
-          var ariaText = nextTaskLabel ? `Task Completed. Next Task: ${nextTaskLabel}` : 'All tasks completed.';
-          currentTaskAria.text(ariaText);
+        // Handle indicator on trigger elements for completing task
+        var completingTaskTriggerElement = completingTaskModel._isForm
+          ? completingTaskModel._form.filter(task => task.type.submit)
+          : [completingTaskModel];
 
-          var completingTaskID = completingTask.attr('data-task-id')
-          var nextTaskID = $(nextTaskMain).attr('data-task-id');
-          var nextTaskModel = tasks.find(task => task.id === nextTaskID);
-          var completingTaskModel = tasks.find(task => task.id === completingTaskID);
+        if (completingTaskTriggerElement.length) {
+          completingTaskTriggerElement.forEach(function (trigger) {
+            var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-readable-id="${trigger.readableID}"]`);
+            var triggerWrapper = triggerElement.parent();
+            triggerWrapper.removeClass('indicator');
+          });
+        }
 
-          if (nextTaskModel._isForm) {
-            var nextTaskTriggerElement = nextTaskModel._form.filter(task => task.type.submit)
-          } else {
-            var nextTaskTriggerElement = [nextTaskModel];
-          }
+        // Find the next task to be completed
+        var nextTaskModel = tasks.find(task => !task.taskCompleted);
 
-          if (completingTaskModel._isForm) {
-            var completingTaskTriggerElement = completingTaskModel._form.filter(task => task.type.submit)
-          } else {
-            var completingTaskTriggerElement = [completingTaskModel];
-          }
-
-          if (completingTaskTriggerElement.length) {
-            completingTaskTriggerElement.forEach(function (trigger) {
-              var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-id="${trigger.id}"]`);
-              var triggerWrapper = triggerElement.parent();
-              triggerWrapper.removeClass('indicator');
-            })
-          }
+        if (nextTaskModel) {
+          // Handle form trigger elements for next task
+          var nextTaskTriggerElement = nextTaskModel._isForm
+            ? nextTaskModel._form.filter(task => task.type.submit)
+            : [nextTaskModel];
 
           if (nextTaskTriggerElement.length) {
             nextTaskTriggerElement.forEach(function (trigger) {
-              var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-id="${trigger.id}"]`);
+              var triggerElement = $(`div[data-adapt-id="${self.componentID}"] .action-container [data-readable-id="${trigger.readableID}"]`);
               var triggerWrapper = triggerElement.parent();
               triggerWrapper.addClass('indicator');
-            })
+            });
           }
-        };
-      };
+
+          // Handle scrolling and display for the next task
+          var nextTasksSticky = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.sticky .checkbox-group[data-task-readable-id="${nextTaskModel.readableID}"]`);
+          var nextTaskSticky = nextTasksSticky[0];
+          var nextTasksMain = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.after .checkbox-group[data-task-readable-id="${nextTaskModel.readableID}"]`);
+          var nextTaskMain = nextTasksMain[0];
+          var nextTaskLabel = nextTaskModel._taskLabel;
+
+          if (nextTaskMain) {
+            var currentStickyTaskWrapper = $(`div[data-adapt-id="${this.componentID}"] .simulation-task-list.current`);
+            var offset = nextTaskSticky.offsetTop;
+            setTimeout(function () {
+              currentStickyTaskWrapper[0].scrollTo({
+                top: offset,
+                behavior: 'smooth',
+              });
+            }, 150);
+            $(nextTaskSticky).addClass('current-task');
+            $(nextTaskMain).addClass('current-task');
+          }
+        }
+        // Update ARIA live region
+        var ariaText = nextTaskLabel ? `Task Completed. Next Task: ${nextTaskLabel}` : 'All tasks completed.';
+        currentTaskAria.text(ariaText);
+
+        // Update tasks in the model
+        self.model.set('tasks', tasks);
+      }
     },
 
     handleFallbackAction: function (e) {
@@ -695,19 +705,22 @@ define([
 
     getFirstScreenTask: function () {
       var _childItems = this.model.get('_childItems');
+      var tasks = this.model.get('tasks');
       var firstTask;
       _childItems.forEach(function (action) {
         if (action._isForm) {
           action._form.forEach(function (action) {
             if (action._trackAsTask) {
-              if (!firstTask) {
+              var task = tasks.find(task => task.readableID === action.readableID);
+              if (!task.taskCompleted && !firstTask) {
                 firstTask = action
               }
             };
           });
         }
         if (action._trackAsTask) {
-          if (!firstTask) {
+          var task = tasks.find(task => task.readableID === action.readableID);
+          if (!task.taskCompleted && !firstTask) {
             firstTask = action
           }
         };
@@ -722,7 +735,7 @@ define([
         var simulationWidgetWrapper = simulationWidget[0];
         var offset = simulationWidget.offset().top - 100;
         window.scrollTo({ top: offset });
-        simulationWidgetWrapper.scrollTo({top: 0});
+        simulationWidgetWrapper.scrollTo({ top: 0 });
       }
     },
 
@@ -771,8 +784,10 @@ define([
 
     setIndicator: function () {
       var self = this;
+      var tasks = this.model.get('tasks');
       var task = this.getFirstScreenTask();
-      if (task) {
+      var nextTask = tasks.find(task => !task.taskCompleted);
+      if (task && task.readableID === nextTask.readableID) {
         if (task._isForm) {
           var firstTaskTriggerElement = task._form.filter(task => task.type.submit)
         } else {
