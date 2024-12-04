@@ -368,7 +368,7 @@ define([
           screen._childItems.forEach(function (action) {
             if (action._isForm) {
               action._form.forEach(function (action) {
-                if (action._trackAsTask) {
+                if (action._trackAsTask && action._actionType !== 'submit') {
                   if (!firstTask) {
                     firstTask = action
                   }

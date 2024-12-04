@@ -710,7 +710,7 @@ define([
       _childItems.forEach(function (action) {
         if (action._isForm) {
           action._form.forEach(function (action) {
-            if (action._trackAsTask) {
+            if (action._trackAsTask && action._actionType !== 'submit') {
               var task = tasks.find(task => task.readableID === action.readableID);
               if (!task.taskCompleted && !firstTask) {
                 firstTask = action
