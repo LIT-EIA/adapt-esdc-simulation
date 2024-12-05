@@ -39,16 +39,9 @@ define([
       this.screens = this.model.get('_items');
       if (this.screens.length >= 1) {
         this.model.set('active', true);
-        const globals = Adapt.course.get('_globals');
-        var simulation = globals._components._simulation;
-        this.model.set('simulation', simulation);
         var tasks = [];
         const today = new Date();
         const formattedDate = today.toISOString().split('T')[0];
-        var fieldsData = {
-          today: formattedDate
-        };
-        this.model.set('fieldsData', fieldsData);
         this.model.set('formattedDate', formattedDate);
         this.screens.forEach(function (screen, index) {
           screen.formattedDate = formattedDate;
@@ -273,7 +266,6 @@ define([
       this.listenTo(Adapt, 'device:resize', this.adjustTaskListWidth);
 
       if (this.model.get('active')) {
-        var simulation = this.model.get('simulation');
         this.componentID = this.$el.attr('data-adapt-id');
 
         this.loadImage = function (src) {
@@ -469,6 +461,11 @@ define([
     onStartSimulation: function () {
       var self = this;
       self.screenHistory = [];
+      var formattedDate = self.model.get('formattedDate');
+      var fieldsData = {
+        today: formattedDate
+      };
+      this.model.set('fieldsData', fieldsData);
       var screenID = this.screens[0]._screenID;
       self.setTaskList();
       this.loadScreen({ id: screenID, componentID: this.componentID }, function () {
