@@ -37,7 +37,8 @@ define([
     preRender: function () {
       var self = this;
       this.screens = this.model.get('_items');
-      if (this.screens.length >= 1) {
+      this.model.set('active', false);
+      if (this.screens && this.screens.length >= 1) {
         this.model.set('active', true);
         var tasks = [];
         const today = new Date();
