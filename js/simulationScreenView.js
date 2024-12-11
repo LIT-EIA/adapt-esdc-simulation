@@ -856,6 +856,7 @@ define([
         var matchEmptyString = criteria._matchEmptyString;
         var matchNotEmptyString = criteria._matchNotEmptyString;
         var matchUsingDate = criteria._matchUsingDate;
+        var matchUsingValidDate = criteria._matchUsingValidDate;
 
         if (matchRegex) {
           var regexFlags = caseInsensitive ? 'i' : '';
@@ -880,6 +881,11 @@ define([
           } else if (matchUsingDate) {
             var formattedDate = self.model.get('formattedDate');
             if (inputString === formattedDate) {
+              matched = true;
+            }
+          } else if (matchUsingValidDate){
+            var regex = new RegExp('^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$');
+            if (regex.test(inputString)) {
               matched = true;
             }
           } else {

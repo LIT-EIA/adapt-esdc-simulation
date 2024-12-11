@@ -662,6 +662,10 @@
                                     "value": "false"
                                   },
                                   {
+                                    "name": "_matchUsingValidDate",
+                                    "value": "false"
+                                  },
+                                  {
                                     "name": "_matchUsingDate",
                                     "value": "false"
                                   }
@@ -687,6 +691,10 @@
                                     "value": "false"
                                   },
                                   {
+                                    "name": "_matchUsingValidDate",
+                                    "value": "false"
+                                  },
+                                  {
                                     "name": "_matchUsingDate",
                                     "value": "false"
                                   }
@@ -705,6 +713,10 @@
                                 "and": [
                                   {
                                     "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingValidDate",
                                     "value": "false"
                                   },
                                   {
@@ -737,6 +749,10 @@
                                     "value": "false"
                                   },
                                   {
+                                    "name": "_matchUsingValidDate",
+                                    "value": "false"
+                                  },
+                                  {
                                     "name": "_matchUsingDate",
                                     "value": "false"
                                   },
@@ -746,6 +762,39 @@
                                   },
                                   {
                                     "name": "_matchEmptyString",
+                                    "value": "false"
+                                  }
+                                ]
+                              }
+                            },
+                            "_matchUsingValidDate": {
+                              "type": "boolean",
+                              "required": false,
+                              "default": false,
+                              "title": "Match using any valid date",
+                              "inputType": "Checkbox",
+                              "validators": [],
+                              "help": "Match using any valid date (yyyy-mm-dd)",
+                              "conditions": {
+                                "and": [
+                                  {
+                                    "name": "_caseInsensitive",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchNotEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchRegex",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingDate",
                                     "value": "false"
                                   }
                                 ]
@@ -776,6 +825,10 @@
                                   {
                                     "name": "_matchRegex",
                                     "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingValidDate",
+                                    "value": "false"
                                   }
                                 ]
                               }
@@ -796,6 +849,10 @@
                                   },
                                   {
                                     "name": "_matchNotEmptyString",
+                                    "value": "false"
+                                  },
+                                  {
+                                    "name": "_matchUsingValidDate",
                                     "value": "false"
                                   },
                                   {
@@ -1466,6 +1523,31 @@
                         "conditions": {
                           "and": [
                             {
+                              "name": "_matchUsingValidDate",
+                              "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingDate",
+                              "value": "false"
+                            }
+                          ]
+                        }
+                      },
+                      "_matchUsingValidDate": {
+                        "type": "boolean",
+                        "required": false,
+                        "default": false,
+                        "title": "Match using any valid date",
+                        "inputType": "Checkbox",
+                        "validators": [],
+                        "help": "Match using any valid date (yyyy-mm-dd)",
+                        "conditions": {
+                          "and": [
+                            {
+                              "name": "_matchRegex",
+                              "value": "false"
+                            },
+                            {
                               "name": "_matchUsingDate",
                               "value": "false"
                             }
@@ -1485,6 +1567,10 @@
                             {
                               "name": "_matchRegex",
                               "value": "false"
+                            },
+                            {
+                              "name": "_matchUsingValidDate",
+                              "value": "false"
                             }
                           ]
                         }
@@ -1499,6 +1585,10 @@
                         "help": "Use regex (Regular Expression) as match text. Tip: AI Chatbots can help with generating patterns.",
                         "conditions": {
                           "and": [
+                            {
+                              "name": "_matchUsingValidDate",
+                              "value": "false"
+                            },
                             {
                               "name": "_matchUsingDate",
                               "value": "false"
