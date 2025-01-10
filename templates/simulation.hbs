@@ -5,12 +5,12 @@
     {{#if tasks}}
     <ul class="simulation-task-list after">
       <li data-task-id="{{id}}" data-task-readable-id="{{readableID}}" class="checkbox-group auto-task">
-        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div aria-hidden="true" class="input"><input type="checkbox"  disabled></div>
         <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">{{t 'adapt-simulation-start-simulation' }}</span></div>
       </li>
       {{#each tasks}}
       <li data-task-id="{{id}}" data-task-readable-id="{{readableID}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
-        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div aria-hidden="true" class="input"><input type="checkbox"  disabled></div>
         <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">{{{_taskLabel}}}</span></div>
       </li>
       {{/each}}
@@ -18,7 +18,7 @@
     <ul aria-hidden="true" class="simulation-task-list current">
       {{#each tasks}}
       <li data-task-id="{{id}}" data-task-readable-id="{{readableID}}" class="checkbox-group {{#if @first}}first-task{{/if}}">
-        <div aria-hidden="true" class="input"><input type="checkbox" id="checkbox1" disabled></div>
+        <div aria-hidden="true" class="input"><input type="checkbox"  disabled></div>
         <div class="label"><span aria-hidden="true" class="checkbox"></span><span class="completed-task sr-only"></span><span class="task-label">{{{_taskLabel}}}</span></div>
       </li>
       {{/each}}
