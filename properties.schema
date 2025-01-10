@@ -579,7 +579,7 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "noListTitle": true,
-                        "help": "Selecting this will set the prefilled value based on the learner's lastest data entered in a field with identical name",
+                        "help": "Selecting this will set the prefilled value based on the learner's latest data entered in a field with identical name",
                         "conditions": {
                           "and": [
                             {
@@ -949,7 +949,7 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "noListTitle": true,
-                        "help": "Selecting this will set the selected value based on the learner's lastest data selected in a field with identical name",
+                        "help": "Selecting this will set the selected value based on the learner's latest data selected in a field with identical name",
                         "conditions": {
                           "and": [
                             {
@@ -1014,7 +1014,7 @@
                         "inputType": "Checkbox",
                         "validators": [],
                         "noListTitle": true,
-                        "help": "Selecting this will set the checkbox initial state based on the learner's lastest data selected in a field with identical name",
+                        "help": "Selecting this will set the checkbox initial state based on the learner's latest data selected in a field with identical name",
                         "conditions": {
                           "and": [
                             {
@@ -1449,7 +1449,7 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "noListTitle": true,
-                  "help": "Selecting this will set the prefilled value based on the learner's lastest data entered in a field with identical name",
+                  "help": "Selecting this will set the prefilled value based on the learner's latest data entered in a field with identical name",
                   "conditions": {
                     "and": [
                       {
@@ -1672,7 +1672,7 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "noListTitle": true,
-                  "help": "Selecting this will set the selected value based on the learner's lastest data selected in a field with identical name",
+                  "help": "Selecting this will set the selected value based on the learner's latest data selected in a field with identical name",
                   "conditions": {
                     "and": [
                       {
@@ -1749,7 +1749,7 @@
                   "inputType": "Checkbox",
                   "validators": [],
                   "noListTitle": true,
-                  "help": "Selecting this will set the checkbox initial state based on the learner's lastest data selected in a field with identical name",
+                  "help": "Selecting this will set the checkbox initial state based on the learner's latest data selected in a field with identical name",
                   "conditions": {
                     "and": [
                       {
