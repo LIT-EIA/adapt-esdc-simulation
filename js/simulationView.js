@@ -459,8 +459,11 @@ define([
       Backbone.View.prototype.remove.call(this);
     },
 
-    onStartSimulation: function () {
+    onStartSimulation: function (e) {
       var self = this;
+      self.$el.find('.simulation-wrapper').attr('aria-modal', true);
+      self.$el.find('.simulation-wrapper').attr('role', 'dialog');
+      self.$el.find('.action-container').focus();
       self.screenHistory = [];
       var formattedDate = self.model.get('formattedDate');
       var fieldsData = {
@@ -474,6 +477,7 @@ define([
         self.$el.find('.start-simulation').addClass('display-none');
         self.$el.find('.simulation-graphic').addClass('sticky-margin');
         self.$el.find('.simulation-graphic img').removeClass('simulation-disabled');
+        self.$el.find('.action-container').focus();
       });
 
     },
@@ -507,6 +511,8 @@ define([
       }
       self.$el.find('.simulation-graphic').removeClass('sticky-margin');
       self.$el.find('.simulation-graphic img').addClass('simulation-disabled');
+      self.$el.find('.simulation-wrapper').removeAttr('aria-modal');
+      self.$el.find('.simulation-wrapper').removeAttr('role', 'dialog');
       startSimulationButton.removeClass('display-none');
       startSimulationButton.focus();
     }
