@@ -3,6 +3,7 @@
   {{#if active}}
   <div class="simulation-wrapper">
     {{#if tasks}}
+    <p class="sr-only">{{t 'adapt-simulation-complete-the-following-tasks' }}</p>
     <ul class="simulation-task-list after">
       <li data-task-id="{{id}}" data-task-readable-id="{{readableID}}" class="checkbox-group auto-task">
         <div aria-hidden="true" class="input"><input type="checkbox"  disabled></div>

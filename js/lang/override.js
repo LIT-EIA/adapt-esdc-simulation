@@ -18,7 +18,8 @@ define(function () {
       "adapt-simulation-you-have-left-input-empty": globals.inputEmpty,
       "adapt-simulation-no-option-selected": globals.noOptionSelected,
       "adapt-simulation-fallback-error" : globals.incorrectFallback,
-      "adapt-simulation-action-not-completed": globals.actionNotCompleted
+      "adapt-simulation-action-not-completed": globals.actionNotCompleted,
+      "adapt-simulation-complete-the-following-tasks": globals.completeFollowingTasks
     }
   }
 

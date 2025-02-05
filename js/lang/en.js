@@ -17,7 +17,8 @@ define(function () {
       "adapt-simulation-you-have-left-input-empty": "You have left this field empty",
       "adapt-simulation-no-option-selected": "No option has been selected",
       "adapt-simulation-fallback-error": "Sorry, you did something wrong",
-      "adapt-simulation-action-not-completed": "Action not completed"
+      "adapt-simulation-action-not-completed": "Action not completed",
+      "adapt-simulation-complete-the-following-tasks": "Complete the following tasks:"
     }
   }
 

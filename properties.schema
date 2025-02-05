@@ -165,6 +165,16 @@
       "validators": [],
       "placeholder": "Action not completed / Action non complétée",
       "translatable": true
+    },
+    "completeFollowingTasks": {
+      "title": "Complete Following Tasks Label",
+      "type": "string",
+      "required": false,
+      "default": "",
+      "inputType": "Text",
+      "validators": [],
+      "placeholder": "Complete the following tasks: / Complétez les tâches suivantes :",
+      "translatable": true
     }
   },
   "properties": {
