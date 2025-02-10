@@ -52,8 +52,35 @@ Below are the attributes used in `components.json` to configure the Adapt Tour C
 
 ### Properties
 
+- **_supportedLayout (string)**: Defines the supported layout for the component.
+- **instruction (string)**: Optional text that appears above the component, often used to guide the learner’s interaction with the component.
+- **_setCompletionOn (string)**: Determines when Adapt will register this component as complete.
+- **_setCompletionOnMobile (string)**: Set completion \"In View\" when on mobile displays
 
 ### _items (array)
+- **title (string)**: Title used for editing (reference).
+- **_screenID (string)**: ID that identifies your screen, it is used to associate an action to this screen.
+- **displayTitle (string)**: This title is visible to screen readers; it must match the screen title displayed to learners (if there is one).
+- **body (string)**: Main text displayed in the step bubble.
+- **_graphic (object)**: Path to the background image displayed behind the step.
+  - src: Source of the image to be displayed
+  - alt: Slternative text for the image displayed behind the step.
+  - _forceFullWidth: Forces image to take full width of component.
+
+#### _childItems (array)
+- **title (string)**: This title is visible to screen readers and must be the visible label of this field on the image.
+- **_isForm (boolean)**: If enabled, the element is a form.
+- **_actionType (string)**: Type of navigation action.
+    - click
+    - input
+    - select
+    - checkbox
+- **_clickType (string)**: Select the type of click to correspond to the element on screen.
+    - button
+    - link
+- **_inputType (string)**: Select the type of input to correspond to the element on screen.
+##### _form (array)
+
 
 Each entry in the array represents an element in the guided tour and should contain the following properties:
 
