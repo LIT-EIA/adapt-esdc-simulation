@@ -92,7 +92,7 @@
   </div>
   {{/if}}
   {{#if type.select}}
-  <label for="simulation_element_form_{{@index}}_{{../../componentID}}" class="sr-only">{{title}}</label>
+  <label for="simulation_element_{{@index}}_{{../componentID}}" class="sr-only">{{title}}</label>
   <div class="select-wrapper"
     style="width:{{_position._width}}%;height:{{_position._height}}%;top:{{_position._top}}%;left:{{_position._left}}%;">
     <select id="simulation_element_{{@index}}_{{../componentID}}" data-id="{{id}}" data-readable-id="{{readableID}}"
