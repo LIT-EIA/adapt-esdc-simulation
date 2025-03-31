@@ -237,9 +237,13 @@ define([
     adjustPageScroll: function () {
       var simulationWidget = this.$el.find('.simulation-widget');
       var simulationWidgetWrapper = simulationWidget[0];
-      var offset = simulationWidget.offset().top - 100;
-      window.scrollTo({ top: offset });
-      simulationWidgetWrapper.scrollTo({ top: 0 });
+      var offset = simulationWidget.offset().top ;
+      var newOffset = offset - 40;
+      if (this.isBrowserFullScreen()) {
+        simulationWidgetWrapper.scrollTo({ top: 0 });
+      } else {
+        Adapt.scrollTo(`${newOffset}`, { offset: { top: 0 }, duration: 1 });
+      }
     },
 
     listenToResize: function () {

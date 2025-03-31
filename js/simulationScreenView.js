@@ -733,10 +733,24 @@ define([
       if (!focusOnElement) {
         var simulationWidget = $(`div[data-adapt-id="${this.componentID}"] .simulation-widget`);
         var simulationWidgetWrapper = simulationWidget[0];
-        var offset = simulationWidget.offset().top - 100;
-        window.scrollTo({ top: offset });
-        simulationWidgetWrapper.scrollTo({ top: 0 });
+        var offset = simulationWidget.offset().top;
+        var newOffset = offset - 40;
+        if (this.isBrowserFullScreen()) {
+          simulationWidgetWrapper.scrollTo({ top: 0 });
+        } else {
+          Adapt.scrollTo(`${newOffset}`, { offset: { top: 0 }, duration: 1 });
+        }
+
       }
+    },
+
+    isBrowserFullScreen: function () {
+      return (
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
     },
 
     setSelectFields: function () {
@@ -883,7 +897,7 @@ define([
             if (inputString === formattedDate) {
               matched = true;
             }
-          } else if (matchUsingValidDate){
+          } else if (matchUsingValidDate) {
             var regex = new RegExp('^\\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$');
             if (regex.test(inputString)) {
               matched = true;
